@@ -14,7 +14,7 @@ return [
     'name' => 'food',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'defaultRoute' => '/user/index',
+    // 'defaultRoute' => '/user/index',
     // 'bootstrap' => ['log'],
     'params' => $params,
     'modules' => [

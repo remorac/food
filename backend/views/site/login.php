@@ -21,7 +21,7 @@ $this->context->layout = 'guest/main';
                 <div class="card mt-32">
                     <div class="card-body">
                         <div class="mb-12">
-                            <h3>Food Reservation</h3>
+                            <h3>Food</h3>
                             <div class="text-muted font-weight-bold">Enter your details to login to your account:</div>
                         </div>
                         <?php $form = ActiveForm::begin(['id' => 'kt_login_signin_form', 'class' => 'form']); ?>

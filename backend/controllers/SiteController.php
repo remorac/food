@@ -64,7 +64,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        Yii::$app->session->addFlash('error', 'Test');
+        return $this->redirect(['/user/index']);
+        // Yii::$app->session->addFlash('error', 'Test');
         return $this->render('index');
     }
 
