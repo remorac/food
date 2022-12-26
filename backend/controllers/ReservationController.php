@@ -127,4 +127,26 @@ class ReservationController extends Controller
         }
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionSetReservation($schedule_id)
+    {
+        $model = Reservation::find()->joinWith(['scheduleMenu'])->where([
+            'user_id' => Yii::$app->user->id,
+            'schedule_id' => $schedule_id,
+        ])->one();
+        if (!$model) {
+            $model = new Reservation();
+        }
+        $model->user_id = Yii::$app->user->id;
+        $model->schedule_id = $schedule_id;
+        
+        if ($model->load(Yii::$app->request->post())) {
+            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+        } else if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', [
+                'model' => $model
+            ]);
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+    }
 }
