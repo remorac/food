@@ -58,36 +58,47 @@ use yii\helpers\Url;
 										<span class="menu-text">Dashboard</span>
 									</a>
 								</li> -->
-								<li class="menu-item" aria-haspopup="true">
-									<a href="<?= Url::to(['/user']) ?>" class="menu-link">
-										<i class="menu-icon fa fa-address-book"></i>
-										<span class="menu-text">Administrator</span>
-									</a>
-								</li>
-								<li class="menu-item" aria-haspopup="true">
-									<a href="<?= Url::to(['/unit']) ?>" class="menu-link">
-										<i class="menu-icon fa fa-th-list"></i>
-										<span class="menu-text">Unit Kerja</span>
-									</a>
-								</li>
-								<li class="menu-item" aria-haspopup="true">
-									<a href="<?= Url::to(['/menu']) ?>" class="menu-link">
-										<i class="menu-icon fa fa-utensils"></i>
-										<span class="menu-text">Menu</span>
-									</a>
-								</li>
-								<li class="menu-item" aria-haspopup="true">
-									<a href="<?= Url::to(['/schedule']) ?>" class="menu-link">
-										<i class="menu-icon fa fa-calendar"></i>
-										<span class="menu-text">Jadwal</span>
-									</a>
-								</li>
-								<li class="menu-item d-none" aria-haspopup="true">
-									<a href="<?= Url::to(['/order']) ?>" class="menu-link">
-										<i class="menu-icon fa fa-edit"></i>
-										<span class="menu-text">Pemesanan</span>
-									</a>
-								</li>
+								<?php if (Yii::$app->user->identity->role == 'Administrator') { ?>
+									<li class="menu-item" aria-haspopup="true">
+										<a href="<?= Url::to(['/user']) ?>" class="menu-link">
+											<i class="menu-icon fa fa-address-book"></i>
+											<span class="menu-text">Administrator</span>
+										</a>
+									</li>
+									<li class="menu-item" aria-haspopup="true">
+										<a href="<?= Url::to(['/unit']) ?>" class="menu-link">
+											<i class="menu-icon fa fa-th-list"></i>
+											<span class="menu-text">Unit Kerja</span>
+										</a>
+									</li>
+									<li class="menu-item" aria-haspopup="true">
+										<a href="<?= Url::to(['/menu']) ?>" class="menu-link">
+											<i class="menu-icon fa fa-utensils"></i>
+											<span class="menu-text">Menu</span>
+										</a>
+									</li>
+									<li class="menu-item" aria-haspopup="true">
+										<a href="<?= Url::to(['/schedule']) ?>" class="menu-link">
+											<i class="menu-icon fa fa-calendar"></i>
+											<span class="menu-text">Jadwal</span>
+										</a>
+									</li>
+									<li class="menu-item d-none" aria-haspopup="true">
+										<a href="<?= Url::to(['/order']) ?>" class="menu-link">
+											<i class="menu-icon fa fa-edit"></i>
+											<span class="menu-text">Pemesanan</span>
+										</a>
+									</li>
+								<?php } ?>
+
+								<?php if (Yii::$app->user->identity->role == 'Koperasi') { ?>
+									<li class="menu-item" aria-haspopup="true">
+										<a href="<?= Url::to(['/menu']) ?>" class="menu-link">
+											<i class="menu-icon fa fa-utensils"></i>
+											<span class="menu-text">Menu</span>
+										</a>
+									</li>
+								<?php } ?>
 
 							</ul>
 

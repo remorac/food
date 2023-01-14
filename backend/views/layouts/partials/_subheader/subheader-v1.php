@@ -3,7 +3,7 @@
 	if (!Yii::$app->user->isGuest && Yii::$app->user->identity->unit_id) $containerClass = 'container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap';
 ?>
 <!--begin::Subheader-->
-						<div class="subheader py-2 py-lg-6 subheader-transparent" id="kt_subheader">
+						<div class="subheader py-6 py-lg-6 subheader-transparent" id="kt_subheader">
 							<div class="<?= $containerClass ?>">
 
 								<!--begin::Info-->

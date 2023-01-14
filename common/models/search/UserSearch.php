@@ -20,6 +20,7 @@ class UserSearch extends User
         return [
             [['id', 'otp_expired_at', 'must_change_password', 'confirmed_at', 'status', 'unit_id', 'supplier_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['phone', 'email', 'username', 'auth_key', 'password_hash', 'password_reset_token', 'verification_token', 'one_time_password', 'name'], 'safe'],
+            [['role'], 'safe'],
         ];
     }
 
@@ -44,6 +45,7 @@ class UserSearch extends User
         $query = User::find();
 
         // add conditions that should always apply here
+        $query->where(['>', 'id', 1]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -82,6 +84,8 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'verification_token', $this->verification_token])
             ->andFilterWhere(['like', 'one_time_password', $this->one_time_password])
             ->andFilterWhere(['like', 'name', $this->name]);
+        
+        $query->andFilterWhere(['like', 'role', $this->role]);
 
         return $dataProvider;
     }

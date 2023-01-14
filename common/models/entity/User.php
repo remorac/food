@@ -22,6 +22,7 @@ use Yii;
  * @property integer $status
  * @property string $name
  * @property integer $unit_id
+ * @property integer $role
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
@@ -49,7 +50,7 @@ use Yii;
 class User extends \common\models\User
 {
     public $password;
-    public $role;
+    // public $role;
 
     /**
      * @inheritdoc
@@ -87,6 +88,8 @@ class User extends \common\models\User
 
             [['password'], 'required', 'on' => 'create'],
             [['password'], 'string', 'min' => 8],
+
+            [['role'], 'string', 'max' => 255],
         ];
     }
 
@@ -111,6 +114,7 @@ class User extends \common\models\User
             'status' => 'Status',
             'name' => 'Nama',
             'unit_id' => 'Unit Kerja',
+            'role' => 'Role',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',

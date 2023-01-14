@@ -25,6 +25,16 @@ use common\models\entity\User;
 
     <?= $form->field($model, 'password')->passwordInput()->hint($model->isNewRecord ? '' : 'kosongkan jika tidak ingin mengganti password.') ?>
 
+    <?= $form->field($model, 'role')->widget(Select2::class, [
+        'theme' => Select2::THEME_DEFAULT,
+        'data' => [
+            'Administrator' => 'Administrator',
+            'Koperasi' => 'Koperasi',
+        ],
+        // 'options' => ['placeholder' => '. . .'],
+        'pluginOptions' => ['allowClear' => true],
+    ]); ?>
+
     <?= $form->field($model, 'status')->widget(Select2::class, [
         'theme' => Select2::THEME_DEFAULT,
         'data' => User::statuses(),

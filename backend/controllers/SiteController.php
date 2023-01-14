@@ -66,6 +66,7 @@ class SiteController extends Controller
     {
         if (!Yii::$app->user->isGuest) {
             if (Yii::$app->user->identity->unit_id) return $this->redirect(['/order/index']);
+            if (Yii::$app->user->identity->role == 'Koperasi') return $this->redirect(['/menu/index']);
             return $this->redirect(['/user/index']);
         }
         

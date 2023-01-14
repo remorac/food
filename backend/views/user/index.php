@@ -112,6 +112,7 @@ $this->title = 'User';
             // 'phone',
             'email:email',
             'name',
+            'role',
             [
                 'attribute'           => 'status',
                 'format'              => 'html',
