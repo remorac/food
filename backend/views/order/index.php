@@ -52,7 +52,7 @@ $this->title = 'Pemesanan';
                     </div>
                     <?php $order = Order::find()->where(['schedule_id' => $model->id, 'user_id' => Yii::$app->user->id])->one() ?>
                     <div class="alert p-8 my-4 bg-light font-size-h4"><?= $order ? $order->menu->name : '-' ?></div>
-                    <?= ($model->datetime_end_order > date('Y-m-d H:i:s')) ? Html::button('Tentukan Pesanan', [
+                    <?= ($model->datetime_end_order > date('Y-m-d H:i:s')) ? Html::button($order ? 'Ganti Pesanan' : 'Tentukan Pesanan', [
                         'value'     => Url::to(['set-order', 'schedule_id' => $model->id]),
                         'title'     => $order ? 'Ganti Pesanan' : 'Tentukan Pesanan',
                         'class'     => 'showModalButton btn btn-light-primary',

@@ -33,6 +33,10 @@ use common\models\entity\Menu;
         'pluginOptions' => ['allowClear' => true],
     ])->label('Pilih Menu'); ?>
 
+    <p class="text-muted">
+        Permintaan Anda akan ditinjau terlebih dahulu oleh admin atau koperasi.
+    </p>
+
     <div class="modal-footer text-right">
         <?=  
             Html::button('<i class="fa fa-arrow-left"></i> Cancel', ['class' => 'btn btn-secondary', 'data-dismiss' => 'modal']) 
