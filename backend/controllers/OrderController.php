@@ -3,17 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\entity\Reservation;
-use common\models\search\ReservationSearch;
+use common\models\entity\Order;
+use common\models\search\OrderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\IntegrityException;
 
 /**
- * ReservationController implements the CRUD actions for Reservation model.
+ * OrderController implements the CRUD actions for Order model.
  */
-class ReservationController extends Controller
+class OrderController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,12 +31,12 @@ class ReservationController extends Controller
     }
 
     /**
-     * Lists all Reservation models.
+     * Lists all Order models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ReservationSearch();
+        $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +46,7 @@ class ReservationController extends Controller
     }
 
     /**
-     * Displays a single Reservation model.
+     * Displays a single Order model.
      * @param integer $id
      * @return mixed
      */
@@ -58,14 +58,13 @@ class ReservationController extends Controller
     }
 
     /**
-     * Creates a new Reservation model.
+     * Creates a new Order model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Reservation();
-        $model->user_id = Yii::$app->user->id;
+        $model = new Order();
 
         if ($model->load(Yii::$app->request->post())) {
             if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
@@ -78,7 +77,7 @@ class ReservationController extends Controller
     }
 
     /**
-     * Updates an existing Reservation model.
+     * Updates an existing Order model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -98,7 +97,7 @@ class ReservationController extends Controller
     }
 
     /**
-     * Deletes an existing Reservation model.
+     * Deletes an existing Order model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -114,28 +113,28 @@ class ReservationController extends Controller
     }
 
     /**
-     * Finds the Reservation model based on its primary key value.
+     * Finds the Order model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Reservation the loaded model
+     * @return Order the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Reservation::findOne($id)) !== null) {
+        if (($model = Order::findOne($id)) !== null) {
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionSetReservation($schedule_id)
+    public function actionSetOrder($schedule_id)
     {
-        $model = Reservation::find()->joinWith(['scheduleMenu'])->where([
+        $model = Order::find()->where([
             'user_id' => Yii::$app->user->id,
             'schedule_id' => $schedule_id,
         ])->one();
         if (!$model) {
-            $model = new Reservation();
+            $model = new Order();
         }
         $model->user_id = Yii::$app->user->id;
         $model->schedule_id = $schedule_id;

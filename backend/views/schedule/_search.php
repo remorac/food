@@ -19,11 +19,13 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'datetime_start') ?>
+    <?= $form->field($model, 'datetime') ?>
 
-    <?= $form->field($model, 'datetime_end') ?>
+    <?= $form->field($model, 'datetime_start_order') ?>
 
-    <?= $form->field($model, 'created_at') ?>
+    <?= $form->field($model, 'datetime_end_order') ?>
+
+    <?php // echo $form->field($model, 'created_at') ?>
 
     <?php // echo $form->field($model, 'updated_at') ?>
 

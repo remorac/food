@@ -6,7 +6,6 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap4\ActiveForm;
 use kartik\widgets\Select2;
 use common\models\entity\Unit;
-use common\models\entity\Supplier;
 use common\models\entity\User;
 
 /* @var $this yii\web\View */
@@ -39,14 +38,6 @@ use common\models\entity\User;
         'options' => ['placeholder' => '. . .'],
         'pluginOptions' => ['allowClear' => true],
     ]); */ ?>
-
-    <?= '' /* $form->field($model, 'supplier_id')->widget(Select2::class, [
-        'theme' => Select2::THEME_DEFAULT,
-        'data' => ArrayHelper::map(Supplier::find()->all(), 'id', 'name'),
-        'options' => ['placeholder' => '. . .'],
-        'pluginOptions' => ['allowClear' => true],
-    ]); */ ?>
-
     
     <div class="modal-footer text-right">
         <?=  

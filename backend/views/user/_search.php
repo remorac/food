@@ -45,8 +45,6 @@ use yii\bootstrap4\ActiveForm;
 
     <?php // echo $form->field($model, 'unit_id') ?>
 
-    <?php // echo $form->field($model, 'supplier_id') ?>
-
     <?php // echo $form->field($model, 'created_at') ?>
 
     <?php // echo $form->field($model, 'updated_at') ?>

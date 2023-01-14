@@ -5,14 +5,14 @@ use yii\helpers\Html;
 use common\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\entity\Reservation */
+/* @var $model common\models\entity\Order */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Reservation', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Order', 'url' => ['index']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="reservation-view">
+<div class="order-view">
 
     <div class="toolbar">
         <?= Html::button('<i class="fas fa-pen"></i>', [
@@ -33,8 +33,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Reservation', 'url' => ['index']];
         'model' => $model,
         'attributes' => [
             // 'id',
+            'schedule.name:text:Schedule',
             'user.name:text:User',
-            'scheduleMenu.menu.name:text:Schedule Menu',
+            'menu.name:text:Menu',
             'review_status:integer',
             'reviewed_at:integer',
             'reviewed_by:integer',

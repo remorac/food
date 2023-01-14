@@ -5,21 +5,23 @@ namespace common\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\entity\Reservation;
+use common\models\entity\Order;
 
 /**
- * ReservationSearch represents the model behind the search form about `common\models\entity\Reservation`.
+ * OrderSearch represents the model behind the search form about `common\models\entity\Order`.
  */
-class ReservationSearch extends Reservation
+class OrderSearch extends Order
 {
+    public $unit_id;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'user_id', 'schedule_menu_id', 'review_status', 'reviewed_at', 'reviewed_by', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['schedule_id'], 'safe'],
+            [['id', 'schedule_id', 'user_id', 'menu_id', 'review_status', 'reviewed_at', 'reviewed_by', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['unit_id'], 'safe'],
         ];
     }
 
@@ -41,15 +43,20 @@ class ReservationSearch extends Reservation
      */
     public function search($params)
     {
-        $query = Reservation::find();
+        $query = Order::find();
 
         // add conditions that should always apply here
-        $query->joinWith(['scheduleMenu']);
+        $query->joinWith(['user.unit']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
         ]);
+
+        $dataProvider->sort->attributes['unit_id'] = [
+            'asc' => ['unit.name' => SORT_ASC],
+            'desc' => ['unit.name' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -62,9 +69,9 @@ class ReservationSearch extends Reservation
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'schedule_id' => $this->schedule_id,
             'user_id' => $this->user_id,
-            'schedule_menu.schedule_id' => $this->schedule_id,
-            'schedule_menu_id' => $this->schedule_menu_id,
+            'menu_id' => $this->menu_id,
             'review_status' => $this->review_status,
             'reviewed_at' => $this->reviewed_at,
             'reviewed_by' => $this->reviewed_by,
@@ -72,6 +79,7 @@ class ReservationSearch extends Reservation
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
+            'unit_id' => $this->unit_id,
         ]);
 
         return $dataProvider;

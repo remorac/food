@@ -9,7 +9,7 @@ use kartik\export\ExportMenu;
 /* @var $searchModel common\models\search\UnitSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Unit';
+$this->title = 'Unit Kerja';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -119,7 +119,7 @@ $this->title = 'Unit';
             ]),
             Html::a('<i class="fas fa-undo"></i>', ['index'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Reload']),
             '{toggleData}',
-            $exportMenu,
+            // $exportMenu,
         ],
         'toggleDataOptions' => [
             'all'  => ['label' => false, 'class' => 'btn btn-icon btn-white'],

@@ -9,16 +9,17 @@ use Yii;
  *
  * @property integer $id
  * @property string $name
- * @property string $datetime_start
- * @property string $datetime_end
+ * @property string $datetime
+ * @property string $datetime_start_order
+ * @property string $datetime_end_order
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
  *
+ * @property Order[] $orders
  * @property User $createdBy
  * @property User $updatedBy
- * @property ScheduleMenu[] $scheduleMenus
  */
 class Schedule extends \yii\db\ActiveRecord
 {
@@ -48,8 +49,8 @@ class Schedule extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'datetime_start', 'datetime_end'], 'required'],
-            [['datetime_start', 'datetime_end'], 'safe'],
+            [['name', 'datetime', 'datetime_start_order', 'datetime_end_order'], 'required'],
+            [['datetime', 'datetime_start_order', 'datetime_end_order'], 'safe'],
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
@@ -64,14 +65,27 @@ class Schedule extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'datetime_start' => 'Datetime Start',
-            'datetime_end' => 'Datetime End',
+            'name' => 'Keterangan',
+            'datetime' => 'Waktu Makan',
+            'datetime_start_order' => 'Waktu Mulai Pemesanan',
+            'datetime_end_order' => 'Waktu Akhir Pemesanan',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrders()
+    {
+        return $this->hasMany(Order::className(), ['schedule_id' => 'id']);
+    }
+    public function getOrdersAccepted()
+    {
+        return $this->hasMany(Order::className(), ['schedule_id' => 'id'])->where(['review_status' => Order::REVIEW_STATUS_ACCEPTED]);
     }
 
     /**
@@ -88,13 +102,5 @@ class Schedule extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getScheduleMenus()
-    {
-        return $this->hasMany(ScheduleMenu::className(), ['schedule_id' => 'id']);
     }
 }

@@ -7,17 +7,18 @@ use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 use kartik\widgets\Select2;
 use common\models\entity\Schedule;
+use common\models\entity\User;
 use common\models\entity\Menu;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\search\ScheduleMenuSearch */
+/* @var $searchModel common\models\search\OrderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Schedule Menu';
+$this->title = 'Order';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="schedule-menu-index">
+<div class="order-index">
 
     <?php 
         $exportColumns = [
@@ -26,7 +27,11 @@ $this->title = 'Schedule Menu';
             ],
             'id',
             'schedule.name:text:Schedule',
+            'user.name:text:User',
             'menu.name:text:Menu',
+            'review_status',
+            'reviewed_at:datetime',
+            'reviewedBy.username:text:Reviewed By',
             'created_at:datetime',
             'updated_at:datetime',
             'createdBy.username:text:Created By',
@@ -36,7 +41,7 @@ $this->title = 'Schedule Menu';
         $exportMenu = ExportMenu::widget([
             'dataProvider' => $dataProvider,
             'columns'      => $exportColumns,
-            'filename'     => 'Schedule Menu',
+            'filename'     => 'Order',
             'fontAwesome'  => true,
             'asDropdown'   => false,
             'batchSize'    => 10,
@@ -109,6 +114,17 @@ $this->title = 'Schedule Menu';
                 ],
             ],
             [
+                'attribute'           => 'user_id',
+                'value'               => 'user.name',
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => ArrayHelper::map(User::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+            ],
+            [
                 'attribute'           => 'menu_id',
                 'value'               => 'menu.name',
                 'filterType'          => GridView::FILTER_SELECT2,
@@ -118,6 +134,24 @@ $this->title = 'Schedule Menu';
                     'theme' => Select2::THEME_DEFAULT,
                     'pluginOptions' => ['allowClear' => true],
                 ],
+            ],
+            [
+                'attribute'      => 'review_status',
+                'format'         => 'integer',
+                'headerOptions'  => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right'],
+            ],
+            [
+                'attribute'      => 'reviewed_at',
+                'format'         => 'integer',
+                'headerOptions'  => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right'],
+            ],
+            [
+                'attribute'      => 'reviewed_by',
+                'format'         => 'integer',
+                'headerOptions'  => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right'],
             ],
             // 'created_at:integer',
             // 'updated_at:integer',

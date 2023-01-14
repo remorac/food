@@ -18,7 +18,7 @@ class UserSearchAdministrator extends User
     public function rules()
     {
         return [
-            [['id', 'otp_expired_at', 'must_change_password', 'confirmed_at', 'status', 'unit_id', 'supplier_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'otp_expired_at', 'must_change_password', 'confirmed_at', 'status', 'unit_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['phone', 'email', 'username', 'auth_key', 'password_hash', 'password_reset_token', 'verification_token', 'one_time_password', 'name'], 'safe'],
         ];
     }
@@ -67,7 +67,6 @@ class UserSearchAdministrator extends User
             'confirmed_at' => $this->confirmed_at,
             'status' => $this->status,
             'unit_id' => $this->unit_id,
-            'supplier_id' => $this->supplier_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,

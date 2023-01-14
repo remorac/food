@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\search\SupplierSearch */
+/* @var $model common\models\search\OrderSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="supplier-search">
+<div class="order-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,13 +17,17 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'schedule_id') ?>
 
-    <?= $form->field($model, 'address') ?>
+    <?= $form->field($model, 'user_id') ?>
 
-    <?= $form->field($model, 'phone') ?>
+    <?= $form->field($model, 'menu_id') ?>
 
-    <?= $form->field($model, 'is_active') ?>
+    <?= $form->field($model, 'review_status') ?>
+
+    <?php // echo $form->field($model, 'reviewed_at') ?>
+
+    <?php // echo $form->field($model, 'reviewed_by') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

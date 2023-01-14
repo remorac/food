@@ -18,7 +18,7 @@ class MenuSearch extends Menu
     public function rules()
     {
         return [
-            [['id', 'supplier_id', 'type', 'is_active', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'type', 'is_active_sunday', 'is_active_monday', 'is_active_tuesday', 'is_active_wednesday', 'is_active_thursday', 'is_active_friday', 'is_active_saturday', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name', 'description'], 'safe'],
         ];
     }
@@ -61,9 +61,14 @@ class MenuSearch extends Menu
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'supplier_id' => $this->supplier_id,
             'type' => $this->type,
-            'is_active' => $this->is_active,
+            'is_active_sunday' => $this->is_active_sunday,
+            'is_active_monday' => $this->is_active_monday,
+            'is_active_tuesday' => $this->is_active_tuesday,
+            'is_active_wednesday' => $this->is_active_wednesday,
+            'is_active_thursday' => $this->is_active_thursday,
+            'is_active_friday' => $this->is_active_friday,
+            'is_active_saturday' => $this->is_active_saturday,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,

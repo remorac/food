@@ -22,7 +22,6 @@ use Yii;
  * @property integer $status
  * @property string $name
  * @property integer $unit_id
- * @property integer $supplier_id
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
@@ -34,21 +33,18 @@ use Yii;
  * @property AuthItem[] $authItems0
  * @property Menu[] $menus
  * @property Menu[] $menus0
- * @property Reservation[] $reservations
- * @property Reservation[] $reservations0
- * @property Reservation[] $reservations1
- * @property Reservation[] $reservations2
+ * @property Order[] $orders
+ * @property Order[] $orders0
+ * @property Order[] $orders1
+ * @property Order[] $orders2
  * @property Schedule[] $schedules
  * @property Schedule[] $schedules0
  * @property ScheduleMenu[] $scheduleMenus
  * @property ScheduleMenu[] $scheduleMenus0
  * @property Session[] $sessions
- * @property Supplier[] $suppliers
- * @property Supplier[] $suppliers0
  * @property Unit[] $units
  * @property Unit[] $units0
  * @property Unit $unit
- * @property Supplier $supplier
  */
 class User extends \common\models\User
 {
@@ -82,13 +78,12 @@ class User extends \common\models\User
     {
         return [
             [['email', /* 'username', 'auth_key', 'password_hash' */], 'required'],
-            [['otp_expired_at', 'must_change_password', 'confirmed_at', 'status', 'unit_id', 'supplier_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['otp_expired_at', 'must_change_password', 'confirmed_at', 'status', 'unit_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['phone', 'email', 'username', 'password_hash', 'password_reset_token', 'verification_token', 'one_time_password', 'name'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => Unit::className(), 'targetAttribute' => ['unit_id' => 'id']],
-            [['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Supplier::className(), 'targetAttribute' => ['supplier_id' => 'id']],
 
             [['password'], 'required', 'on' => 'create'],
             [['password'], 'string', 'min' => 8],
@@ -114,9 +109,8 @@ class User extends \common\models\User
             'must_change_password' => 'Must Change Password',
             'confirmed_at' => 'Confirmed At',
             'status' => 'Status',
-            'name' => 'Name',
-            'unit_id' => 'Unit',
-            'supplier_id' => 'Supplier',
+            'name' => 'Nama',
+            'unit_id' => 'Unit Kerja',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
@@ -175,33 +169,33 @@ class User extends \common\models\User
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getReservations()
+    public function getOrders()
     {
-        return $this->hasMany(Reservation::className(), ['user_id' => 'id']);
+        return $this->hasMany(Order::className(), ['user_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getReservations0()
+    public function getOrders0()
     {
-        return $this->hasMany(Reservation::className(), ['reviewed_by' => 'id']);
+        return $this->hasMany(Order::className(), ['reviewed_by' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getReservations1()
+    public function getOrders1()
     {
-        return $this->hasMany(Reservation::className(), ['created_by' => 'id']);
+        return $this->hasMany(Order::className(), ['created_by' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getReservations2()
+    public function getOrders2()
     {
-        return $this->hasMany(Reservation::className(), ['updated_by' => 'id']);
+        return $this->hasMany(Order::className(), ['updated_by' => 'id']);
     }
 
     /**
@@ -223,41 +217,9 @@ class User extends \common\models\User
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getScheduleMenus()
-    {
-        return $this->hasMany(ScheduleMenu::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getScheduleMenus0()
-    {
-        return $this->hasMany(ScheduleMenu::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getSessions()
     {
         return $this->hasMany(Session::className(), ['user_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSuppliers()
-    {
-        return $this->hasMany(Supplier::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSuppliers0()
-    {
-        return $this->hasMany(Supplier::className(), ['updated_by' => 'id']);
     }
 
     /**
@@ -282,14 +244,6 @@ class User extends \common\models\User
     public function getUnit()
     {
         return $this->hasOne(Unit::className(), ['id' => 'unit_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSupplier()
-    {
-        return $this->hasOne(Supplier::className(), ['id' => 'supplier_id']);
     }
 
     public static function statuses($index = null, $html = false) {

@@ -5,7 +5,7 @@
 			<!--begin::Logo-->
 			<a href="index.html">
 				<!-- <img alt="Logo" src="<?= Yii::getAlias('@web/img/logo-ppni.png') ?>" height="35px" class="mr-4"/> -->
-				<span class="font-size-h4 font-weight-bold text-light-danger">PPNI Sumbar</span>
+				<span class="font-size-h4 font-weight-bold text-light-danger"><?= Yii::$app->name ?></span>
 			</a>
 
 			<!--end::Logo-->

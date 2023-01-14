@@ -5,11 +5,12 @@ namespace common\models\entity;
 use Yii;
 
 /**
- * This is the model class for table "reservation".
+ * This is the model class for table "order".
  *
  * @property integer $id
+ * @property integer $schedule_id
  * @property integer $user_id
- * @property integer $schedule_menu_id
+ * @property integer $menu_id
  * @property integer $review_status
  * @property integer $reviewed_at
  * @property integer $reviewed_by
@@ -19,14 +20,17 @@ use Yii;
  * @property integer $updated_by
  *
  * @property User $user
- * @property ScheduleMenu $scheduleMenu
  * @property User $reviewedBy
  * @property User $createdBy
  * @property User $updatedBy
+ * @property Menu $menu
+ * @property Schedule $schedule
  */
-class Reservation extends \yii\db\ActiveRecord
+class Order extends \yii\db\ActiveRecord
 {
-    public $schedule_id;
+    const REVIEW_STATUS_WAITING  = 0;
+    const REVIEW_STATUS_ACCEPTED = 1;
+    const REVIEW_STATUS_REJECTED = 2;
 
     /**
      * @inheritdoc
@@ -45,7 +49,7 @@ class Reservation extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'reservation';
+        return 'order';
     }
 
     /**
@@ -54,13 +58,14 @@ class Reservation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'schedule_menu_id'], 'required'],
-            [['user_id', 'schedule_menu_id', 'review_status', 'reviewed_at', 'reviewed_by', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['schedule_id', 'user_id', 'menu_id'], 'required'],
+            [['schedule_id', 'user_id', 'menu_id', 'review_status', 'reviewed_at', 'reviewed_by', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['schedule_menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => ScheduleMenu::className(), 'targetAttribute' => ['schedule_menu_id' => 'id']],
             [['reviewed_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['reviewed_by' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
+            [['menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['menu_id' => 'id']],
+            [['schedule_id'], 'exist', 'skipOnError' => true, 'targetClass' => Schedule::className(), 'targetAttribute' => ['schedule_id' => 'id']],
         ];
     }
 
@@ -71,8 +76,9 @@ class Reservation extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'schedule_id' => 'Jadwal',
             'user_id' => 'User',
-            'schedule_menu_id' => 'Schedule Menu',
+            'menu_id' => 'Menu',
             'review_status' => 'Review Status',
             'reviewed_at' => 'Reviewed At',
             'reviewed_by' => 'Reviewed By',
@@ -89,14 +95,6 @@ class Reservation extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getScheduleMenu()
-    {
-        return $this->hasOne(ScheduleMenu::className(), ['id' => 'schedule_menu_id']);
     }
 
     /**
@@ -123,8 +121,42 @@ class Reservation extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
 
-    public function afterFind()
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMenu()
     {
-        $this->schedule_id = $this->scheduleMenu->schedule_id;
+        return $this->hasOne(Menu::className(), ['id' => 'menu_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSchedule()
+    {
+        return $this->hasOne(Schedule::className(), ['id' => 'schedule_id']);
+    }
+
+    public static function reviewStatuses($index = null, $html = false) {
+        $array = [
+            self::REVIEW_STATUS_WAITING => 'Ditinjau',
+            self::REVIEW_STATUS_ACCEPTED => 'Disetujui',
+            self::REVIEW_STATUS_REJECTED => 'Ditolak',
+        ];
+        if ($html) {
+            $array = [
+                self::REVIEW_STATUS_WAITING => '<span class="font-weight-bold label label-inline label-light">Ditinjau</span>',
+                self::REVIEW_STATUS_ACCEPTED => '<span class="font-weight-bold label label-inline label-light-success">Disetujui</span>',
+                self::REVIEW_STATUS_REJECTED => '<span class="font-weight-bold label label-inline label-light-danger">Ditolak</span>',
+            ];
+        }
+        if ($index === null) return $array;
+        if (isset($array[$index])) return $array[$index];
+        return null;
+    }
+
+    public function getReviewStatusHtml()
+    {
+        return self::reviewStatuses($this->review_status, true);
     }
 }

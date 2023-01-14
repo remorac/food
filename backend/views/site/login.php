@@ -27,10 +27,10 @@ $this->context->layout = 'guest/main';
                         <?php $form = ActiveForm::begin(['id' => 'kt_login_signin_form', 'class' => 'form']); ?>
 
                             <div class="form-group mb-5">
-                            <?= $form->field($model, 'username')->textInput([
+                            <?= $form->field($model, 'email')->textInput([
                                 'autofocus' => true,
                                 'class' => 'form-control h-auto form-control-solid py-4 px-8',
-                                'placeholder' => 'username',
+                                'placeholder' => 'email',
                                 'autocomplete' => 'off',
                             ])->label(false) ?>
                             </div>
@@ -43,10 +43,11 @@ $this->context->layout = 'guest/main';
                             </div>
 
                             <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
-                                <div class="checkbox-inline d-none">
-                                    <label class="checkbox m-0 text-muted">
-                                    <input type="checkbox" name="remember" />
-                                    <span></span>Remember me</label>
+                                <div class="checkbox-inline">
+                                    <!-- <label class="checkbox m-0 text-muted">
+                                    <input type="checkbox" name="LoginForm[rememberMe]" />
+                                    <span></span>Remember me</label> -->
+                                    <?= Html::activeCheckbox($model, 'rememberMe', ['labelOptions' => ['class' => 'm-0 text-muted']]) ?>
                                 </div>
                                 <div></div>
                                 <a href="<?= Url::to(['/site/request-password-reset']) ?>" id="kt_login_forgot" class="text-muted text-hover-primary">Lupa Password ?</a>

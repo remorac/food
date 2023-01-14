@@ -33,11 +33,44 @@ $this->params['breadcrumbs'][] = ['label' => 'Menu', 'url' => ['index']];
         'model' => $model,
         'attributes' => [
             // 'id',
-            'supplier.name:text:Supplier',
             'name',
-            'type:integer',
+            // 'type:integer',
             'description:ntext',
-            'is_active:integer',
+            [
+                'attribute'      => 'is_active_sunday',
+                'format'         => 'html',
+                'value'          => isActiveHtml($model->is_active_sunday),
+            ],
+            [
+                'attribute'      => 'is_active_monday',
+                'format'         => 'html',
+                'value'          => isActiveHtml($model->is_active_monday),
+            ],
+            [
+                'attribute'      => 'is_active_tuesday',
+                'format'         => 'html',
+                'value'          => isActiveHtml($model->is_active_tuesday),
+            ],
+            [
+                'attribute'      => 'is_active_wednesday',
+                'format'         => 'html',
+                'value'          => isActiveHtml($model->is_active_wednesday),
+            ],
+            [
+                'attribute'      => 'is_active_thursday',
+                'format'         => 'html',
+                'value'          => isActiveHtml($model->is_active_thursday),
+            ],
+            [
+                'attribute'      => 'is_active_friday',
+                'format'         => 'html',
+                'value'          => isActiveHtml($model->is_active_friday),
+            ],
+            [
+                'attribute'      => 'is_active_saturday',
+                'format'         => 'html',
+                'value'          => isActiveHtml($model->is_active_saturday),
+            ],
             // 'created_at:datetime',
             // 'updated_at:datetime',
             // 'createdBy.username:text:Created By',

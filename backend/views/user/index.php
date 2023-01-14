@@ -7,7 +7,6 @@ use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 use kartik\widgets\Select2;
 use common\models\entity\Unit;
-use common\models\entity\Supplier;
 use common\models\entity\User;
 
 /* @var $this yii\web\View */
@@ -40,7 +39,6 @@ $this->title = 'User';
             'status',
             'name',
             'unit.name:text:Unit',
-            'supplier.name:text:Supplier',
             'created_at:datetime',
             'updated_at:datetime',
             'createdBy.username:text:Created By',
@@ -131,17 +129,6 @@ $this->title = 'User';
                 'value'               => 'unit.name',
                 'filterType'          => GridView::FILTER_SELECT2,
                 'filter'              => ArrayHelper::map(Unit::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
-                'filterInputOptions'  => ['placeholder' => '. . .'],
-                'filterWidgetOptions' => [
-                    'theme' => Select2::THEME_DEFAULT,
-                    'pluginOptions' => ['allowClear' => true],
-                ],
-            ],
-            [
-                'attribute'           => 'supplier_id',
-                'value'               => 'supplier.name',
-                'filterType'          => GridView::FILTER_SELECT2,
-                'filter'              => ArrayHelper::map(Supplier::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
                 'filterInputOptions'  => ['placeholder' => '. . .'],
                 'filterWidgetOptions' => [
                     'theme' => Select2::THEME_DEFAULT,

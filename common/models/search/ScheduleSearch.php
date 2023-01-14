@@ -19,7 +19,7 @@ class ScheduleSearch extends Schedule
     {
         return [
             [['id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name', 'datetime_start', 'datetime_end'], 'safe'],
+            [['name', 'datetime', 'datetime_start_order', 'datetime_end_order'], 'safe'],
         ];
     }
 
@@ -61,8 +61,9 @@ class ScheduleSearch extends Schedule
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'datetime_start' => $this->datetime_start,
-            'datetime_end' => $this->datetime_end,
+            'datetime' => $this->datetime,
+            'datetime_start_order' => $this->datetime_start_order,
+            'datetime_end_order' => $this->datetime_end_order,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,

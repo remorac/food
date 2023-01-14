@@ -2,11 +2,8 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
-use kartik\widgets\Select2;
-use common\models\entity\Supplier;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\MenuSearch */
@@ -24,11 +21,16 @@ $this->title = 'Menu';
                 'class' => 'yii\grid\SerialColumn',
             ],
             'id',
-            'supplier.name:text:Supplier',
             'name',
             'type',
             'description',
-            'is_active',
+            'is_active_sunday',
+            'is_active_monday',
+            'is_active_tuesday',
+            'is_active_wednesday',
+            'is_active_thursday',
+            'is_active_friday',
+            'is_active_saturday',
             'created_at:datetime',
             'updated_at:datetime',
             'createdBy.username:text:Created By',
@@ -99,34 +101,52 @@ $this->title = 'Menu';
                 ],
             ],
             // 'id',
-            [
-                'attribute'           => 'supplier_id',
-                'value'               => 'supplier.name',
-                'filterType'          => GridView::FILTER_SELECT2,
-                'filter'              => ArrayHelper::map(Supplier::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
-                'filterInputOptions'  => ['placeholder' => '. . .'],
-                'filterWidgetOptions' => [
-                    'theme' => Select2::THEME_DEFAULT,
-                    'pluginOptions' => ['allowClear' => true],
-                ],
-            ],
             'name',
-            [
+            /* [
                 'attribute'      => 'type',
                 'format'         => 'integer',
                 'headerOptions'  => ['class' => 'text-right'],
                 'contentOptions' => ['class' => 'text-right'],
-            ],
+            ], */
             [
                 'attribute'      => 'description',
                 'format'         => 'ntext',
                 'contentOptions' => ['class' => 'text-wrap'],
             ],
             [
-                'attribute'      => 'is_active',
-                'format'         => 'integer',
-                'headerOptions'  => ['class' => 'text-right'],
-                'contentOptions' => ['class' => 'text-right'],
+                'attribute'      => 'is_active_sunday',
+                'format'         => 'html',
+                'value'          => function($model) { return isActiveHtml($model->is_active_sunday); },
+            ],
+            [
+                'attribute'      => 'is_active_monday',
+                'format'         => 'html',
+                'value'          => function($model) { return isActiveHtml($model->is_active_monday); },
+            ],
+            [
+                'attribute'      => 'is_active_tuesday',
+                'format'         => 'html',
+                'value'          => function($model) { return isActiveHtml($model->is_active_tuesday); },
+            ],
+            [
+                'attribute'      => 'is_active_wednesday',
+                'format'         => 'html',
+                'value'          => function($model) { return isActiveHtml($model->is_active_wednesday); },
+            ],
+            [
+                'attribute'      => 'is_active_thursday',
+                'format'         => 'html',
+                'value'          => function($model) { return isActiveHtml($model->is_active_thursday); },
+            ],
+            [
+                'attribute'      => 'is_active_friday',
+                'format'         => 'html',
+                'value'          => function($model) { return isActiveHtml($model->is_active_friday); },
+            ],
+            [
+                'attribute'      => 'is_active_saturday',
+                'format'         => 'html',
+                'value'          => function($model) { return isActiveHtml($model->is_active_saturday); },
             ],
             // 'created_at:integer',
             // 'updated_at:integer',
@@ -154,7 +174,7 @@ $this->title = 'Menu';
             ]),
             Html::a('<i class="fas fa-undo"></i>', ['index'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Reload']),
             '{toggleData}',
-            $exportMenu,
+            // $exportMenu,
         ],
         'toggleDataOptions' => [
             'all'  => ['label' => false, 'class' => 'btn btn-icon btn-white'],

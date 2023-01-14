@@ -12,6 +12,10 @@ use yii\bootstrap4\Breadcrumbs;
 use common\widgets\Alert;
 
 AppAsset::register($this);
+
+$bodyClass = 'header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-fixed page-loading';
+if (!Yii::$app->user->isGuest && Yii::$app->user->identity->unit_id) $bodyClass = 'header-fixed header-mobile-fixed subheader-enabled page-loading';
+
 ?>
 
 <?php $this->beginPage() ?>
@@ -48,7 +52,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!--end::Head-->
 
 	<!--begin::Body-->
-	<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-fixed page-loading">
+	<body id="kt_body" class="<?= $bodyClass ?>">
 	<?php $this->beginBody() ?>
 
 		<!--[html-partial:include:{"file":"layout.html"}]/-->

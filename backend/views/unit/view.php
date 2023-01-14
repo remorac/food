@@ -14,7 +14,7 @@ use yii\data\ActiveDataProvider;
 /* @var $model common\models\entity\Unit */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Unit', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Unit Kerja', 'url' => ['index']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 

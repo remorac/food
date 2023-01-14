@@ -17,15 +17,25 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'supplier_id') ?>
-
     <?= $form->field($model, 'name') ?>
 
     <?= $form->field($model, 'type') ?>
 
     <?= $form->field($model, 'description') ?>
 
-    <?php // echo $form->field($model, 'is_active') ?>
+    <?= $form->field($model, 'is_active_sunday') ?>
+
+    <?php // echo $form->field($model, 'is_active_monday') ?>
+
+    <?php // echo $form->field($model, 'is_active_tuesday') ?>
+
+    <?php // echo $form->field($model, 'is_active_wednesday') ?>
+
+    <?php // echo $form->field($model, 'is_active_thursday') ?>
+
+    <?php // echo $form->field($model, 'is_active_friday') ?>
+
+    <?php // echo $form->field($model, 'is_active_saturday') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

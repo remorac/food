@@ -9,7 +9,7 @@ use kartik\export\ExportMenu;
 /* @var $searchModel common\models\search\ScheduleSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Schedule';
+$this->title = 'Jadwal';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -22,8 +22,9 @@ $this->title = 'Schedule';
             ],
             'id',
             'name',
-            'datetime_start',
-            'datetime_end',
+            'datetime',
+            'datetime_start_order',
+            'datetime_end_order',
             'created_at:datetime',
             'updated_at:datetime',
             'createdBy.username:text:Created By',
@@ -95,8 +96,9 @@ $this->title = 'Schedule';
             ],
             // 'id',
             'name',
-            'datetime_start',
-            'datetime_end',
+            'datetime',
+            'datetime_start_order',
+            'datetime_end_order',
             // 'created_at:integer',
             // 'updated_at:integer',
             // 'created_by:integer',
@@ -123,7 +125,7 @@ $this->title = 'Schedule';
             ]),
             Html::a('<i class="fas fa-undo"></i>', ['index'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Reload']),
             '{toggleData}',
-            $exportMenu,
+            // $exportMenu,
         ],
         'toggleDataOptions' => [
             'all'  => ['label' => false, 'class' => 'btn btn-icon btn-white'],

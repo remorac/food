@@ -38,7 +38,6 @@ $this->params['breadcrumbs'][] = ['label' => 'User', 'url' => ['index']];
             'name',
             'statusHtml:html:Status',
             // 'unit.name:text:Unit',
-            // 'supplier.name:text:Supplier',
             // 'created_at:datetime',
             // 'updated_at:datetime',
             // 'created_by:integer',

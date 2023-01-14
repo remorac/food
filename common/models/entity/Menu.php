@@ -8,20 +8,24 @@ use Yii;
  * This is the model class for table "menu".
  *
  * @property integer $id
- * @property integer $supplier_id
  * @property string $name
  * @property integer $type
  * @property string $description
- * @property integer $is_active
+ * @property integer $is_active_sunday
+ * @property integer $is_active_monday
+ * @property integer $is_active_tuesday
+ * @property integer $is_active_wednesday
+ * @property integer $is_active_thursday
+ * @property integer $is_active_friday
+ * @property integer $is_active_saturday
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
  *
- * @property Supplier $supplier
  * @property User $createdBy
  * @property User $updatedBy
- * @property ScheduleMenu[] $scheduleMenus
+ * @property Order[] $orders
  */
 class Menu extends \yii\db\ActiveRecord
 {
@@ -51,11 +55,10 @@ class Menu extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['supplier_id', 'name'], 'required'],
-            [['supplier_id', 'type', 'is_active', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['name'], 'required'],
+            [['type', 'is_active_sunday', 'is_active_monday', 'is_active_tuesday', 'is_active_wednesday', 'is_active_thursday', 'is_active_friday', 'is_active_saturday', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 255],
-            [['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Supplier::className(), 'targetAttribute' => ['supplier_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
         ];
@@ -68,24 +71,21 @@ class Menu extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'supplier_id' => 'Supplier',
-            'name' => 'Name',
+            'name' => 'Nama',
             'type' => 'Type',
-            'description' => 'Description',
-            'is_active' => 'Is Active',
+            'description' => 'Keterangan',
+            'is_active_sunday' => 'Minggu',
+            'is_active_monday' => 'Senin',
+            'is_active_tuesday' => 'Selasa',
+            'is_active_wednesday' => 'Rabu',
+            'is_active_thursday' => 'Kamis',
+            'is_active_friday' => 'Jumat',
+            'is_active_saturday' => 'Sabtu',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSupplier()
-    {
-        return $this->hasOne(Supplier::className(), ['id' => 'supplier_id']);
     }
 
     /**
@@ -107,8 +107,8 @@ class Menu extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getScheduleMenus()
+    public function getOrders()
     {
-        return $this->hasMany(ScheduleMenu::className(), ['menu_id' => 'id']);
+        return $this->hasMany(Order::className(), ['menu_id' => 'id']);
     }
 }

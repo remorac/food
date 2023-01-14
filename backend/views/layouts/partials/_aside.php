@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 						<!--begin::Logo-->
 						<a href="<?= Url::to(['/']) ?>" class="brand-logo">
-							<span class="font-size-h4 font-weight-bold">Food</span>
+							<span class="font-size-h4 font-weight-bold"><?= Yii::$app->name ?></span>
 						</a>
 
 						<!--end::Logo-->
@@ -65,15 +65,15 @@ use yii\helpers\Url;
 									</a>
 								</li>
 								<li class="menu-item" aria-haspopup="true">
-									<a href="<?= Url::to(['/supplier']) ?>" class="menu-link">
-										<i class="menu-icon fa fa-building"></i>
-										<span class="menu-text">Supplier</span>
-									</a>
-								</li>
-								<li class="menu-item" aria-haspopup="true">
 									<a href="<?= Url::to(['/unit']) ?>" class="menu-link">
 										<i class="menu-icon fa fa-th-list"></i>
 										<span class="menu-text">Unit Kerja</span>
+									</a>
+								</li>
+								<li class="menu-item" aria-haspopup="true">
+									<a href="<?= Url::to(['/menu']) ?>" class="menu-link">
+										<i class="menu-icon fa fa-utensils"></i>
+										<span class="menu-text">Menu</span>
 									</a>
 								</li>
 								<li class="menu-item" aria-haspopup="true">
@@ -82,8 +82,8 @@ use yii\helpers\Url;
 										<span class="menu-text">Jadwal</span>
 									</a>
 								</li>
-								<li class="menu-item" aria-haspopup="true">
-									<a href="<?= Url::to(['/reservation']) ?>" class="menu-link">
+								<li class="menu-item d-none" aria-haspopup="true">
+									<a href="<?= Url::to(['/order']) ?>" class="menu-link">
 										<i class="menu-icon fa fa-edit"></i>
 										<span class="menu-text">Pemesanan</span>
 									</a>

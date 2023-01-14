@@ -13,7 +13,7 @@ use common\widgets\Alert;
 			<div class="d-flex flex-row flex-column-fluid page">
 
 				<!--[html-partial:include:{"file":"partials/_aside.html"}]/-->
-				<?= $this->render('partials/_aside.php') ?>
+				<?php if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->unit_id) echo $this->render('partials/_aside.php') ?>
 
 				<!--begin::Wrapper-->
 				<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
@@ -29,7 +29,7 @@ use common\widgets\Alert;
 
 						<!--Content area here-->
 						<div class="d-flex flex-column-fluid">
-							<div class="container-fluid">
+							<div class="<?= (!Yii::$app->user->isGuest && Yii::$app->user->identity->unit_id) ? 'container' : 'container-fluid' ?>">
 								<?= Alert::widget() ?>
 								<?= $content ?>
 							</div>

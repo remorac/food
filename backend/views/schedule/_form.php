@@ -1,9 +1,9 @@
 <?php
 
-use kartik\widgets\DateTimePicker;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
+use kartik\datetime\DateTimePicker;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\entity\Schedule */
@@ -15,15 +15,20 @@ use yii\bootstrap4\ActiveForm;
     <?php $form = ActiveForm::begin(['id' => 'active-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-    
 
-    <?= $form->field($model, 'datetime_start')->widget(DateTimePicker::class, [
+    <?= $form->field($model, 'datetime')->widget(DateTimePicker::class, [
         'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
         'readonly' => true,
         'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd hh:ii'],
     ]) ?>
 
-    <?= $form->field($model, 'datetime_end')->widget(DateTimePicker::class, [
+    <?= $form->field($model, 'datetime_start_order')->widget(DateTimePicker::class, [
+        'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
+        'readonly' => true,
+        'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd hh:ii'],
+    ]) ?>
+
+    <?= $form->field($model, 'datetime_end_order')->widget(DateTimePicker::class, [
         'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
         'readonly' => true,
         'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd hh:ii'],
