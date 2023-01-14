@@ -29,27 +29,27 @@ $this->title = $title;
         <span class="text-muted">Tidak ada data.</span>
     <?php } else { ?>
 
-        <?php $menus = Menu::find()->asArray()->all() ?>
+        <?php $menus = Menu::find()->orderBy('name')->asArray()->all() ?>
         <?php foreach ($menus as $menu) { ?>
-            <?php $menuAcceptedCount = Order::find()->where(['schedule_id' => $model->id, 'menu_id' => $menu['id']])->count(); ?>
+            <?php $menuAcceptedCount = Order::find()->where(['schedule_id' => $model->id, 'menu_id' => $menu['id'], 'review_status' => Order::REVIEW_STATUS_ACCEPTED])->count(); ?>
             <?php if ($menuAcceptedCount) { ?>
 
                 <table width="100%" class="table table-report-footer" style="margin-bottom: 8px;">
                     <tr>
                         <td style="padding:0"><b><?= $menu['name'] ?></b></td>
-                        <td style="padding:0" class="text-right">Total Quantity: <b><?= $menuAcceptedCount ?></b></td>
+                        <td class="text-right" style="padding:0; width: 1px; white-space: nowrap"><b><?= $menuAcceptedCount ?></b></td>
                     </tr>
                 </table>
                 
-                <div class="detail-view-container" style="border:2px solid #eee">
+                <div class="detail-view-container" style="border:1px solid #aaa; margin-bottom: 16px;">
                     <table width="100%" class="table table-report" style="margin-bottom: -1px;">
-                    <?php $units = Unit::find()->asArray()->all() ?>
+                    <?php $units = Unit::find()->orderBy('name')->asArray()->all() ?>
                     <?php foreach ($units as $unit) { ?>
-                        <?php $unitAcceptedCount = Order::find()->joinWith(['user'])->where(['schedule_id' => $model->id, 'unit_id' => $unit['id']])->count(); ?>
+                        <?php $unitAcceptedCount = Order::find()->joinWith(['user'])->where(['schedule_id' => $model->id, 'menu_id' => $menu['id'], 'unit_id' => $unit['id'], 'review_status' => Order::REVIEW_STATUS_ACCEPTED])->count(); ?>
                         <?php if ($unitAcceptedCount) { ?>
                             <tr>
-                                <td><?= $unit['name'] ?></td>
-                                <td class="text-right"><?= $unitAcceptedCount ?></td>
+                                <td style="font-size:8pt"><?= $unit['name'] ?></td>
+                                <td class="text-right" style="width: 1px; white-space: nowrap; font-size:8pt"><?= $unitAcceptedCount ?></td>
                             </tr>
                         <?php } ?>
                     <?php } ?>

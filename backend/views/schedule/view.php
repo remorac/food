@@ -123,7 +123,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
                         'attribute'           => 'user_id',
                         'value'               => 'user.name',
                         'filterType'          => GridView::FILTER_SELECT2,
-                        'filter'              => ArrayHelper::map(User::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
+                        'filter'              => ArrayHelper::map(User::find()->where(['is not', 'unit_id', null])->orderBy('name')->asArray()->all(), 'id', 'name'),
                         'filterInputOptions'  => ['placeholder' => '. . .'],
                         'filterWidgetOptions' => [
                             'theme' => Select2::THEME_DEFAULT,
@@ -228,8 +228,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
                         'data-confirm' => 'Tolak semua pesanan?', 
                         'class' => 'btn btn-light-danger',
                     ]),
-                    Html::a('<i class="fas fa-file-pdf"></i> Print', ['report-by-menu', 'id' => $model->id], ['data-pjax' => 0, 'class' => 'btn btn-light-info']),
-                    // Html::a('<i class="fas fa-file-pdf"></i> Resume by Unit', ['report-by-unit', 'id' => $model->id], ['data-pjax' => 0, 'class' => 'btn btn-light-info']),
+                    Html::a('<i class="fas fa-file-pdf"></i> Resume By Menu', ['report-by-menu', 'id' => $model->id], ['data-pjax' => 0, 'class' => 'btn btn-light-info']),
+                    Html::a('<i class="fas fa-file-pdf"></i> Resume by Unit Kerja', ['report-by-unit', 'id' => $model->id], ['data-pjax' => 0, 'class' => 'btn btn-light-info']),
                 ],
                 'toggleDataOptions' => [
                     'all'  => ['label' => false, 'class' => 'btn btn-icon btn-secondary'],

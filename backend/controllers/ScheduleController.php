@@ -202,13 +202,32 @@ class ScheduleController extends Controller
         return $this->render($view, $params);
     }
 
+    public function actionReportByUnit($id, $to_pdf = 1)
+    {
+        $model  = $this->findModel($id);
+        $title  = $model->name.' '.date('d F Y H:i', strtotime($model->datetime));
+        $view   = 'report-by-unit';
+        $pre_params = [
+            'model'  => $model,
+            'title'  => $title,
+            'view'   => $view,
+            'to_pdf' => $to_pdf,
+        ];
+        $params = array_merge($pre_params, ['params' => $pre_params]);
+
+        if ($to_pdf)
+        return $this->generatePdf($title, $view, $params, 0);
+
+        return $this->render($view, $params);
+    }
+
     public function generatePdf($title, $view, $params = []) {
         $format = 'A4';
         $pdf = new Pdf([
             'mode'         => Pdf::MODE_CORE,
             'format'       => $format,
             'orientation'  => 'P',
-            'marginTop'    => '25',
+            'marginTop'    => '30',
             'marginBottom' => '10',
             // 'marginBottom' => '0',
             'marginLeft'   => '10',
@@ -221,12 +240,13 @@ class ScheduleController extends Controller
             ],
             'content'      => $this->renderPartial($view, $params),
             'methods'      => [
-                'SetHeader' => '<table class="table-report-header" width="100%">
+                'SetHeader' => '<table class="table-report-header" width="100%" style="margin-bottom:0">
                                     <tr>
                                         <td style="padding:0">
-                                            <h4 style="margin:0;"><b>'. Yii::$app->name .'</b>
+                                            <div style="margin:0;"><b><big><big><big><big>'. Yii::$app->name .'</big></big></big></big></b>
                                                 <br><small>' . $params['title'] . '</small>
-                                            </h4>
+                                            </div>
+                                            <hr style="margin:8px">
                                         </td>
                                     </tr>
                                 </table>',
@@ -242,7 +262,7 @@ class ScheduleController extends Controller
                 .table-report th,
                 table { font-size: 11pt !important }
                 .table-report { margin-bottom:10px }
-                .table-report td { border-bottom:1px solid #ccc; vertical-align:top; padding:0px 10px }
+                .table-report td { border-bottom:1px solid #ccc; vertical-align:top; padding:4px 8px }
                 .table-report tr.thead td { vertical-align:bottom; padding:2px 10px }
                 .table-report tr.thead td { font-weight: bold; border-bottom:2px solid #ccc; border-top:none }
                 thead { display: table-header-group }
