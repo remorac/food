@@ -18,7 +18,7 @@ $this->title = 'Pemesanan';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="card card-custom rounded-lg bg-primary text-white">
+<div class="card card-custom rounded-lg bg-primary text-white mb-8">
     <div class="card-body">
         <table width="100%">
         <tr class="row">
@@ -36,7 +36,7 @@ $this->title = 'Pemesanan';
     </div>
 </div>
 
-<div class="order-index">
+<div class="row">
 
     <?php $schedules = Schedule::find()->where([
         'and',
@@ -44,20 +44,22 @@ $this->title = 'Pemesanan';
         ['>=', 'datetime', date('Y-m-d H:i:s')],
     ])->orderBy('datetime DESC')->all(); ?>
     <?php foreach ($schedules as $model) { ?>
-        <div class="card card-custom rounded-lg">
-            <div class="card-body">
-                <div class="mt-0">
-                    <b class="font-size-lg"><?= $model->name ?></b><br><span><?= date('d F Y H:i', strtotime($model->datetime)) ?></span>
+        <div class="col-md-12 col-lg-6">
+            <div class="card card-custom rounded-lg mb-8">
+                <div class="card-body">
+                    <div class="mt-0">
+                        <b class="font-size-lg"><?= $model->name ?></b><br><span><?= date('d F Y H:i', strtotime($model->datetime)) ?></span>
+                    </div>
+                    <?php $order = Order::find()->where(['schedule_id' => $model->id, 'user_id' => Yii::$app->user->id])->one() ?>
+                    <div class="alert p-8 my-4 bg-light font-size-h4"><?= $order ? $order->menu->name : '-' ?></div>
+                    <?= ($model->datetime_end_order > date('Y-m-d H:i:s')) ? Html::button('Tentukan Pesanan', [
+                        'value'     => Url::to(['set-order', 'schedule_id' => $model->id]),
+                        'title'     => $order ? 'Ganti Pesanan' : 'Tentukan Pesanan',
+                        'class'     => 'showModalButton btn btn-light-primary',
+                        'data-pjax' => 0,
+                    ]) : '' ?>
+                    <div class="float-right"><button class="btn btn-flat">&nbsp;</button> <?= $order ? $order->reviewStatusHtml : '' ?></div>
                 </div>
-                <?php $order = Order::find()->where(['schedule_id' => $model->id, 'user_id' => Yii::$app->user->id])->one() ?>
-                <div class="alert p-8 my-4 bg-light font-size-h4"><?= $order ? $order->menu->name : '-' ?></div>
-                <?= ($model->datetime_end_order > date('Y-m-d H:i:s')) ? Html::button('Tentukan Pesanan', [
-                    'value'     => Url::to(['set-order', 'schedule_id' => $model->id]),
-                    'title'     => 'Tentukan Pesanan',
-                    'class'     => 'showModalButton btn btn-light-primary',
-                    'data-pjax' => 0,
-                ]) : '' ?>
-                <div class="float-right"><?= $order ? $order->reviewStatusHtml : '' ?></div>
             </div>
         </div>
     <?php } ?>

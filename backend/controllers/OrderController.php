@@ -138,7 +138,7 @@ class OrderController extends Controller
         }
         $model->user_id = Yii::$app->user->id;
         $model->schedule_id = $schedule_id;
-        $model->review_status = null;
+        $model->review_status = Order::REVIEW_STATUS_WAITING;
         $model->reviewed_at = null;
         $model->reviewed_by = null;
         
