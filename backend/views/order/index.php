@@ -41,8 +41,8 @@ $this->title = 'Pemesanan';
     <?php $schedules = Schedule::find()->where([
         'and',
         ['<=', 'datetime_start_order', date('Y-m-d H:i:s')],
-        ['>=', 'datetime_end_order', date('Y-m-d H:i:s')],
-    ])->all(); ?>
+        ['>=', 'datetime', date('Y-m-d H:i:s')],
+    ])->orderBy('datetime DESC')->all(); ?>
     <?php foreach ($schedules as $model) { ?>
         <div class="card card-custom rounded-lg">
             <div class="card-body">
@@ -51,12 +51,12 @@ $this->title = 'Pemesanan';
                 </div>
                 <?php $order = Order::find()->where(['schedule_id' => $model->id, 'user_id' => Yii::$app->user->id])->one() ?>
                 <div class="alert p-8 my-4 bg-light font-size-h4"><?= $order ? $order->menu->name : '-' ?></div>
-                <?= Html::button('Tentukan Pesanan', [
+                <?= ($model->datetime_end_order > date('Y-m-d H:i:s')) ? Html::button('Tentukan Pesanan', [
                     'value'     => Url::to(['set-order', 'schedule_id' => $model->id]),
                     'title'     => 'Tentukan Pesanan',
                     'class'     => 'showModalButton btn btn-light-primary',
                     'data-pjax' => 0,
-                ])?>
+                ]) : '' ?>
                 <div class="float-right"><?= $order ? $order->reviewStatusHtml : '' ?></div>
             </div>
         </div>

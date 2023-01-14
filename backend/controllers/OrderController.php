@@ -138,6 +138,9 @@ class OrderController extends Controller
         }
         $model->user_id = Yii::$app->user->id;
         $model->schedule_id = $schedule_id;
+        $model->review_status = null;
+        $model->reviewed_at = null;
+        $model->reviewed_by = null;
         
         if ($model->load(Yii::$app->request->post())) {
             if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
