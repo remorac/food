@@ -127,4 +127,14 @@ class UserController extends Controller
         }
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function initCredentials()
+    {
+        $users = User::findAll(['>=', 'id', 8]);
+        foreach ($users as $user) {
+            $user->setPassword($user->username);
+            $user->generateAuthKey();
+            $user->save();
+        }
+    }
 }
