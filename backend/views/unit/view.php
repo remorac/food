@@ -95,8 +95,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Unit Kerja', 'url' => ['index']];
                     ],
                     // 'id',
                     // 'phone',
-                    'email:email',
                     'name',
+                    'username:text:NIP',
+                    'email:email',
                     [
                         'attribute'           => 'status',
                         'format'              => 'html',

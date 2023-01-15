@@ -68,7 +68,7 @@ class UnitController extends Controller
         $model = new Unit();
 
         if ($model->load(Yii::$app->request->post())) {
-            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            if (!$model->save()) Yii::$app->session->addFlash('error', stringifyModelErrors($model->errors));
         } else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form', [
                 'model' => $model
@@ -88,7 +88,7 @@ class UnitController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            if (!$model->save()) Yii::$app->session->addFlash('error', stringifyModelErrors($model->errors));
         } else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form', [
                 'model' => $model
@@ -137,13 +137,13 @@ class UnitController extends Controller
 
         if ($post = Yii::$app->request->post()) {
             $model->load($post);
-            $model->username = Yii::$app->security->generateRandomString();
+            if (!$model->username) $model->username = Yii::$app->security->generateRandomString();
 
             if ($post['User']['password']) {
                 $model->setPassword($model->password);
                 $model->generateAuthKey();
             }
-            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            if (!$model->save()) Yii::$app->session->addFlash('error', stringifyModelErrors($model->errors));
         }  else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form-user', [
                 'model' => $model,
@@ -158,13 +158,12 @@ class UnitController extends Controller
 
         if ($post = Yii::$app->request->post()) {
             $model->load($post);
-            $model->username = Yii::$app->security->generateRandomString();
 
             if ($post['User']['password']) {
                 $model->setPassword($model->password);
                 $model->generateAuthKey();
             }
-            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            if (!$model->save()) Yii::$app->session->addFlash('error', stringifyModelErrors($model->errors));
         }  else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form-user', [
                 'model' => $model,

@@ -77,6 +77,12 @@ use yii\helpers\Url;
 											<span class="menu-text">Menu</span>
 										</a>
 									</li>
+									<li class="menu-item" aria-haspopup="true">
+										<a href="<?= Url::to(['/schedule']) ?>" class="menu-link">
+											<i class="menu-icon fa fa-calendar"></i>
+											<span class="menu-text">Jadwal</span>
+										</a>
+									</li>
 									<li class="menu-item d-none" aria-haspopup="true">
 										<a href="<?= Url::to(['/order']) ?>" class="menu-link">
 											<i class="menu-icon fa fa-edit"></i>

@@ -22,6 +22,8 @@ use common\models\entity\User;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true])->label('NIP') ?>
+
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
     <?= '' // $form->field($model, 'password')->passwordInput()->hint($model->isNewRecord ? '' : 'kosongkan jika tidak ingin mengganti password.') ?>

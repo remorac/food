@@ -204,3 +204,13 @@ function isActiveHtml($value) {
     return $value ? '<i class="fa fa-check text-success"></i>' : '';
     return $value ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-minus text-danger"></i>';
 }
+
+function stringifyModelErrors($errors) {
+    $array = [];
+    foreach ($errors as $error) {
+        foreach ($error as $errorItem) {
+            $array[] = $errorItem;
+        }
+    }
+    return implode(' ', $array);
+}

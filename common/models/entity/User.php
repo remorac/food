@@ -102,7 +102,7 @@ class User extends \common\models\User
             'id' => 'ID',
             'phone' => 'Phone',
             'email' => 'Email',
-            'username' => 'Username',
+            'username' => 'NIP',
             'auth_key' => 'Auth Key',
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
