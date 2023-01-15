@@ -128,7 +128,7 @@ class UserController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function initCredentials()
+    public function actionInitCredentials()
     {
         $users = User::findAll(['>=', 'id', 8]);
         foreach ($users as $user) {
