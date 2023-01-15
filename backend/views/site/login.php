@@ -19,6 +19,9 @@ $this->context->layout = 'guest/main';
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="card mt-32">
+                    <div class="card-header">
+                        <?= Html::img(Yii::getAlias('@web/img/logo.png'), ['height' => '50px']) ?>
+                    </div>
                     <div class="card-body">
                         <div class="mb-12">
                             <h3><?= Yii::$app->name ?></h3>
