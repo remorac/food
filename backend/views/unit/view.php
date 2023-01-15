@@ -67,6 +67,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Unit Kerja', 'url' => ['index']];
                     [
                         'contentOptions' => ['class' => 'action-column nowrap text-left'],
                         'class' => 'yii\grid\ActionColumn',
+                        'template' => '{update} {delete}',
                         'buttons' => [
                             'view' => function ($url) {
                                 return Html::a('<i class="fas fa-eye"></i>', $url, [
@@ -76,14 +77,14 @@ $this->params['breadcrumbs'][] = ['label' => 'Unit Kerja', 'url' => ['index']];
                             },
                             'update' => function ($url, $model) {
                                 return Html::button('<i class="fas fa-pen"></i>', [
-                                    'value'     => $url,
+                                    'value'     => Url::to(['user-update', 'user_id' => $model->id]),
                                     'title'     => 'Update',
                                     'class'     => 'showModalButton btn btn-icon btn-xs btn-light-warning',
                                     'data-pjax' => 0,
                                 ]);
                             },
-                            'delete' => function ($url) {
-                                return Html::a('<i class="fas fa-trash"></i>', $url, [
+                            'delete' => function ($url, $model) {
+                                return Html::a('<i class="fas fa-trash"></i>', ['user-delete', 'user_id' => $model->id], [
                                     'class'        => 'btn btn-icon btn-xs btn-light-danger',
                                     'data-method'  => 'post',
                                     'data-confirm' => 'Are you sure you want to delete this item?',

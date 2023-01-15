@@ -11,7 +11,7 @@ $params = array_merge(
 
 return [
     'id' => 'food',
-    'name' => 'food',
+    'name' => 'adipala food',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     // 'defaultRoute' => '/user/index',

@@ -24,7 +24,8 @@ use common\models\entity\User;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput()->hint($model->isNewRecord ? '' : 'kosongkan jika tidak ingin mengganti password.') ?>
+    <?= '' // $form->field($model, 'password')->passwordInput()->hint($model->isNewRecord ? '' : 'kosongkan jika tidak ingin mengganti password.') ?>
+    <?= $form->field($model, 'password')->textInput()->hint($model->isNewRecord ? '' : 'kosongkan jika tidak ingin mengganti password.') ?>
 
     <?= $form->field($model, 'status')->widget(Select2::class, [
         'theme' => Select2::THEME_DEFAULT,

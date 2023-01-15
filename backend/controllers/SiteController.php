@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use common\models\entity\User;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -8,6 +9,7 @@ use yii\filters\AccessControl;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use common\models\LoginForm;
+use common\models\PasswordForm;
 use common\models\PasswordResetRequestForm;
 use common\models\ResetPasswordForm;
 
@@ -30,7 +32,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'change-password'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -156,5 +158,37 @@ class SiteController extends Controller
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    public function actionChangePassword(){
+        $model     = new PasswordForm();
+        $modelUser = User::findOne(Yii::$app->user->id);
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                try {
+                    $password = $_POST['PasswordForm']['password_new'];
+                    $modelUser->setPassword($password);
+                    $modelUser->generateAuthKey();
+
+                    if ($modelUser->save()) {
+                        Yii::$app->session->addFlash('success','Password changed.');
+                        return $this->redirect(['index']);
+                    } else {
+                        Yii::$app->session->addFlash('error','Password not changed: '. \yii\helpers\Json::encode($modelUser->errors));
+                    }
+                } catch (\Exception $e) {
+                    Yii::$app->session->addFlash('error',"{$e->getMessage()}");
+                }
+            } else {
+                Yii::$app->session->addFlash('error','Password not changed: '. \yii\helpers\Json::encode($model->errors));
+            } 
+        } else /* if (Yii::$app->request->isAjax) */ {
+            // return $this->renderAjax('change-password', [
+            return $this->render('change-password', [
+                'model' => $model
+            ]);
+        }
+        return $this->redirect(Yii::$app->request->referrer);
     }
 }

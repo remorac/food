@@ -21,7 +21,7 @@ $this->context->layout = 'guest/main';
                 <div class="card mt-32">
                     <div class="card-body">
                         <div class="mb-12">
-                            <h3>Food</h3>
+                            <h3><?= Yii::$app->name ?></h3>
                             <div class="text-muted font-weight-bold">Enter your details to login to your account:</div>
                         </div>
                         <?php $form = ActiveForm::begin(['id' => 'kt_login_signin_form', 'class' => 'form']); ?>
@@ -36,7 +36,20 @@ $this->context->layout = 'guest/main';
                             </div>
 
                             <div class="form-group mb-5">
-                            <?= $form->field($model, 'password')->passwordInput([
+                            <?= '' /* $form->field($model, 'password')->passwordInput([
+                                'class' => 'form-control h-auto form-control-solid py-4 px-8',
+                                'placeholder' => 'password',
+                            ])->label(false) */ ?>
+
+                            <?= $form->field($model, 'password', [
+                                'inputTemplate' => '
+                                    <div class="input-group">
+                                        {input}
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" style="border: none"><i class="far fa-eye" id="togglePassword" style="cursor: pointer"></i></span>
+                                        </div>
+                                    </div>'
+                            ])->passwordInput([
                                 'class' => 'form-control h-auto form-control-solid py-4 px-8',
                                 'placeholder' => 'password',
                             ])->label(false) ?>
@@ -65,3 +78,56 @@ $this->context->layout = 'guest/main';
     
 </div>
 <!--end::Login Sign in form-->
+
+<?php
+$js = <<<JAVASCRIPT
+
+console.log('js is loaded by yii.');
+
+const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#loginform-password');
+
+/* togglePassword.addEventListener('click', function (e) {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
+}); */
+
+togglePassword.addEventListener('mousedown', function (e) {
+    password.setAttribute('type', 'text');
+    this.classList.add('fa-eye-slash');
+});
+
+togglePassword.addEventListener('mouseup', function (e) {
+    password.setAttribute('type', 'password');
+    this.classList.remove('fa-eye-slash');
+});
+JAVASCRIPT;
+
+// $this->registerJs($js, \yii\web\View::POS_READY);
+?>
+
+
+<script type="text/javascript">
+
+console.log('js is loaded by html.');
+
+const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#loginform-password');
+
+/* togglePassword.addEventListener('click', function (e) {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
+}); */
+
+togglePassword.addEventListener('mousedown', function (e) {
+    password.setAttribute('type', 'text');
+    this.classList.add('fa-eye-slash');
+});
+
+togglePassword.addEventListener('mouseup', function (e) {
+    password.setAttribute('type', 'password');
+    this.classList.remove('fa-eye-slash');
+});
+</script>

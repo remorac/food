@@ -151,4 +151,36 @@ class UnitController extends Controller
         }
         return $this->redirect(Yii::$app->request->referrer);
     }
+
+    public function actionUserUpdate($user_id)
+    {
+        $model = User::findOne($user_id);
+
+        if ($post = Yii::$app->request->post()) {
+            $model->load($post);
+            $model->username = Yii::$app->security->generateRandomString();
+
+            if ($post['User']['password']) {
+                $model->setPassword($model->password);
+                $model->generateAuthKey();
+            }
+            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+        }  else if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form-user', [
+                'model' => $model,
+            ]);
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionUserDelete($user_id)
+    {
+        try {
+            $model = User::findOne($user_id);
+            $model->delete();
+            return $this->redirect(['view', 'id' => $model->unit_id]);
+        } catch (IntegrityException $e) {
+            throw new \yii\web\HttpException(500,"Integrity Constraint Violation. This data can not be deleted due to the relation.", 405);
+        }
+    }
 }
