@@ -6,6 +6,7 @@ use common\models\search\UserSearchUnit;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use common\widgets\DetailView;
+use kartik\export\ExportMenu;
 use kartik\grid\GridView;
 use kartik\widgets\Select2;
 use yii\data\ActiveDataProvider;
@@ -14,7 +15,7 @@ use yii\data\ActiveDataProvider;
 /* @var $model common\models\entity\Unit */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Unit Kerja', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Instansi', 'url' => ['index']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -58,6 +59,46 @@ $this->params['breadcrumbs'][] = ['label' => 'Unit Kerja', 'url' => ['index']];
                 $queryParams['UserSearchUnit']['unit_id'] = $model->id;
                 $dataProvider = $searchModel->search($queryParams);
 
+                $exportColumns = [
+                    [
+                        'class' => 'yii\grid\SerialColumn',
+                    ],
+                    'name',
+                    'employee_number',
+                    'subunit',
+                    'email',
+                    'statusText:text:Status',
+                ];
+        
+                $exportMenu = ExportMenu::widget([
+                    'dataProvider' => $dataProvider,
+                    'columns'      => $exportColumns,
+                    'filename'     => 'User',
+                    'fontAwesome'  => true,
+                    'asDropdown'   => false,
+                    'batchSize'    => 10,
+                    'target'       => ExportMenu::TARGET_SELF,
+                    'exportConfig' => [
+                        ExportMenu::FORMAT_CSV      => false,
+                        ExportMenu::FORMAT_EXCEL    => false,
+                        ExportMenu::FORMAT_HTML     => false,
+                        ExportMenu::FORMAT_TEXT     => false,
+                        ExportMenu::FORMAT_PDF      => false,
+                        ExportMenu::FORMAT_EXCEL_X  => [
+                            'label'       => '',
+                            'icon'        => 'fas fa-file-excel',
+                            'linkOptions' => ['class' => 'btn btn-icon btn-secondary text-success'],
+                            'options'     => ['style' => 'list-style:none; padding: 0; margin: 0;display: inline-block;'],
+                        ],
+                    ],
+                    'styleOptions' => [
+                        ExportMenu::FORMAT_EXCEL_X => [
+                            'font' => ['color' => ['argb' => '00000000']],
+                            'fill' => ['color' => ['argb' => 'DDDDDDDD']],
+                        ],
+                    ],
+                ]);
+
                 $gridColumns = [
                     [
                         'class' => 'yii\grid\SerialColumn',
@@ -96,7 +137,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Unit Kerja', 'url' => ['index']];
                     // 'id',
                     // 'phone',
                     'name',
-                    'username:text:NIP',
+                    'employee_number',
+                    'subunit',
                     'email:email',
                     [
                         'attribute'           => 'status',
@@ -158,7 +200,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Unit Kerja', 'url' => ['index']];
                     ]),
                     Html::a('<i class="fas fa-undo"></i>', ['view', 'id' => $model->id], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-secondary', 'title' => 'Reload']),
                     '{toggleData}',
-                    // $exportMenu,
+                    $exportMenu,
                 ],
                 'toggleDataOptions' => [
                     'all'  => ['label' => false, 'class' => 'btn btn-icon btn-secondary'],

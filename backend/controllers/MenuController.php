@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\IntegrityException;
+use yii\web\UploadedFile;
 
 /**
  * MenuController implements the CRUD actions for Menu model.
@@ -67,7 +68,17 @@ class MenuController extends Controller
         $model = new Menu();
 
         if ($model->load(Yii::$app->request->post())) {
-            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            unset($model->file_image);
+            if ($model->save()) {
+                $uploadedFile = UploadedFile::getInstance($model, 'file_image');
+                if ($uploadedFile) {
+                    if (!uploadFile($model, 'file_image', $uploadedFile)) {
+                        Yii::$app->session->addFlash('error', 'Error uploading file.');
+                    }
+                }
+            } else {
+                Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            }
         } else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form', [
                 'model' => $model
@@ -87,7 +98,17 @@ class MenuController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            unset($model->file_image);
+            if ($model->save()) {
+                $uploadedFile = UploadedFile::getInstance($model, 'file_image');
+                if ($uploadedFile) {
+                    if (!uploadFile($model, 'file_image', $uploadedFile)) {
+                        Yii::$app->session->addFlash('error', 'Error uploading file.');
+                    }
+                }
+            } else {
+                Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            }
         } else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form', [
                 'model' => $model
@@ -125,5 +146,11 @@ class MenuController extends Controller
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionDownload($id, $field = 'file_image')
+    {
+        $model = $this->findModel($id);
+        return downloadFile($model, $field);
     }
 }

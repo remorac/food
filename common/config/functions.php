@@ -200,6 +200,13 @@ function parseUserAgent($http_user_agent, $html = false)
     return $http_user_agent;
 }
 
+function isActives() {
+    return [
+        1 => 'Aktif',
+        2 => 'Inaktif',
+    ];
+}
+
 function isActiveHtml($value) {
     return $value ? '<i class="fa fa-check text-success"></i>' : '';
     return $value ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-minus text-danger"></i>';

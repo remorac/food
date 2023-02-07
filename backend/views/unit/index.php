@@ -9,7 +9,7 @@ use kartik\export\ExportMenu;
 /* @var $searchModel common\models\search\UnitSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Unit Kerja';
+$this->title = 'Instansi';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 

@@ -11,6 +11,8 @@ use Yii;
  * @property string $name
  * @property integer $type
  * @property string $description
+ * @property string $file_image
+ * @property integer $quota
  * @property integer $is_active_sunday
  * @property integer $is_active_monday
  * @property integer $is_active_tuesday
@@ -29,6 +31,9 @@ use Yii;
  */
 class Menu extends \yii\db\ActiveRecord
 {
+    const TYPE_PRIMARY = 1;
+    const TYPE_SECONDARY = 2;
+
     /**
      * @inheritdoc
      */
@@ -55,9 +60,9 @@ class Menu extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['type', 'is_active_sunday', 'is_active_monday', 'is_active_tuesday', 'is_active_wednesday', 'is_active_thursday', 'is_active_friday', 'is_active_saturday', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['description'], 'string'],
+            [['name', 'type'], 'required'],
+            [['type', 'quota', 'is_active_sunday', 'is_active_monday', 'is_active_tuesday', 'is_active_wednesday', 'is_active_thursday', 'is_active_friday', 'is_active_saturday', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['description', 'file_image'], 'string'],
             [['name'], 'string', 'max' => 255],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
@@ -72,8 +77,11 @@ class Menu extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Nama',
-            'type' => 'Type',
+            'type' => 'Jenis',
             'description' => 'Keterangan',
+            'quota' => 'Kuota',
+            'file_image' => 'Foto',
+            'quota' => 'Quota',
             'is_active_sunday' => 'Minggu',
             'is_active_monday' => 'Senin',
             'is_active_tuesday' => 'Selasa',
@@ -110,5 +118,31 @@ class Menu extends \yii\db\ActiveRecord
     public function getOrders()
     {
         return $this->hasMany(Order::className(), ['menu_id' => 'id']);
+    }
+
+    public static function types($index = null, $html = false) {
+        $array = [
+            self::TYPE_PRIMARY => 'Menu Utama',
+            self::TYPE_SECONDARY => 'Menu Pengganti',
+        ];
+        if ($html) {
+            $array = [
+                self::TYPE_PRIMARY => '<span class="font-weight-bold label label-inline label-light-primary">Menu Utama</span>',
+                self::TYPE_SECONDARY => '<span class="font-weight-bold label label-inline label-light-secondary text-dark-50">Menu Pengganti</span>',
+            ];
+        }
+        if ($index === null) return $array;
+        if (isset($array[$index])) return $array[$index];
+        return null;
+    }
+
+    public function getTypeText()
+    {
+        return self::types($this->type ?? 0);
+    }
+
+    public function getTypeHtml()
+    {
+        return self::types($this->type ?? 0, true);
     }
 }

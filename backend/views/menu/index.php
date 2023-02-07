@@ -1,9 +1,11 @@
 <?php
 
+use common\models\entity\Menu;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
+use kartik\widgets\Select2;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\search\MenuSearch */
@@ -101,52 +103,133 @@ $this->title = 'Menu';
                 ],
             ],
             // 'id',
+            [
+                'attribute'      => 'file_image',
+                'format'         => 'html',
+                'value'  => function($model) {
+                    return $model->file_image ? Html::img(['download', 'id' => $model->id], ['width' => '50px', 'height' => '50px', 'class' => 'rounded border']) : '';
+                },
+            ],
             'name',
             /* [
-                'attribute'      => 'type',
-                'format'         => 'integer',
-                'headerOptions'  => ['class' => 'text-right'],
-                'contentOptions' => ['class' => 'text-right'],
-            ], */
-            [
                 'attribute'      => 'description',
                 'format'         => 'ntext',
                 'contentOptions' => ['class' => 'text-wrap'],
+            ], */
+            'quota:integer',
+            [
+                'attribute'      => 'type',
+                'format'         => 'html',
+                'value'  => function($model) {
+                    return $model->typeHtml;
+                },
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => Menu::types(),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'headerOptions' => ['class' => 'fit nowrap'],
+                'contentOptions' => ['class' => 'fit nowrap'],
             ],
             [
                 'attribute'      => 'is_active_sunday',
                 'format'         => 'html',
                 'value'          => function($model) { return isActiveHtml($model->is_active_sunday); },
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => isActives(),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'headerOptions' => ['class' => 'fit nowrap text-center'],
+                'contentOptions' => ['class' => 'fit nowrap text-center'],
             ],
             [
                 'attribute'      => 'is_active_monday',
                 'format'         => 'html',
                 'value'          => function($model) { return isActiveHtml($model->is_active_monday); },
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => isActives(),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'headerOptions' => ['class' => 'fit nowrap text-center'],
+                'contentOptions' => ['class' => 'fit nowrap text-center'],
             ],
             [
                 'attribute'      => 'is_active_tuesday',
                 'format'         => 'html',
                 'value'          => function($model) { return isActiveHtml($model->is_active_tuesday); },
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => isActives(),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'headerOptions' => ['class' => 'fit nowrap text-center'],
+                'contentOptions' => ['class' => 'fit nowrap text-center'],
             ],
             [
                 'attribute'      => 'is_active_wednesday',
                 'format'         => 'html',
                 'value'          => function($model) { return isActiveHtml($model->is_active_wednesday); },
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => isActives(),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'headerOptions' => ['class' => 'fit nowrap text-center'],
+                'contentOptions' => ['class' => 'fit nowrap text-center'],
             ],
             [
                 'attribute'      => 'is_active_thursday',
                 'format'         => 'html',
                 'value'          => function($model) { return isActiveHtml($model->is_active_thursday); },
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => isActives(),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'headerOptions' => ['class' => 'fit nowrap text-center'],
+                'contentOptions' => ['class' => 'fit nowrap text-center'],
             ],
             [
                 'attribute'      => 'is_active_friday',
                 'format'         => 'html',
                 'value'          => function($model) { return isActiveHtml($model->is_active_friday); },
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => isActives(),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'headerOptions' => ['class' => 'fit nowrap text-center'],
+                'contentOptions' => ['class' => 'fit nowrap text-center'],
             ],
             [
                 'attribute'      => 'is_active_saturday',
                 'format'         => 'html',
                 'value'          => function($model) { return isActiveHtml($model->is_active_saturday); },
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => isActives(),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'headerOptions' => ['class' => 'fit nowrap text-center'],
+                'contentOptions' => ['class' => 'fit nowrap text-center'],
             ],
             // 'created_at:integer',
             // 'updated_at:integer',

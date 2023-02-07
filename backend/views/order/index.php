@@ -28,8 +28,9 @@ $this->title = 'Pemesanan';
             <td style="vertical-align:middle">
                 <big><b><?= Yii::$app->user->identity->name ?></b></big>
                 <br><?= Yii::$app->user->identity->email ?>
-                <br>
-                <br><span class="label label-inline font-weight-bold text-primary"><big><?= Yii::$app->user->identity->unit->name ?><big></span>
+                <div></div>
+                <br><span class="label label-inline font-weight-bold text-primary mb-0"><big><?= Yii::$app->user->identity->unit->name ?></big></span>
+                <br><?= Yii::$app->user->identity->subunit ?></span>
             </td>
         </tr>
         </table>
@@ -51,11 +52,20 @@ $this->title = 'Pemesanan';
                         <b class="font-size-lg"><?= $model->name ?></b><br><span><?= date('d F Y H:i', strtotime($model->datetime)) ?></span>
                     </div>
                     <?php $order = Order::find()->where(['schedule_id' => $model->id, 'user_id' => Yii::$app->user->id])->one() ?>
-                    <div class="alert p-8 my-4 bg-light font-size-h4"><?= $order ? $order->menu->name : '-' ?></div>
+                    <div class="alert p-0 my-4 bg-light text-center">
+                        <?php if ($order) { ?>
+                            <div class="image-container mb-4">
+                                <?= Html::img(['/menu/download', 'id' => $order->menu_id], ['width' => '100%', 'class' => 'rounded border img img-responsive full-width bg-secondary']) ?>
+                            </div>
+                            <h5 class="mb-4"><?= $order->menu->name ?></h5>
+                        <?php } ?>
+                        <?php if (!$order) echo '<i>belum memesan</i>' ?>
+                    </div>
                     <?= ($model->datetime_end_order > date('Y-m-d H:i:s')) ? Html::button($order ? 'Ganti Pesanan' : 'Tentukan Pesanan', [
                         'value'     => Url::to(['set-order', 'schedule_id' => $model->id]),
                         'title'     => $order ? 'Ganti Pesanan' : 'Tentukan Pesanan',
                         'class'     => 'showModalButton btn btn-light-primary',
+                        'size'      => 'modal-lg',
                         'data-pjax' => 0,
                     ]) : '' ?>
                     <div class="float-right"><button class="btn btn-flat">&nbsp;</button> <?= $order ? $order->reviewStatusHtml : '' ?></div>
@@ -65,11 +75,28 @@ $this->title = 'Pemesanan';
     <?php } ?>
 
     <?php if (!$schedules) { ?>
-        <div class="card card-custom rounded-lg">
-            <div class="card-body text-center text-muted">
-                belum ada pemesanan makanan tersedia.
+        <div class="col-md-12 col-lg-12">
+            <div class="card card-custom rounded-lg">
+                <div class="card-body text-center text-muted">
+                    belum ada pemesanan makanan tersedia.
+                </div>
             </div>
         </div>
     <?php } ?>
 
 </div>
+
+<style>
+    .image-container {
+        position:relative;
+        overflow:hidden;
+        padding-bottom:100%;
+    }
+    .image-container img {
+        width: 100%; 
+        height: 100%; 
+        display: block; 
+        object-fit: cover; 
+        position: absolute;
+    }
+</style>

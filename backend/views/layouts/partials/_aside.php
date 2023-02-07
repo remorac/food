@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 						<!--begin::Logo-->
 						<a href="<?= Url::to(['/']) ?>" class="brand-logo">
-							<span class="font-size-h4 font-weight-bold"><?= Yii::$app->name ?></span>
+							<span class="font-size-h4 font-weight-bold"><?= '' // Yii::$app->name ?> <small>ADIPALA</small><br>SERVICE FOOD</span>
 						</a>
 
 						<!--end::Logo-->
@@ -68,7 +68,7 @@ use yii\helpers\Url;
 									<li class="menu-item" aria-haspopup="true">
 										<a href="<?= Url::to(['/unit']) ?>" class="menu-link">
 											<i class="menu-icon fa fa-th-list"></i>
-											<span class="menu-text">Unit Kerja</span>
+											<span class="menu-text">Instansi</span>
 										</a>
 									</li>
 									<li class="menu-item" aria-haspopup="true">

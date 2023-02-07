@@ -22,7 +22,9 @@ use common\models\entity\User;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true])->label('NIP') ?>
+    <?= $form->field($model, 'employee_number')->textInput(['maxlength' => true])->label('NIP') ?>
+
+    <?= $form->field($model, 'subunit')->textInput(['maxlength' => true])->label('Bidang') ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 

@@ -42,8 +42,14 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect email or password.');
+            if (!$user) {
+                $this->addError($attribute, 'Akun tidak ditemukan.');
+            } else if (!$user->validatePassword($this->password)) {
+                $this->addError($attribute, 'Password salah.');
+            } else if ($user->status == User::STATUS_INACTIVE) {
+                $this->addError($attribute, 'Akun ini telah dinonaktifkan.');
+            } else {
+                $this->addError($attribute, 'Unknown error.');
             }
         }
     }

@@ -18,7 +18,7 @@ class MenuSearch extends Menu
     public function rules()
     {
         return [
-            [['id', 'type', 'is_active_sunday', 'is_active_monday', 'is_active_tuesday', 'is_active_wednesday', 'is_active_thursday', 'is_active_friday', 'is_active_saturday', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'type', 'quota', 'is_active_sunday', 'is_active_monday', 'is_active_tuesday', 'is_active_wednesday', 'is_active_thursday', 'is_active_friday', 'is_active_saturday', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name', 'description'], 'safe'],
         ];
     }
@@ -62,6 +62,7 @@ class MenuSearch extends Menu
         $query->andFilterWhere([
             'id' => $this->id,
             'type' => $this->type,
+            'quota' => $this->quota,
             'is_active_sunday' => $this->is_active_sunday,
             'is_active_monday' => $this->is_active_monday,
             'is_active_tuesday' => $this->is_active_tuesday,

@@ -21,13 +21,18 @@ $this->context->layout = 'guest/main';
     <?php $form = ActiveForm::begin(['id' => 'reset-password-form']); ?>
 
         <div class="form-group mb-5">
-        <?= Html::activePasswordInput($model, 'password', [
-            'autofocus' => true,
-            'class' => 'form-control form-control-solid h-auto py-4 px-8',
-            'placeholder' => 'new password',
-            'autocomplete' => 'off',
-        ]) ?>
-        <?= Html::error($model, 'password', ['class' => 'text-danger text-left small help-block']) ?>
+        <?= $form->field($model, 'password', [
+            'inputTemplate' => '
+                <div class="input-group">
+                    {input}
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="border: none"><i class="far fa-eye" id="togglePassword" style="cursor: pointer"></i></span>
+                    </div>
+                </div>'
+        ])->passwordInput([
+            'class' => 'form-control h-auto form-control-solid py-4 px-8',
+            'placeholder' => 'password',
+        ])->label(false) ?>
         </div>
 
         <div class="form-group d-flex flex-wrap flex-center mt-10">
@@ -38,3 +43,57 @@ $this->context->layout = 'guest/main';
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+<?php
+$js = <<<JAVASCRIPT
+
+console.log('js is loaded by yii.');
+
+const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#loginform-password');
+
+/* togglePassword.addEventListener('click', function (e) {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
+}); */
+
+togglePassword.addEventListener('mousedown', function (e) {
+    password.setAttribute('type', 'text');
+    this.classList.add('fa-eye-slash');
+});
+
+togglePassword.addEventListener('mouseup', function (e) {
+    password.setAttribute('type', 'password');
+    this.classList.remove('fa-eye-slash');
+});
+JAVASCRIPT;
+
+// $this->registerJs($js, \yii\web\View::POS_READY);
+?>
+
+
+<script type="text/javascript">
+
+console.log('js is loaded by html.');
+
+const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#loginform-password');
+
+/* togglePassword.addEventListener('click', function (e) {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
+}); */
+
+togglePassword.addEventListener('mousedown', function (e) {
+    password.setAttribute('type', 'text');
+    this.classList.add('fa-eye-slash');
+});
+
+togglePassword.addEventListener('mouseup', function (e) {
+    password.setAttribute('type', 'password');
+    this.classList.remove('fa-eye-slash');
+});
+</script>

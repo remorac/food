@@ -33,9 +33,33 @@ $this->params['breadcrumbs'][] = ['label' => 'Menu', 'url' => ['index']];
         'model' => $model,
         'attributes' => [
             // 'id',
+            [
+                'attribute'      => 'file_image',
+                'format'         => 'html',
+                'value'  => $model->file_image ? Html::img(['download', 'id' => $model->id], ['width' => '200px', 'height' => '200px', 'class' => 'rounded border']) : '',
+            ],
             'name',
-            // 'type:integer',
-            'description:ntext',
+            /* [
+                'attribute'      => 'description',
+                'format'         => 'ntext',
+                'contentOptions' => ['class' => 'text-wrap'],
+            ], */
+            'quota:integer',
+            [
+                'attribute'      => 'type',
+                'format'         => 'html',
+                'value'  => $model->typeHtml,
+            ],
+            // 'created_at:datetime',
+            // 'updated_at:datetime',
+            // 'createdBy.username:text:Created By',
+            // 'updatedBy.username:text:Updated By',
+        ],
+    ]) ?>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
             [
                 'attribute'      => 'is_active_sunday',
                 'format'         => 'html',
@@ -71,10 +95,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Menu', 'url' => ['index']];
                 'format'         => 'html',
                 'value'          => isActiveHtml($model->is_active_saturday),
             ],
-            // 'created_at:datetime',
-            // 'updated_at:datetime',
-            // 'createdBy.username:text:Created By',
-            // 'updatedBy.username:text:Updated By',
         ],
     ]) ?>
     

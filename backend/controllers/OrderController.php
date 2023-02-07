@@ -25,6 +25,7 @@ class OrderController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'set' => ['POST'],
                 ],
             ],
         ];
@@ -150,5 +151,26 @@ class OrderController extends Controller
             ]);
         }
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionSet($schedule_id, $menu_id)
+    {
+        $model = Order::find()->where([
+            'user_id' => Yii::$app->user->id,
+            'schedule_id' => $schedule_id,
+        ])->one();
+        if (!$model) {
+            $model = new Order();
+        }
+        $model->user_id = Yii::$app->user->id;
+        $model->schedule_id = $schedule_id;
+        $model->menu_id = $menu_id;
+        $model->review_status = Order::REVIEW_STATUS_WAITING;
+        $model->reviewed_at = null;
+        $model->reviewed_by = null;
+        
+        if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+        
+        return $this->redirect(['index']);
     }
 }
