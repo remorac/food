@@ -97,8 +97,15 @@ class MenuController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            unset($model->file_image);
+        if (Yii::$app->request->post()) {
+            $model->is_active_sunday    = 0;
+            $model->is_active_monday    = 0;
+            $model->is_active_tuesday   = 0;
+            $model->is_active_wednesday = 0;
+            $model->is_active_thursday  = 0;
+            $model->is_active_friday    = 0;
+            $model->is_active_saturday  = 0;
+            $model->load(Yii::$app->request->post());
             if ($model->save()) {
                 $uploadedFile = UploadedFile::getInstance($model, 'file_image');
                 if ($uploadedFile) {

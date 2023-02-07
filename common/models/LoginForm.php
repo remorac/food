@@ -42,6 +42,13 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
+            if (!$user || !$user->validatePassword($this->password)) {
+                $this->addError($attribute, 'Incorrect email or password.');
+            }
+        }
+
+        /* if (!$this->hasErrors()) {
+            $user = $this->getUser();
             if (!$user) {
                 $this->addError($attribute, 'Akun tidak ditemukan.');
             } else if (!$user->validatePassword($this->password)) {
@@ -51,7 +58,7 @@ class LoginForm extends Model
             } else {
                 $this->addError($attribute, 'Unknown error.');
             }
-        }
+        } */
     }
 
     /**
