@@ -5,25 +5,24 @@ namespace common\models\entity;
 use Yii;
 
 /**
- * This is the model class for table "schedule".
+ * This is the model class for table "menu_availability".
  *
  * @property integer $id
- * @property string $datetime
+ * @property integer $menu_id
+ * @property integer $day_of_week
  * @property integer $shift_id
- * @property string $name
- * @property string $datetime_start_order
- * @property string $datetime_end_order
+ * @property integer $quota
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
  *
- * @property Order[] $orders
+ * @property Menu $menu
  * @property User $createdBy
  * @property User $updatedBy
  * @property Shift $shift
  */
-class Schedule extends \yii\db\ActiveRecord
+class MenuAvailability extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -42,7 +41,7 @@ class Schedule extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'schedule';
+        return 'menu_availability';
     }
 
     /**
@@ -51,10 +50,9 @@ class Schedule extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['datetime', 'shift_id', 'name', 'datetime_start_order', 'datetime_end_order'], 'required'],
-            [['datetime', 'datetime_start_order', 'datetime_end_order'], 'safe'],
-            [['shift_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['menu_id', 'day_of_week', 'shift_id'], 'required'],
+            [['menu_id', 'day_of_week', 'shift_id', 'quota', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['menu_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['shift_id'], 'exist', 'skipOnError' => true, 'targetClass' => Shift::className(), 'targetAttribute' => ['shift_id' => 'id']],
@@ -68,11 +66,10 @@ class Schedule extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'datetime' => 'Datetime',
+            'menu_id' => 'Menu',
+            'day_of_week' => 'Day Of Week',
             'shift_id' => 'Shift',
-            'name' => 'Name',
-            'datetime_start_order' => 'Datetime Start Order',
-            'datetime_end_order' => 'Datetime End Order',
+            'quota' => 'Quota',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
@@ -83,13 +80,9 @@ class Schedule extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrders()
+    public function getMenu()
     {
-        return $this->hasMany(Order::className(), ['schedule_id' => 'id']);
-    }
-    public function getOrdersAccepted()
-    {
-        return $this->hasMany(Order::className(), ['schedule_id' => 'id'])->where(['review_status' => Order::REVIEW_STATUS_ACCEPTED]);
+        return $this->hasOne(Menu::className(), ['id' => 'menu_id']);
     }
 
     /**

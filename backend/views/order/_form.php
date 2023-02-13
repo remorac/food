@@ -8,6 +8,7 @@ use kartik\widgets\Select2;
 use common\models\entity\Schedule;
 use common\models\entity\User;
 use common\models\entity\Menu;
+use common\models\entity\MenuAvailability;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\entity\Order */
@@ -49,20 +50,22 @@ use common\models\entity\Menu;
 
     <div class="row">
         <?php foreach ($menus as $menu) { ?>
-            <div class="col-6">
-                <div class="alert p-0 my-4 bg-light text-center">
-                    <div class="image-container mb-4">
-                        <?= Html::img(['/menu/download', 'id' => $menu->id], ['width' => '100%', 'class' => 'rounded border img img-responsive full-width bg-secondary']) ?>
-                    </div>
-                    <h5><?= $menu->name ?></h5>
-                    <div class="p-4">
-                    <?= Html::a('<i class="fa fa-check"></i> Pilih', ['order/set', 'schedule_id' => $model->schedule_id, 'menu_id' => $menu->id], [
-                        'class' => 'btn btn-primary btn-block',
-                        'data-method' => 'post',
-                    ]) ?>
+            <?php if (Menu::isAvailable($menu->id, date('w', strtotime($model->schedule->datetime)), $model->schedule->shift_id)) { ?>
+                <div class="col-6">
+                    <div class="alert p-0 my-4 bg-light text-center">
+                        <div class="image-container mb-4">
+                            <?= Html::img(['/menu/download', 'id' => $menu->id], ['width' => '100%', 'class' => 'rounded border img img-responsive full-width bg-secondary']) ?>
+                        </div>
+                        <h5><?= $menu->name ?></h5>
+                        <div class="p-4">
+                        <?= Html::a('<i class="fa fa-check"></i> Pilih', ['order/set', 'schedule_id' => $model->schedule_id, 'menu_id' => $menu->id], [
+                            'class' => 'btn btn-primary btn-block',
+                            'data-method' => 'post',
+                        ]) ?>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php } ?>
         <?php } ?>
     </div>
 

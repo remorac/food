@@ -27,6 +27,7 @@ use Yii;
  *
  * @property User $createdBy
  * @property User $updatedBy
+ * @property MenuAvailability[] $menuAvailabilities
  * @property Order[] $orders
  */
 class Menu extends \yii\db\ActiveRecord
@@ -115,6 +116,14 @@ class Menu extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getMenuAvailabilities()
+    {
+        return $this->hasMany(MenuAvailability::className(), ['menu_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getOrders()
     {
         return $this->hasMany(Order::className(), ['menu_id' => 'id']);
@@ -144,5 +153,46 @@ class Menu extends \yii\db\ActiveRecord
     public function getTypeHtml()
     {
         return self::types($this->type ?? 0, true);
+    }
+
+    public function generateAvailability()
+    {
+        $day_of_weeks = range(0, 6);
+        $shifts       = Shift::find()->select('id')->column();
+
+        foreach ($day_of_weeks as $day_of_week) {
+            foreach ($shifts as $shift) {
+                $menuAvailability = MenuAvailability::findOne([
+                    'menu_id'     => $this->id,
+                    'day_of_week' => $day_of_week,
+                    'shift_id'    => $shift,
+                ]);
+                if (!$menuAvailability) {
+                    $menuAvailability              = new MenuAvailability();
+                    $menuAvailability->menu_id     = $this->id;
+                    $menuAvailability->day_of_week = $day_of_week;
+                    $menuAvailability->shift_id    = $shift;
+                    if (!$menuAvailability->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($menuAvailability->errors));
+                }
+            }
+        }
+    }
+
+    public static function isAvailable($id, $day_of_week, $shift_id)
+    {
+        $menuAvailability = MenuAvailability::find()->where([
+            'menu_id'     => $id,
+            'day_of_week' => $day_of_week,
+            'shift_id'    => $shift_id,
+        ])->andWhere(['>', 'quota', 0])->one();
+        if ($menuAvailability) {
+            $order_count = Order::find()->joinWith(['schedule'])->where([
+                'menu_id'     => $id,
+                'dayofweek(schedule.datetime)' => $day_of_week,
+                'schedule.shift_id'    => $shift_id,
+            ])->count();
+            if ($menuAvailability->quota > $order_count) return true;
+        };
+        return false;
     }
 }

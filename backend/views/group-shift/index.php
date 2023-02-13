@@ -1,22 +1,24 @@
 <?php
 
-use common\models\entity\Shift;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 use kartik\widgets\Select2;
-use yii\helpers\ArrayHelper;
+use kartik\widgets\DatePicker;
+use common\models\entity\Group;
+use common\models\entity\Shift;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\search\ScheduleSearch */
+/* @var $searchModel common\models\search\GroupShiftSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Jadwal';
+$this->title = 'Group Shift';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="schedule-index">
+<div class="group-shift-index">
 
     <?php 
         $exportColumns = [
@@ -24,11 +26,9 @@ $this->title = 'Jadwal';
                 'class' => 'yii\grid\SerialColumn',
             ],
             'id',
-            'name',
-            'shift_id',
-            'datetime',
-            'datetime_start_order',
-            'datetime_end_order',
+            'date:date',
+            'group.name:text:Group',
+            'shift.name:text:Shift',
             'created_at:datetime',
             'updated_at:datetime',
             'createdBy.username:text:Created By',
@@ -38,7 +38,7 @@ $this->title = 'Jadwal';
         $exportMenu = ExportMenu::widget([
             'dataProvider' => $dataProvider,
             'columns'      => $exportColumns,
-            'filename'     => 'Schedule',
+            'filename'     => 'Group Shift',
             'fontAwesome'  => true,
             'asDropdown'   => false,
             'batchSize'    => 10,
@@ -99,7 +99,27 @@ $this->title = 'Jadwal';
                 ],
             ],
             // 'id',
-            'datetime',
+            [
+                'attribute'           => 'date',
+                'format'              => 'date',
+                'filterType'          => GridView::FILTER_DATE,
+                'filterInputOptions'  => ['placeholder' => ''],
+                'filterWidgetOptions' => [
+                    'type' => DatePicker::TYPE_INPUT,
+                    'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd'],
+                ],
+            ],
+            [
+                'attribute'           => 'group_id',
+                'value'               => 'group.name',
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+            ],
             [
                 'attribute'           => 'shift_id',
                 'value'               => 'shift.name',
@@ -111,9 +131,6 @@ $this->title = 'Jadwal';
                     'pluginOptions' => ['allowClear' => true],
                 ],
             ],
-            'name',
-            'datetime_start_order',
-            'datetime_end_order',
             // 'created_at:integer',
             // 'updated_at:integer',
             // 'created_by:integer',
@@ -140,7 +157,7 @@ $this->title = 'Jadwal';
             ]),
             Html::a('<i class="fas fa-undo"></i>', ['index'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Reload']),
             '{toggleData}',
-            // $exportMenu,
+            $exportMenu,
         ],
         'toggleDataOptions' => [
             'all'  => ['label' => false, 'class' => 'btn btn-icon btn-white'],

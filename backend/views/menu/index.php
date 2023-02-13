@@ -26,13 +26,13 @@ $this->title = 'Menu';
             'name',
             'type',
             'description',
-            'is_active_sunday',
-            'is_active_monday',
-            'is_active_tuesday',
-            'is_active_wednesday',
-            'is_active_thursday',
-            'is_active_friday',
-            'is_active_saturday',
+            // 'is_active_sunday',
+            // 'is_active_monday',
+            // 'is_active_tuesday',
+            // 'is_active_wednesday',
+            // 'is_active_thursday',
+            // 'is_active_friday',
+            // 'is_active_saturday',
             'created_at:datetime',
             'updated_at:datetime',
             'createdBy.username:text:Created By',
@@ -109,6 +109,8 @@ $this->title = 'Menu';
                 'value'  => function($model) {
                     return $model->file_image ? Html::img(['download', 'id' => $model->id], ['width' => '50px', 'height' => '50px', 'class' => 'rounded border']) : '';
                 },
+                'headerOptions' => ['class' => 'fit nowrap'],
+                'contentOptions' => ['class' => 'fit nowrap'],
             ],
             'name',
             /* [
@@ -116,7 +118,12 @@ $this->title = 'Menu';
                 'format'         => 'ntext',
                 'contentOptions' => ['class' => 'text-wrap'],
             ], */
-            'quota:integer',
+            /* [
+                'attribute' => 'quota',
+                'format' => 'integer',
+                'headerOptions' => ['class' => 'fit nowrap text-right'],
+                'contentOptions' => ['class' => 'fit nowrap text-right'],
+            ], */
             [
                 'attribute'      => 'type',
                 'format'         => 'html',
@@ -133,7 +140,7 @@ $this->title = 'Menu';
                 'headerOptions' => ['class' => 'fit nowrap'],
                 'contentOptions' => ['class' => 'fit nowrap'],
             ],
-            [
+            /* [
                 'attribute'      => 'is_active_sunday',
                 'format'         => 'html',
                 'value'          => function($model) { return isActiveHtml($model->is_active_sunday); },
@@ -230,7 +237,7 @@ $this->title = 'Menu';
                 ],
                 'headerOptions' => ['class' => 'fit nowrap text-center'],
                 'contentOptions' => ['class' => 'fit nowrap text-center'],
-            ],
+            ], */
             // 'created_at:integer',
             // 'updated_at:integer',
             // 'created_by:integer',

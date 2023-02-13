@@ -33,7 +33,7 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'type')->radioList(Menu::types()) ?>
     
-    <div class="form-group">
+    <div class="form-group d-none">
         <label for="">Tersedia pada</label>
         <br><?= Html::checkbox('Menu[is_active_sunday]', $model->is_active_sunday, ['label' => '&nbsp;'.$model->getAttributeLabel('is_active_sunday'), 'labelOptions' => ['class' => 'checkbox-label mb-0']]) ?>
         <br><?= Html::checkbox('Menu[is_active_monday]', $model->is_active_monday, ['label' => '&nbsp;'.$model->getAttributeLabel('is_active_monday'), 'labelOptions' => ['class' => 'checkbox-label mb-0']]) ?>

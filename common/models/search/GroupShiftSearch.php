@@ -5,12 +5,12 @@ namespace common\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\entity\Schedule;
+use common\models\entity\GroupShift;
 
 /**
- * ScheduleSearch represents the model behind the search form about `common\models\entity\Schedule`.
+ * GroupShiftSearch represents the model behind the search form about `common\models\entity\GroupShift`.
  */
-class ScheduleSearch extends Schedule
+class GroupShiftSearch extends GroupShift
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class ScheduleSearch extends Schedule
     public function rules()
     {
         return [
-            [['id', 'shift_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['datetime', 'name', 'datetime_start_order', 'datetime_end_order'], 'safe'],
+            [['id', 'group_id', 'shift_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['date'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class ScheduleSearch extends Schedule
      */
     public function search($params)
     {
-        $query = Schedule::find();
+        $query = GroupShift::find();
 
         // add conditions that should always apply here
 
@@ -61,18 +61,14 @@ class ScheduleSearch extends Schedule
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'datetime' => $this->datetime,
+            'date' => $this->date,
+            'group_id' => $this->group_id,
             'shift_id' => $this->shift_id,
-            'name' => $this->name,
-            'datetime_start_order' => $this->datetime_start_order,
-            'datetime_end_order' => $this->datetime_end_order,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

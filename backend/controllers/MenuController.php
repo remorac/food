@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\entity\Menu;
+use common\models\entity\MenuAvailability;
+use common\models\entity\Shift;
 use common\models\search\MenuSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -53,8 +55,31 @@ class MenuController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id); 
+
+        if ($post = Yii::$app->request->post()) {
+            $day_of_weeks = range(0, 6);
+            $shifts = Shift::find()->all();
+
+            foreach ($day_of_weeks as $day_of_week) {
+                foreach ($shifts as $shift) {
+                    if (isset($post[$day_of_week.'-'.$shift->id])) {
+                        $menuAvailability = MenuAvailability::find()->where([
+                            'menu_id'     => $model->id,
+                            'day_of_week' => $day_of_week,
+                            'shift_id'    => $shift->id,
+                        ])->one();
+                        $menuAvailability->quota = $post[$day_of_week.'-'.$shift->id];
+                        if (!$menuAvailability->quota) $menuAvailability->quota = 0;
+                        $menuAvailability->save();
+                    }
+                }
+            }
+            Yii::$app->session->addFlash('success', 'Ketersediaan menu <b>'.$model->name.'</b> berhasil diperbarui.');
+            return $this->redirect(['view', 'id' => $id]);
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -70,6 +95,7 @@ class MenuController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             unset($model->file_image);
             if ($model->save()) {
+                $model->generateAvailability();
                 $uploadedFile = UploadedFile::getInstance($model, 'file_image');
                 if ($uploadedFile) {
                     if (!uploadFile($model, 'file_image', $uploadedFile)) {
@@ -159,5 +185,14 @@ class MenuController extends Controller
     {
         $model = $this->findModel($id);
         return downloadFile($model, $field);
+    }
+
+    public function actionGenerateAvailability()
+    {
+        $menus = Menu::find()->all();
+        foreach ($menus as $menu) {
+            $menu->generateAvailability();
+        }
+        return $this->redirect(['index']);
     }
 }

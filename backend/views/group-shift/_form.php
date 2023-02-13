@@ -1,48 +1,42 @@
 <?php
 
-use common\models\entity\Shift;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
-use kartik\datetime\DateTimePicker;
-use kartik\widgets\Select2;
 use yii\helpers\ArrayHelper;
+use yii\bootstrap4\ActiveForm;
+use kartik\widgets\Select2;
+use kartik\widgets\DatePicker;
+use common\models\entity\Group;
+use common\models\entity\Shift;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\entity\Schedule */
+/* @var $model common\models\entity\GroupShift */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="schedule-form">
+<div class="group-shift-form">
 
     <?php $form = ActiveForm::begin(['id' => 'active-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'datetime')->widget(DateTimePicker::class, [
-        'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
+    <?= $form->field($model, 'date')->widget(DatePicker::class, [
+        'type' => DatePicker::TYPE_COMPONENT_PREPEND,
         'readonly' => true,
-        'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd hh:ii'],
-    ]) ?>
+        'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd'],
+    ]); ?>
+
+    <?= $form->field($model, 'group_id')->widget(Select2::class, [
+        'theme' => Select2::THEME_DEFAULT,
+        'data' => ArrayHelper::map(Group::find()->all(), 'id', 'name'),
+        'options' => ['placeholder' => '. . .'],
+        'pluginOptions' => ['allowClear' => true],
+    ]); ?>
 
     <?= $form->field($model, 'shift_id')->widget(Select2::class, [
         'theme' => Select2::THEME_DEFAULT,
         'data' => ArrayHelper::map(Shift::find()->all(), 'id', 'name'),
         'options' => ['placeholder' => '. . .'],
         'pluginOptions' => ['allowClear' => true],
-    ]) ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'datetime_start_order')->widget(DateTimePicker::class, [
-        'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
-        'readonly' => true,
-        'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd hh:ii'],
-    ]) ?>
-
-    <?= $form->field($model, 'datetime_end_order')->widget(DateTimePicker::class, [
-        'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
-        'readonly' => true,
-        'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd hh:ii'],
-    ]) ?>
+    ]); ?>
 
     
     <div class="modal-footer text-right">

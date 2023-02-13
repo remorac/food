@@ -20,13 +20,9 @@ use Yii;
  * @property integer $must_change_password
  * @property integer $confirmed_at
  * @property integer $status
- * @property string $employee_number
  * @property string $name
  * @property integer $unit_id
- * @property string $subunit
- * @property string $position
- * @property integer $group_id
- * @property string $role
+ * @property integer $role
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
@@ -36,27 +32,20 @@ use Yii;
  * @property AuthAssignment[] $authAssignments0
  * @property AuthItem[] $authItems
  * @property AuthItem[] $authItems0
- * @property Group[] $groups
- * @property Group[] $groups0
- * @property GroupShift[] $groupShifts
- * @property GroupShift[] $groupShifts0
  * @property Menu[] $menus
  * @property Menu[] $menus0
- * @property MenuAvailability[] $menuAvailabilities
- * @property MenuAvailability[] $menuAvailabilities0
  * @property Order[] $orders
  * @property Order[] $orders0
  * @property Order[] $orders1
  * @property Order[] $orders2
  * @property Schedule[] $schedules
  * @property Schedule[] $schedules0
+ * @property ScheduleMenu[] $scheduleMenus
+ * @property ScheduleMenu[] $scheduleMenus0
  * @property Session[] $sessions
- * @property Shift[] $shifts
- * @property Shift[] $shifts0
  * @property Unit[] $units
  * @property Unit[] $units0
  * @property Unit $unit
- * @property Group $group
  */
 class User extends \common\models\User
 {
@@ -89,15 +78,14 @@ class User extends \common\models\User
     public function rules()
     {
         return [
-            [['email', 'username', 'auth_key', 'password_hash'], 'required'],
-            [['otp_expired_at', 'must_change_password', 'confirmed_at', 'status', 'unit_id', 'group_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['phone', 'email', 'username', 'password_hash', 'password_reset_token', 'verification_token', 'one_time_password', 'employee_number', 'name', 'subunit', 'position', 'role'], 'string', 'max' => 255],
+            [['email', /* 'username', 'auth_key', 'password_hash' */], 'required'],
+            [['otp_expired_at', 'must_change_password', 'confirmed_at', 'status', 'unit_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['phone', 'email', 'username', 'password_hash', 'password_reset_token', 'verification_token', 'one_time_password', 'employee_number', 'name', 'subunit'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => Unit::className(), 'targetAttribute' => ['unit_id' => 'id']],
-            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],
-            
+
             [['password'], 'required', 'on' => 'create'],
             [['password'], 'string', 'min' => 8],
 
@@ -128,8 +116,6 @@ class User extends \common\models\User
             'name' => 'Nama',
             'unit_id' => 'Instansi',
             'subunit' => 'Bidang',
-            'position' => 'Jabatan',
-            'group_id' => 'Group',
             'role' => 'Role',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -173,38 +159,6 @@ class User extends \common\models\User
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGroups()
-    {
-        return $this->hasMany(Group::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGroups0()
-    {
-        return $this->hasMany(Group::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGroupShifts()
-    {
-        return $this->hasMany(GroupShift::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGroupShifts0()
-    {
-        return $this->hasMany(GroupShift::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getMenus()
     {
         return $this->hasMany(Menu::className(), ['created_by' => 'id']);
@@ -216,22 +170,6 @@ class User extends \common\models\User
     public function getMenus0()
     {
         return $this->hasMany(Menu::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMenuAvailabilities()
-    {
-        return $this->hasMany(MenuAvailability::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMenuAvailabilities0()
-    {
-        return $this->hasMany(MenuAvailability::className(), ['updated_by' => 'id']);
     }
 
     /**
@@ -293,22 +231,6 @@ class User extends \common\models\User
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getShifts()
-    {
-        return $this->hasMany(Shift::className(), ['created_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getShifts0()
-    {
-        return $this->hasMany(Shift::className(), ['updated_by' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUnits()
     {
         return $this->hasMany(Unit::className(), ['created_by' => 'id']);
@@ -328,14 +250,6 @@ class User extends \common\models\User
     public function getUnit()
     {
         return $this->hasOne(Unit::className(), ['id' => 'unit_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGroup()
-    {
-        return $this->hasOne(Group::className(), ['id' => 'group_id']);
     }
 
     public static function statuses($index = null, $html = false) {

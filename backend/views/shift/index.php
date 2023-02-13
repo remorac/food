@@ -1,22 +1,19 @@
 <?php
 
-use common\models\entity\Shift;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
-use kartik\widgets\Select2;
-use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\search\ScheduleSearch */
+/* @var $searchModel common\models\search\ShiftSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Jadwal';
+$this->title = 'Shift';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="schedule-index">
+<div class="shift-index">
 
     <?php 
         $exportColumns = [
@@ -25,10 +22,8 @@ $this->title = 'Jadwal';
             ],
             'id',
             'name',
-            'shift_id',
-            'datetime',
-            'datetime_start_order',
-            'datetime_end_order',
+            'start_time',
+            'end_time',
             'created_at:datetime',
             'updated_at:datetime',
             'createdBy.username:text:Created By',
@@ -38,7 +33,7 @@ $this->title = 'Jadwal';
         $exportMenu = ExportMenu::widget([
             'dataProvider' => $dataProvider,
             'columns'      => $exportColumns,
-            'filename'     => 'Schedule',
+            'filename'     => 'Shift',
             'fontAwesome'  => true,
             'asDropdown'   => false,
             'batchSize'    => 10,
@@ -73,6 +68,7 @@ $this->title = 'Jadwal';
             [
                 'contentOptions' => ['class' => 'action-column nowrap text-left'],
                 'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update}',
                 'buttons' => [
                     'view' => function ($url) {
                         return Html::a('<i class="fas fa-eye"></i>', $url, [
@@ -99,21 +95,11 @@ $this->title = 'Jadwal';
                 ],
             ],
             // 'id',
-            'datetime',
             [
-                'attribute'           => 'shift_id',
-                'value'               => 'shift.name',
-                'filterType'          => GridView::FILTER_SELECT2,
-                'filter'              => ArrayHelper::map(Shift::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
-                'filterInputOptions'  => ['placeholder' => '. . .'],
-                'filterWidgetOptions' => [
-                    'theme' => Select2::THEME_DEFAULT,
-                    'pluginOptions' => ['allowClear' => true],
-                ],
+                'attribute'      => 'name',
             ],
-            'name',
-            'datetime_start_order',
-            'datetime_end_order',
+            'start_time',
+            'end_time',
             // 'created_at:integer',
             // 'updated_at:integer',
             // 'created_by:integer',
@@ -123,7 +109,7 @@ $this->title = 'Jadwal';
 
     <?= GridView::widget([
         'dataProvider'     => $dataProvider,
-        'filterModel'      => $searchModel,
+        // 'filterModel'      => $searchModel,
         'columns'          => $gridColumns,
         'responsiveWrap'   => false,
         'pjax'             => true,
@@ -132,7 +118,8 @@ $this->title = 'Jadwal';
         'bordered'         => false,
         'pjaxSettings'     => ['options' => ['id' => 'grid']],
         'headerRowOptions' => ['class' => 'thead-light'],
-        'toolbar'          => [
+        'toolbar'          => false,
+        /* 'toolbar'          => [
             Html::button('<i class="fas fa-plus"></i>', [
                 'value' => Url::to(['create']), 
                 'title' => 'Create', 
@@ -140,8 +127,8 @@ $this->title = 'Jadwal';
             ]),
             Html::a('<i class="fas fa-undo"></i>', ['index'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Reload']),
             '{toggleData}',
-            // $exportMenu,
-        ],
+            $exportMenu,
+        ], */
         'toggleDataOptions' => [
             'all'  => ['label' => false, 'class' => 'btn btn-icon btn-white'],
             'page' => ['label' => false, 'class' => 'btn btn-icon btn-white'],

@@ -23,8 +23,8 @@ use Yii;
  * @property User $reviewedBy
  * @property User $createdBy
  * @property User $updatedBy
- * @property Menu $menu
  * @property Schedule $schedule
+ * @property Menu $menu
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -64,8 +64,8 @@ class Order extends \yii\db\ActiveRecord
             [['reviewed_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['reviewed_by' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
-            [['menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['menu_id' => 'id']],
             [['schedule_id'], 'exist', 'skipOnError' => true, 'targetClass' => Schedule::className(), 'targetAttribute' => ['schedule_id' => 'id']],
+            [['menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['menu_id' => 'id']],
         ];
     }
 
@@ -124,17 +124,17 @@ class Order extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMenu()
+    public function getSchedule()
     {
-        return $this->hasOne(Menu::className(), ['id' => 'menu_id']);
+        return $this->hasOne(Schedule::className(), ['id' => 'schedule_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSchedule()
+    public function getMenu()
     {
-        return $this->hasOne(Schedule::className(), ['id' => 'schedule_id']);
+        return $this->hasOne(Menu::className(), ['id' => 'menu_id']);
     }
 
     public static function reviewStatuses($index = null, $html = false) {
