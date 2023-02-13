@@ -66,6 +66,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Instansi', 'url' => ['index']];
                     'name',
                     'employee_number',
                     'subunit',
+                    'position',
                     'email',
                     'statusText:text:Status',
                 ];
@@ -139,6 +140,13 @@ $this->params['breadcrumbs'][] = ['label' => 'Instansi', 'url' => ['index']];
                     'name',
                     'employee_number',
                     'subunit',
+                    'position',
+                    [
+                        'attribute' => 'group_id',
+                        'value' => function($model) {
+                            return $model->group_id ? $model->group->name : null;
+                        },
+                    ],
                     'email:email',
                     [
                         'attribute'           => 'status',

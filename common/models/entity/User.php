@@ -129,7 +129,7 @@ class User extends \common\models\User
             'unit_id' => 'Instansi',
             'subunit' => 'Bidang',
             'position' => 'Jabatan',
-            'group_id' => 'Group',
+            'group_id' => 'Regu',
             'role' => 'Role',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
