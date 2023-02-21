@@ -2,13 +2,18 @@
 
 namespace backend\controllers;
 
+use Box\Spout\Common\Type;
+use Box\Spout\Reader\ReaderFactory;
+use common\models\entity\Group;
 use Yii;
 use common\models\entity\GroupShift;
+use common\models\entity\Shift;
 use common\models\search\GroupShiftSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\IntegrityException;
+use yii\web\UploadedFile;
 
 /**
  * GroupShiftController implements the CRUD actions for GroupShift model.
@@ -125,5 +130,61 @@ class GroupShiftController extends Controller
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionImport() 
+    {
+        if ($post = Yii::$app->request->post()) {
+            $packageFile    = UploadedFile::getInstanceByName('package-file');
+            $reader         = ReaderFactory::create(Type::XLSX);
+            $reader->open($packageFile->tempName);
+
+            $unsaved_rows = [];
+            $saved_count = 0;
+
+            Yii::$app->db->createCommand("
+                SET foreign_key_checks = 0;
+                TRUNCATE TABLE `discount`;
+                TRUNCATE TABLE `item`;
+                TRUNCATE TABLE `item_price_sell`;
+                TRUNCATE TABLE `item_quantity_adjustment`;
+                TRUNCATE TABLE `item_storage`;
+            ")->execute();
+            
+            foreach ($reader->getSheetIterator() as $sheet) {
+                $rowCount = 0;
+                foreach ($sheet->getRowIterator() as $row) {
+                    $rowCount++;
+                    if ($rowCount >= 2) {
+
+                        for ($i = 1; $i <= 3; $i++) {
+                            $group_name = $row[$i] ? trim((string)$row[$i]) : null;
+                            if ($group_name) {
+                                $group           = Group::findOne(['name' => trim((string)$row[$i])]);
+                                $model           = new GroupShift();
+                                $model->date     = $row[0];
+                                $model->group_id = $group->id;
+                                $model->shift_id = $i;
+                                
+                                if ($model->save()) {
+                                    $saved_count++;
+                                } else {
+                                    Yii::$app->session->addFlash('error', $rowCount .': '. \yii\helpers\Json::encode($model->errors));
+                                    $unsaved_rows[] = $rowCount;
+                                }
+                            }
+                        }
+                    } 
+                }
+            }
+            $reader->close();
+            $unsaved_rows_str = implode(', ', $unsaved_rows);
+            if ($unsaved_rows) Yii::$app->session->setFlash('warning', 
+                $saved_count.' rows has been imported. 
+                <br>You may want to re-check the following unsaved rows : '.$unsaved_rows_str);
+            return $this->redirect(['index']);
+        } else {
+            return $this->render('import');
+        }
     }
 }

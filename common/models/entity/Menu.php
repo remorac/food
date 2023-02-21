@@ -178,8 +178,19 @@ class Menu extends \yii\db\ActiveRecord
         }
     }
 
-    public static function isAvailable($id, $day_of_week, $shift_id)
+    public static function isAvailable($id, $date, $shift_id)
     {
+        $day_of_week = date('w', strtotime($date));
+
+        if (Yii::$app->user->identity->group_id != null) {
+            $groupShift = GroupShift::findOne([
+                'date'     => $date,
+                'group_id' => Yii::$app->user->identity->group_id,
+                'shift_id' => $shift_id,
+            ]);
+            if (!$groupShift) return false;
+        }
+
         $menuAvailability = MenuAvailability::find()->where([
             'menu_id'     => $id,
             'day_of_week' => $day_of_week,
