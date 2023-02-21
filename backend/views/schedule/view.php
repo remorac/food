@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model common\models\entity\Schedule */
 
-$this->title = $model->name;
+$this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -42,10 +42,14 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
         'model' => $model,
         'attributes' => [
             // 'id',
-            'name',
-            'datetime',
+            'date',
+            [
+                'attribute'           => 'shift_id',
+                'value'               => $model->shift->name,
+            ],
             'datetime_start_order',
             'datetime_end_order',
+            'description',
             // 'created_at:datetime',
             // 'updated_at:datetime',
             // 'createdBy.username:text:Created By',

@@ -130,9 +130,10 @@ class UserController extends Controller
 
     public function actionInitCredentials()
     {
-        $users = User::find()->where(['>=', 'id', 8])->all();
+        $users = User::find()->where(['employee_number' => null])->andWhere(['is not', 'unit_id', null])->all();
         foreach ($users as $user) {
             d($user->name);
+            $user->employee_number = $user->username;
             $user->setPassword($user->username);
             $user->generateAuthKey();
             $user->save();

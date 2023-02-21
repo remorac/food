@@ -112,9 +112,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Menu', 'url' => ['index']];
             <?php $day_of_weeks = range(0, 6) ?>
             <?php $shifts = Shift::find()->all() ?>
             <table width="100%">
-                <tr>
                 <?php foreach ($day_of_weeks as $day_of_week) { ?>
-                    <td>
+                <tr>
+                    <td class="pb-8">
                         <div class="mb-2"><b><?= date('l', strtotime("Sunday +{$day_of_week} days")); ?></b></div>
                         <?php $menuAvailabilities = MenuAvailability::find()->where(['menu_id' => $model->id, 'day_of_week' => $day_of_week])->all() ?>
                         <?php foreach ($menuAvailabilities as $menuAvailability) { ?>
@@ -130,8 +130,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Menu', 'url' => ['index']];
                             </div>
                         <?php } ?>
                     </td>
-                <?php } ?>
                 </tr>
+                <?php } ?>
             </table>
         </div>
         <div class="card-footer text-right">

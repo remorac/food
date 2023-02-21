@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
 use kartik\datetime\DateTimePicker;
+use kartik\widgets\DatePicker;
 use kartik\widgets\Select2;
 use yii\helpers\ArrayHelper;
 
@@ -17,10 +18,10 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(['id' => 'active-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'datetime')->widget(DateTimePicker::class, [
-        'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
+    <?= $form->field($model, 'date')->widget(DatePicker::class, [
+        'type' => DatePicker::TYPE_COMPONENT_PREPEND,
         'readonly' => true,
-        'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd hh:ii'],
+        'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd'],
     ]) ?>
 
     <?= $form->field($model, 'shift_id')->widget(Select2::class, [
@@ -29,8 +30,6 @@ use yii\helpers\ArrayHelper;
         'options' => ['placeholder' => '. . .'],
         'pluginOptions' => ['allowClear' => true],
     ]) ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'datetime_start_order')->widget(DateTimePicker::class, [
         'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
@@ -43,6 +42,8 @@ use yii\helpers\ArrayHelper;
         'readonly' => true,
         'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd hh:ii'],
     ]) ?>
+    
+    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
     
     <div class="modal-footer text-right">

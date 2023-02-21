@@ -8,11 +8,11 @@ use Yii;
  * This is the model class for table "schedule".
  *
  * @property integer $id
- * @property string $datetime
+ * @property string $date
  * @property integer $shift_id
- * @property string $name
  * @property string $datetime_start_order
  * @property string $datetime_end_order
+ * @property string $description
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
@@ -51,10 +51,10 @@ class Schedule extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['datetime', 'shift_id', 'name', 'datetime_start_order', 'datetime_end_order'], 'required'],
-            [['datetime', 'datetime_start_order', 'datetime_end_order'], 'safe'],
+            [['date', 'shift_id', 'datetime_start_order', 'datetime_end_order'], 'required'],
+            [['date', 'datetime_start_order', 'datetime_end_order'], 'safe'],
             [['shift_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['description'], 'string'],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['shift_id'], 'exist', 'skipOnError' => true, 'targetClass' => Shift::className(), 'targetAttribute' => ['shift_id' => 'id']],
@@ -68,11 +68,11 @@ class Schedule extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'datetime' => 'Datetime',
+            'date' => 'Tanggal',
             'shift_id' => 'Shift',
-            'name' => 'Name',
-            'datetime_start_order' => 'Datetime Start Order',
-            'datetime_end_order' => 'Datetime End Order',
+            'datetime_start_order' => 'Waktu Awal Pemesanan',
+            'datetime_end_order' => 'Waktu Akhir Pemesanan',
+            'description' => 'Keterangan',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',

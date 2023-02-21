@@ -42,14 +42,14 @@ $this->title = 'Pemesanan';
     <?php $schedules = Schedule::find()->where([
         'and',
         ['<=', 'datetime_start_order', date('Y-m-d H:i:s')],
-        ['>=', 'datetime', date('Y-m-d H:i:s')],
-    ])->orderBy('datetime DESC')->all(); ?>
+        ['>=', 'date', date('Y-m-d')],
+    ])->orderBy('date DESC')->all(); ?>
     <?php foreach ($schedules as $model) { ?>
         <div class="col-md-12 col-lg-6">
             <div class="card card-custom rounded-lg mb-8">
                 <div class="card-body">
                     <div class="mt-0">
-                        <b class="font-size-lg"><?= $model->name ?></b><br><span><?= date('d F Y H:i', strtotime($model->datetime)) ?></span>
+                        <b class="font-size-lg"><?= date('d F Y', strtotime($model->date)) ?></b><br><span><?= $model->shift->name.' '.$model->description ?></span>
                     </div>
                     <?php $order = Order::find()->where(['schedule_id' => $model->id, 'user_id' => Yii::$app->user->id])->one() ?>
                     <div class="alert p-0 my-4 bg-light text-center">

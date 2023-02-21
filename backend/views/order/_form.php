@@ -16,14 +16,16 @@ use common\models\entity\MenuAvailability;
 ?>
 
 <?php 
-    $field = 'is_active_'.strtolower(date('l', strtotime($model->schedule->datetime)));
-    $menus = Menu::find()->where([$field => 1])->all();
+    // $field = 'is_active_'.strtolower(date('l', strtotime($model->schedule->date)));
+    $menus = Menu::find()->all();
 ?>
 
 <div class="order-form">
     
     <div class="mt-0 mb-6">
-        <b class="font-size-lg"><?= $model->schedule->name ?></b><br><span><?= date('d F Y H:i', strtotime($model->schedule->datetime)) ?></span>
+        <b class="font-size-lg"><?= date('d F Y', strtotime($model->schedule->date)) ?></b>
+        <br><span><?= $model->schedule->shift->name ?></span>
+        <br><span class="text-muted"><?= $model->schedule->description ?></span>
     </div>
 
     <?php $form = ActiveForm::begin(['id' => 'active-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
@@ -50,7 +52,7 @@ use common\models\entity\MenuAvailability;
 
     <div class="row">
         <?php foreach ($menus as $menu) { ?>
-            <?php if (Menu::isAvailable($menu->id, date('w', strtotime($model->schedule->datetime)), $model->schedule->shift_id)) { ?>
+            <?php if (Menu::isAvailable($menu->id, date('w', strtotime($model->schedule->date)), $model->schedule->shift_id)) { ?>
                 <div class="col-6">
                     <div class="alert p-0 my-4 bg-light text-center">
                         <div class="image-container mb-4">

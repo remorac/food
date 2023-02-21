@@ -1,5 +1,7 @@
 <?php
 
+use common\models\entity\Group;
+use common\models\entity\Shift;
 use common\models\entity\User;
 use common\models\search\UserSearch;
 use common\models\search\UserSearchUnit;
@@ -10,6 +12,7 @@ use kartik\export\ExportMenu;
 use kartik\grid\GridView;
 use kartik\widgets\Select2;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\entity\Unit */
@@ -142,10 +145,15 @@ $this->params['breadcrumbs'][] = ['label' => 'Instansi', 'url' => ['index']];
                     'subunit',
                     'position',
                     [
-                        'attribute' => 'group_id',
-                        'value' => function($model) {
-                            return $model->group_id ? $model->group->name : null;
-                        },
+                        'attribute'           => 'group_id',
+                        'value'               => 'group.name',
+                        'filterType'          => GridView::FILTER_SELECT2,
+                        'filter'              => ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
+                        'filterInputOptions'  => ['placeholder' => '. . .'],
+                        'filterWidgetOptions' => [
+                            'theme' => Select2::THEME_DEFAULT,
+                            'pluginOptions' => ['allowClear' => true],
+                        ],
                     ],
                     'email:email',
                     [
@@ -191,7 +199,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Instansi', 'url' => ['index']];
         
             <?= GridView::widget([
                 'dataProvider'     => $dataProvider,
-                // 'filterModel'      => $searchModel,
+                'filterModel'      => $searchModel,
                 'columns'          => $gridColumns,
                 'responsiveWrap'   => false,
                 'pjax'             => true,

@@ -186,7 +186,7 @@ class ScheduleController extends Controller
     public function actionReportByMenu($id, $to_pdf = 1)
     {
         $model  = $this->findModel($id);
-        $title  = $model->name.' '.date('d F Y H:i', strtotime($model->datetime));
+        $title  = $model->date.' '.$model->shift->name.' '.$model->description;
         $view   = 'report-by-menu';
         $pre_params = [
             'model'  => $model,
@@ -205,7 +205,7 @@ class ScheduleController extends Controller
     public function actionReportByUnit($id, $to_pdf = 1)
     {
         $model  = $this->findModel($id);
-        $title  = $model->name.' '.date('d F Y H:i', strtotime($model->datetime));
+        $title  = $model->date.' '.$model->shift->name.' '.$model->description;
         $view   = 'report-by-unit';
         $pre_params = [
             'model'  => $model,

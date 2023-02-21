@@ -1,5 +1,6 @@
 <?php
 
+use common\models\entity\Group;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
@@ -25,6 +26,15 @@ use common\models\entity\User;
     <?= $form->field($model, 'employee_number')->textInput(['maxlength' => true])->label('NIP') ?>
 
     <?= $form->field($model, 'subunit')->textInput(['maxlength' => true])->label('Bidang') ?>
+
+    <?= $form->field($model, 'position')->textInput(['maxlength' => true])->label('Bidang') ?>
+
+    <?= $form->field($model, 'group_id')->widget(Select2::class, [
+        'theme' => Select2::THEME_DEFAULT,
+        'data' => ArrayHelper::map(Group::find()->all(), 'id', 'name'),
+        'options' => ['placeholder' => '. . .'],
+        'pluginOptions' => ['allowClear' => true],
+    ]); ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 

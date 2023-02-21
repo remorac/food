@@ -188,7 +188,7 @@ class Menu extends \yii\db\ActiveRecord
         if ($menuAvailability) {
             $order_count = Order::find()->joinWith(['schedule'])->where([
                 'menu_id'     => $id,
-                'dayofweek(schedule.datetime)' => $day_of_week,
+                'dayofweek(schedule.date)' => $day_of_week,
                 'schedule.shift_id'    => $shift_id,
             ])->count();
             if ($menuAvailability->quota > $order_count) return true;
