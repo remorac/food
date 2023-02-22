@@ -68,6 +68,9 @@ class UserController extends Controller
         $model = new User();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->setPassword($model->password);
+            $model->generateAuthKey();
+            $model->username = Yii::$app->security->generateRandomString();
             if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
         } else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form', [
@@ -88,6 +91,10 @@ class UserController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
+            if ($model->password) {
+                $model->setPassword($model->password);
+                $model->generateAuthKey();
+            }
             if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
         } else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form', [
