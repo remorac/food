@@ -157,7 +157,9 @@ $this->title = 'Group Shift';
             ]),
             Html::a('<i class="fas fa-undo"></i>', ['index'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Reload']),
             '{toggleData}',
-            $exportMenu,
+            // $exportMenu,
+            Html::a('<i class="fas fa-upload"></i>', ['import'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Import dari file excel']),
+
         ],
         'toggleDataOptions' => [
             'all'  => ['label' => false, 'class' => 'btn btn-icon btn-white'],
