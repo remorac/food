@@ -46,6 +46,7 @@ class UserSearchAdministrator extends User
 
         // add conditions that should always apply here
         $query->where(['!=', 'id', 1]);
+        $query->andWhere(['!=', 'id', 2]);
         $query->andWhere(['user.unit_id' => null]);
 
         $dataProvider = new ActiveDataProvider([
