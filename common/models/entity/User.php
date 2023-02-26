@@ -57,6 +57,9 @@ use Yii;
  * @property Unit[] $units0
  * @property Unit $unit
  * @property Group $group
+ * @property UserShift[] $userShifts
+ * @property UserShift[] $userShifts0
+ * @property UserShift[] $userShifts1
  */
 class User extends \common\models\User
 {
@@ -338,6 +341,28 @@ class User extends \common\models\User
         return $this->hasOne(Group::className(), ['id' => 'group_id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserShifts()
+    {
+        return $this->hasMany(UserShift::className(), ['user_id' => 'id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserShifts0()
+    {
+        return $this->hasMany(UserShift::className(), ['created_by' => 'id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserShifts1()
+    {
+        return $this->hasMany(UserShift::className(), ['updated_by' => 'id']);
+    }
+
     public static function statuses($index = null, $html = false) {
         $array = [
             self::STATUS_ACTIVE => 'Aktif',
@@ -379,5 +404,10 @@ class User extends \common\models\User
         }
         
         return parent::beforeSave($insert);
+    }
+
+    public function getShortText()
+    {
+        return $this->employee_number.' - '.$this->name;
     }
 }

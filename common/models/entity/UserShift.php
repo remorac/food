@@ -5,25 +5,23 @@ namespace common\models\entity;
 use Yii;
 
 /**
- * This is the model class for table "shift".
+ * This is the model class for table "user_shift".
  *
  * @property integer $id
- * @property string $name
- * @property string $start_time
- * @property string $end_time
+ * @property integer $user_id
+ * @property string $date
+ * @property integer $shift_id
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
  * @property integer $updated_by
  *
- * @property GroupShift[] $groupShifts
- * @property MenuAvailability[] $menuAvailabilities
- * @property Schedule[] $schedules
+ * @property User $user
+ * @property Shift $shift
  * @property User $createdBy
  * @property User $updatedBy
- * @property UserShift[] $userShifts
  */
-class Shift extends \yii\db\ActiveRecord
+class UserShift extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -42,7 +40,7 @@ class Shift extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'shift';
+        return 'user_shift';
     }
 
     /**
@@ -51,10 +49,11 @@ class Shift extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'start_time', 'end_time'], 'required'],
-            [['start_time', 'end_time'], 'safe'],
-            [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['user_id', 'date', 'shift_id'], 'required'],
+            [['user_id', 'shift_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['date'], 'safe'],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['shift_id'], 'exist', 'skipOnError' => true, 'targetClass' => Shift::className(), 'targetAttribute' => ['shift_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
         ];
@@ -67,9 +66,9 @@ class Shift extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'start_time' => 'Start Time',
-            'end_time' => 'End Time',
+            'user_id' => 'User',
+            'date' => 'Date',
+            'shift_id' => 'Shift',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
@@ -80,25 +79,17 @@ class Shift extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGroupShifts()
+    public function getUser()
     {
-        return $this->hasMany(GroupShift::className(), ['shift_id' => 'id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMenuAvailabilities()
+    public function getShift()
     {
-        return $this->hasMany(MenuAvailability::className(), ['shift_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSchedules()
-    {
-        return $this->hasMany(Schedule::className(), ['shift_id' => 'id']);
+        return $this->hasOne(Shift::className(), ['id' => 'shift_id']);
     }
 
     /**
@@ -115,13 +106,5 @@ class Shift extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUserShifts()
-    {
-        return $this->hasMany(UserShift::className(), ['shift_id' => 'id']);
     }
 }

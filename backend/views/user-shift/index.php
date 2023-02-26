@@ -7,18 +7,18 @@ use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 use kartik\widgets\Select2;
 use kartik\widgets\DatePicker;
-use common\models\entity\Group;
+use common\models\entity\User;
 use common\models\entity\Shift;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\search\GroupShiftSearch */
+/* @var $searchModel common\models\search\UserShiftSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Jadwal Shift Regu';
+$this->title = 'Perubahan Jadwal Shift Individu';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="group-shift-index">
+<div class="user-shift-index">
 
     <?php 
         $exportColumns = [
@@ -26,8 +26,8 @@ $this->title = 'Jadwal Shift Regu';
                 'class' => 'yii\grid\SerialColumn',
             ],
             'id',
+            'user.name:text:User',
             'date:date',
-            'group.name:text:Group',
             'shift.name:text:Shift',
             'created_at:datetime',
             'updated_at:datetime',
@@ -38,7 +38,7 @@ $this->title = 'Jadwal Shift Regu';
         $exportMenu = ExportMenu::widget([
             'dataProvider' => $dataProvider,
             'columns'      => $exportColumns,
-            'filename'     => 'Group Shift',
+            'filename'     => 'User Shift',
             'fontAwesome'  => true,
             'asDropdown'   => false,
             'batchSize'    => 10,
@@ -100,6 +100,17 @@ $this->title = 'Jadwal Shift Regu';
             ],
             // 'id',
             [
+                'attribute'           => 'user_id',
+                'value'               => 'user.shortText',
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => ArrayHelper::map(User::find()->where(['is not', 'unit_id', null])->orderBy('name')->all(), 'id', 'shortText'),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+            ],
+            [
                 'attribute'           => 'date',
                 'format'              => 'date',
                 'filterType'          => GridView::FILTER_DATE,
@@ -107,17 +118,6 @@ $this->title = 'Jadwal Shift Regu';
                 'filterWidgetOptions' => [
                     'type' => DatePicker::TYPE_INPUT,
                     'pluginOptions' => ['autoclose' => true, 'format' => 'yyyy-mm-dd'],
-                ],
-            ],
-            [
-                'attribute'           => 'group_id',
-                'value'               => 'group.name',
-                'filterType'          => GridView::FILTER_SELECT2,
-                'filter'              => ArrayHelper::map(Group::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
-                'filterInputOptions'  => ['placeholder' => '. . .'],
-                'filterWidgetOptions' => [
-                    'theme' => Select2::THEME_DEFAULT,
-                    'pluginOptions' => ['allowClear' => true],
                 ],
             ],
             [
@@ -158,9 +158,6 @@ $this->title = 'Jadwal Shift Regu';
             Html::a('<i class="fas fa-undo"></i>', ['index'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Reload']),
             '{toggleData}',
             // $exportMenu,
-            Html::a('<i class="fas fa-upload"></i> Import dari Excel', ['import'], ['data-pjax' => 0, 'class' => 'btn btn-white', 'title' => 'Import dari file excel']),
-            Html::a('Perubahan Jadwal Shift Individu', ['/user-shift/index'], ['data-pjax' => 0, 'class' => 'btn btn-white']),
-
         ],
         'toggleDataOptions' => [
             'all'  => ['label' => false, 'class' => 'btn btn-icon btn-white'],

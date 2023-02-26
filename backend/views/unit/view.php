@@ -216,7 +216,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Instansi', 'url' => ['index']];
                     ]),
                     Html::a('<i class="fas fa-undo"></i>', ['view', 'id' => $model->id], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-secondary', 'title' => 'Reload']),
                     '{toggleData}',
-                    $exportMenu,
+                    // $exportMenu,
                 ],
                 'toggleDataOptions' => [
                     'all'  => ['label' => false, 'class' => 'btn btn-icon btn-secondary'],
