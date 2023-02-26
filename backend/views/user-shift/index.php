@@ -73,6 +73,7 @@ $this->title = 'Perubahan Jadwal Shift Individu';
             [
                 'contentOptions' => ['class' => 'action-column nowrap text-left'],
                 'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}',
                 'buttons' => [
                     'view' => function ($url) {
                         return Html::a('<i class="fas fa-eye"></i>', $url, [
