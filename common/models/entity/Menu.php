@@ -198,8 +198,8 @@ class Menu extends \yii\db\ActiveRecord
                 'user_id'  => Yii::$app->user->id,
             ])->andWhere(['!=', 'shift_id', $shift_id])->one();
             
-            if (!$groupShift && !$userShift) return false;
-            if (($groupShift && $userShift_other && !$userShift)) return false;
+            if (Yii::$app->user->identity->group_id && !$groupShift && !$userShift) return false;
+            if (Yii::$app->user->identity->group_id && $groupShift && $userShift_other && !$userShift) return false;
         }
 
         $menuAvailability = MenuAvailability::find()->where([
