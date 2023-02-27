@@ -178,7 +178,7 @@ class Menu extends \yii\db\ActiveRecord
         }
     }
 
-    public static function isAvailable($id, $date, $shift_id)
+    public static function isAvailable($id, $date, $shift_id, $schedule_id = null)
     {
         $day_of_week = date('w', strtotime($date));
         $holiday = Holiday::findOne(['date' => $date]);
@@ -205,7 +205,8 @@ class Menu extends \yii\db\ActiveRecord
             if (!Yii::$app->user->identity->group_id && $holiday && !$userShift)                        return false;
         }
 
-        $menuAvailability = MenuAvailability::find()->where([
+        // method 1
+        /* $menuAvailability = MenuAvailability::find()->where([
             'menu_id'     => $id,
             'day_of_week' => $day_of_week,
             'shift_id'    => $shift_id,
@@ -217,7 +218,21 @@ class Menu extends \yii\db\ActiveRecord
                 'schedule.shift_id'    => $shift_id,
             ])->count();
             if ($menuAvailability->quota > $order_count) return true;
-        };
+        }; */
+
+        // method 2
+        $scheduleMenu = ScheduleMenu::findOne([
+            'schedule_id' => $schedule_id,
+            'menu_id' => $id,
+        ]);
+        if ($scheduleMenu) {
+            $order_count = Order::find()->where([
+                'schedule_id' => $schedule_id,
+                'menu_id'     => $id,
+            ])->count();
+            if ($scheduleMenu->quota > $order_count) return true;
+        }
+
         return false;
     }
 }

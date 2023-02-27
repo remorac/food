@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\entity\Menu;
 use Yii;
 use common\models\entity\Order;
 use common\models\search\OrderSearch;
@@ -144,7 +145,11 @@ class OrderController extends Controller
         $model->reviewed_by = null;
         
         if ($model->load(Yii::$app->request->post())) {
-            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            if (Menu::isAvailable($model->menu_id, $model->schedule->date, $model->schedule->shift_id, $model->schedule_id)) {
+                if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            } else {
+                Yii::$app->session->addFlash('error', '<b>'.$model->menu->name.'</b> sudah tidak tersedia.');
+            }
         } else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form', [
                 'model' => $model
@@ -169,7 +174,11 @@ class OrderController extends Controller
         $model->reviewed_at = null;
         $model->reviewed_by = null;
         
-        if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+        if (Menu::isAvailable($model->menu_id, $model->schedule->date, $model->schedule->shift_id, $model->schedule_id)) {
+            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+        } else {
+            Yii::$app->session->addFlash('error', '<b>'.$model->menu->name.'</b> sudah tidak tersedia.');
+        }
         
         return $this->redirect(['index']);
     }

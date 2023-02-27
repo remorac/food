@@ -52,7 +52,7 @@ use common\models\entity\MenuAvailability;
 
     <div class="row">
         <?php foreach ($menus as $menu) { ?>
-            <?php if (Menu::isAvailable($menu->id, $model->schedule->date, $model->schedule->shift_id)) { ?>
+            <?php if (Menu::isAvailable($menu->id, $model->schedule->date, $model->schedule->shift_id, $model->schedule_id)) { ?>
                 <div class="col-6">
                     <div class="alert p-0 my-4 bg-light text-center">
                         <div class="image-container mb-4">
