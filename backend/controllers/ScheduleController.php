@@ -2,9 +2,11 @@
 
 namespace backend\controllers;
 
+use common\models\entity\Holiday;
 use common\models\entity\Order;
 use Yii;
 use common\models\entity\Schedule;
+use common\models\entity\ScheduleMenu;
 use common\models\search\ScheduleSearch;
 use kartik\mpdf\Pdf;
 use yii\web\Controller;
@@ -54,8 +56,29 @@ class ScheduleController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        if ($post = Yii::$app->request->post()) {
+            $ids = [];
+            foreach ($post['quota'] as $key => $value) {
+                if ($value > 0) {
+                    $scheduleMenu = ScheduleMenu::findOne(['schedule_id' => $id, 'menu_id' => $key]);
+                    if (!$scheduleMenu) {
+                        $scheduleMenu = new ScheduleMenu();
+                        $scheduleMenu->schedule_id = $id;
+                        $scheduleMenu->menu_id = $key;
+                    }
+                    $scheduleMenu->quota = $value;
+                    if (!$scheduleMenu->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($scheduleMenu->errors));
+                    $ids[] = $scheduleMenu->id;
+                }
+            }
+            ScheduleMenu::deleteAll(['not in', 'id', $ids]);
+            return $this->redirect(['view', 'id' => $id]);
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -300,12 +323,12 @@ class ScheduleController extends Controller
 
             $date = $post['generator_date_start'];
             while ($date <= $post['generator_date_end']) {
-                $schedule = new Schedule();
-                $schedule->date = $date;
-                $schedule->shift_id = $post['generator_shift_id'];
+                $schedule                       = new Schedule();
+                $schedule->date                 = $date;
+                $schedule->shift_id             = $post['generator_shift_id'];
                 $schedule->datetime_start_order = date('Y-m-d H:i', strtotime('-'.$post['generator_order_start'].' hours', strtotime($date.' '.$post['generator_time'])));
-                $schedule->datetime_end_order = date('Y-m-d H:i', strtotime('-'.$post['generator_order_end'].' hours', strtotime($date.' '.$post['generator_time'])));
-                $schedule->is_generated = 1;
+                $schedule->datetime_end_order   = date('Y-m-d H:i', strtotime('-'.$post['generator_order_end'].' hours', strtotime($date.' '.$post['generator_time'])));
+                $schedule->is_generated         = 1;
                 $schedule->save();
 
                 $date = date('Y-m-d', strtotime('+1 day', strtotime($date)));

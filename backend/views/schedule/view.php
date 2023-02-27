@@ -3,6 +3,7 @@
 use common\models\entity\Menu;
 use common\models\entity\Order;
 use common\models\entity\Schedule;
+use common\models\entity\ScheduleMenu;
 use common\models\entity\Unit;
 use common\models\entity\User;
 use common\models\search\OrderSearch;
@@ -11,6 +12,7 @@ use yii\helpers\Html;
 use common\widgets\DetailView;
 use kartik\grid\GridView;
 use kartik\widgets\Select2;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -56,6 +58,33 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
             // 'updatedBy.username:text:Updated By',
         ],
     ]) ?>
+
+    <?php $form = ActiveForm::begin(['id' => 'active-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
+
+    <div class="card card-custom">
+        <div class="card-header">
+            <div class="card-title">Menu</div>
+            <div class="card-toolbar text-warning"></div>
+        </div>
+        <div class="card-body">
+            <table>
+                <?php $menus = Menu::find()->orderBy('name')->all(); ?>
+                <?php foreach ($menus as $menu) { ?>
+                    <?php $scheduleMenu = ScheduleMenu::findOne(['schedule_id' => $model->id, 'menu_id' => $menu->id]); ?>
+                    <?php $menuCssClass = $scheduleMenu && $scheduleMenu->quota > 0 ? '' : 'text-muted' ?>
+                    <tr>
+                        <th class="pb-4 pr-8 <?= $menuCssClass ?>"><?= $menu->name ?></th>
+                        <td class="pb-4"><?= Html::textInput('quota['.$menu->id.']', $menuCssClass ? '' : $scheduleMenu->quota, ['class' => 'form-control text-right']) ?></td>
+                    </tr>
+                <?php } ?>
+            </table>
+        </div>
+        <div class="card-footer">
+            <?= Html::submitButton('Update', ['class' => 'btn btn-primary', 'data-confirm' => 'Perbarui menu untuk jadwal ini?']) ?>
+        </div>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
     <?php $countOrderWaiting = Order::find()->where([
         'schedule_id' => $model->id,

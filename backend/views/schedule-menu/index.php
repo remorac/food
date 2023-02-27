@@ -1,22 +1,23 @@
 <?php
 
-use common\models\entity\Shift;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
 use kartik\widgets\Select2;
-use yii\helpers\ArrayHelper;
+use common\models\entity\Schedule;
+use common\models\entity\Menu;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\search\ScheduleSearch */
+/* @var $searchModel common\models\search\ScheduleMenuSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Jadwal';
+$this->title = 'Schedule Menu';
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="schedule-index">
+<div class="schedule-menu-index">
 
     <?php 
         $exportColumns = [
@@ -24,11 +25,9 @@ $this->title = 'Jadwal';
                 'class' => 'yii\grid\SerialColumn',
             ],
             'id',
-            'name',
-            'shift_id',
-            'datetime',
-            'datetime_start_order',
-            'datetime_end_order',
+            'schedule.name:text:Schedule',
+            'menu.name:text:Menu',
+            'quota',
             'created_at:datetime',
             'updated_at:datetime',
             'createdBy.username:text:Created By',
@@ -38,7 +37,7 @@ $this->title = 'Jadwal';
         $exportMenu = ExportMenu::widget([
             'dataProvider' => $dataProvider,
             'columns'      => $exportColumns,
-            'filename'     => 'Schedule',
+            'filename'     => 'Schedule Menu',
             'fontAwesome'  => true,
             'asDropdown'   => false,
             'batchSize'    => 10,
@@ -99,21 +98,34 @@ $this->title = 'Jadwal';
                 ],
             ],
             // 'id',
-            'date',
             [
-                'attribute'           => 'shift_id',
-                'value'               => 'shift.name',
+                'attribute'           => 'schedule_id',
+                'value'               => 'schedule.name',
                 'filterType'          => GridView::FILTER_SELECT2,
-                'filter'              => ArrayHelper::map(Shift::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
+                'filter'              => ArrayHelper::map(Schedule::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
                 'filterInputOptions'  => ['placeholder' => '. . .'],
                 'filterWidgetOptions' => [
                     'theme' => Select2::THEME_DEFAULT,
                     'pluginOptions' => ['allowClear' => true],
                 ],
             ],
-            'datetime_start_order',
-            'datetime_end_order',
-            'description',
+            [
+                'attribute'           => 'menu_id',
+                'value'               => 'menu.name',
+                'filterType'          => GridView::FILTER_SELECT2,
+                'filter'              => ArrayHelper::map(Menu::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
+                'filterInputOptions'  => ['placeholder' => '. . .'],
+                'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_DEFAULT,
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+            ],
+            [
+                'attribute'      => 'quota',
+                'format'         => 'integer',
+                'headerOptions'  => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right'],
+            ],
             // 'created_at:integer',
             // 'updated_at:integer',
             // 'created_by:integer',
@@ -140,13 +152,7 @@ $this->title = 'Jadwal';
             ]),
             Html::a('<i class="fas fa-undo"></i>', ['index'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Reload']),
             '{toggleData}',
-            // $exportMenu,
-            Html::button('<i class="fas fa-plus"></i> Generate Jadwal', [
-                'value' => Url::to(['generate']), 
-                'title' => 'Generate Jadwal', 
-                'class' => 'showModalButton btn btn-success',
-            ]),
-            Html::a('<i class="fas fa-calendar"></i> Hari Libur', ['/holiday/index'], ['data-pjax' => 0, 'class' => 'btn btn-white', 'title' => 'Reload']),
+            $exportMenu,
         ],
         'toggleDataOptions' => [
             'all'  => ['label' => false, 'class' => 'btn btn-icon btn-white'],
