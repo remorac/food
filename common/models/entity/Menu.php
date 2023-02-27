@@ -188,7 +188,18 @@ class Menu extends \yii\db\ActiveRecord
                 'group_id' => Yii::$app->user->identity->group_id,
                 'shift_id' => $shift_id,
             ]);
-            if (!$groupShift) return false;
+            $userShift = UserShift::findOne([
+                'date'     => $date,
+                'user_id'  => Yii::$app->user->id,
+                'shift_id' => $shift_id,
+            ]);
+            $userShift_other = UserShift::find()->where([
+                'date'     => $date,
+                'user_id'  => Yii::$app->user->id,
+            ])->andWhere(['!=', 'shift_id', $shift_id])->one();
+            
+            if (!$groupShift && !$userShift) return false;
+            if (($groupShift && $userShift_other && !$userShift)) return false;
         }
 
         $menuAvailability = MenuAvailability::find()->where([

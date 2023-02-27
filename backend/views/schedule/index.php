@@ -141,6 +141,11 @@ $this->title = 'Jadwal';
             Html::a('<i class="fas fa-undo"></i>', ['index'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Reload']),
             '{toggleData}',
             // $exportMenu,
+            Html::button('<i class="fas fa-plus"></i> Generate Jadwal', [
+                'value' => Url::to(['generate']), 
+                'title' => 'Generate Jadwal', 
+                'class' => 'showModalButton btn btn-success',
+            ]),
         ],
         'toggleDataOptions' => [
             'all'  => ['label' => false, 'class' => 'btn btn-icon btn-white'],

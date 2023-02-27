@@ -274,4 +274,49 @@ class ScheduleController extends Controller
         ]);
         return $pdf->render();
     }
+
+    public function actionGenerate()
+    {
+        $model = new Schedule();
+
+        if ($post = Yii::$app->request->post()) {
+            
+            $isValid = 1;
+            if ($post['generator_date_start'] > $post['generator_date_end']) {
+                $isValid = 0;
+                Yii::$app->session->addFlash('error', 'Tanggal Mulai harus sebelum Tanggal Selesai.');
+            }
+            if ($post['generator_order_start'] < $post['generator_order_end']) {
+                $isValid = 0;
+                Yii::$app->session->addFlash('error', 'Mulai Pemesanan harus lebih lama dari Selesai Pemesanan.');
+            }
+            $times = explode(':', $post['generator_time']);
+            if (!isset($times[1]) || isset($times[3]) || $times[0] >= 24 || $times[1] >= 60) {
+                $isValid = 0;
+                Yii::$app->session->addFlash('error', 'Jam Makan tidak valid.');
+            }
+
+            if (!$isValid) return $this->redirect(Yii::$app->request->referrer);
+
+            $date = $post['generator_date_start'];
+            while ($date <= $post['generator_date_end']) {
+                $schedule = new Schedule();
+                $schedule->date = $date;
+                $schedule->shift_id = $post['generator_shift_id'];
+                $schedule->datetime_start_order = date('Y-m-d H:i', strtotime('-'.$post['generator_order_start'].' hours', strtotime($date.' '.$post['generator_time'])));
+                $schedule->datetime_end_order = date('Y-m-d H:i', strtotime('-'.$post['generator_order_end'].' hours', strtotime($date.' '.$post['generator_time'])));
+                $schedule->is_generated = 1;
+                $schedule->save();
+
+                $date = date('Y-m-d', strtotime('+1 day', strtotime($date)));
+            }
+
+            
+        } else if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form-generate', [
+                'model' => $model
+            ]);
+        }
+        return $this->redirect(['index']);
+    }
 }

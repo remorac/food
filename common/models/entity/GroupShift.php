@@ -52,6 +52,8 @@ class GroupShift extends \yii\db\ActiveRecord
             [['date', 'group_id', 'shift_id'], 'required'],
             [['date'], 'safe'],
             [['group_id', 'shift_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['date', 'group_id'], 'unique', 'targetAttribute' => ['date', 'group_id'], 'message' => 'The combination of Date and Group has already been taken.'],
+            [['date', 'shift_id'], 'unique', 'targetAttribute' => ['date', 'shift_id'], 'message' => 'The combination of Date and Shift has already been taken.'],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],
             [['shift_id'], 'exist', 'skipOnError' => true, 'targetClass' => Shift::className(), 'targetAttribute' => ['shift_id' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
