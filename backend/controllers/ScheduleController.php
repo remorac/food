@@ -73,7 +73,11 @@ class ScheduleController extends Controller
                     $ids[] = $scheduleMenu->id;
                 }
             }
-            ScheduleMenu::deleteAll(['not in', 'id', $ids]);
+            ScheduleMenu::deleteAll([
+                'and',
+                ['schedule_id' => $id],
+                ['not in', 'id', $ids],
+            ]);
             return $this->redirect(['view', 'id' => $id]);
         }
 

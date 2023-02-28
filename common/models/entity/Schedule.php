@@ -83,6 +83,14 @@ class Schedule extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getScheduleMenus()
+    {
+        return $this->hasMany(ScheduleMenu::className(), ['schedule_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getOrders()
     {
         return $this->hasMany(Order::className(), ['schedule_id' => 'id']);

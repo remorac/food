@@ -64,12 +64,13 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($dashboard = 0)
     {
         if (!Yii::$app->user->isGuest) {
+            if ($dashboard == 1) return $this->render('index');
             if (Yii::$app->user->identity->unit_id) return $this->redirect(['/order/index']);
             if (Yii::$app->user->identity->role == 'Koperasi') return $this->redirect(['/menu/index']);
-            return $this->redirect(['/user/index']);
+            if (Yii::$app->user->identity->role == 'Administrator') return $this->redirect(['/user/index']);
         }
         
         return $this->redirect(['/site/login']);
