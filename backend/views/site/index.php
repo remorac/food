@@ -22,6 +22,7 @@ $schedulesClosed = Schedule::find()->where([
 ?>
 
 <h2 class="mb-8">Pemesanan Sedang Dibuka</h2>
+<?php if (!$schedulesOpen) echo '<div class="alert alert-white mb-8">belum ada data.</div>'; ?>
 
 <div class="row">
     <?php foreach ($schedulesOpen as $schedule) { ?>
@@ -56,6 +57,7 @@ $schedulesClosed = Schedule::find()->where([
 <br>
 <br>
 <h2 class="mb-8">Pemesanan Sudah Ditutup</h2>
+<?php if (!$schedulesClosed) echo '<div class="alert alert-white mb-8">belum ada data.</div>'; ?>
 
 <div class="row">
     <?php foreach ($schedulesClosed as $schedule) { ?>
