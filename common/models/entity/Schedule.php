@@ -123,4 +123,29 @@ class Schedule extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Shift::className(), ['id' => 'shift_id']);
     }
+
+    public function getMenuBadge()
+    {
+        $menuCssClass = 'danger';
+        $menuLabel    = 'BELUM ADA MENU';
+        $count        = count($this->scheduleMenus);
+        if ($count) {
+            $menuCssClass = 'success';
+            $menuLabel    = $count.' JENIS MENU';
+        } 
+        return '<span class="mt-2 label label-inline label-'.$menuCssClass.'">'.$menuLabel.'</span>';
+    }
+
+    public function getEligibleUsersCount()
+    {
+        $return = 0;
+        if (date('w', strtotime($this->date)) != 0) $return+= User::find()->where(['group_id' => null])->count();
+        $return+= User::find()->joinWith(['groups.groupShifts'])->where([
+            'and',
+            ['is not', 'user.group_id', null],
+            ['group_shift.date' => $this->date],
+        ])->count();
+
+        return $return;
+    }
 }
