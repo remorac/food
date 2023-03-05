@@ -71,6 +71,12 @@ use common\models\entity\MenuAvailability;
         <?php } ?>
     </div>
 
+    <?php if (!$model->schedule->scheduleMenus) { ?>
+        <div class="alert p-0 my-4 bg-light text-center">
+            <div class="m-4"><i>belum ada menu tersedia.</i></div>
+        </div>
+    <?php } ?>
+
 </div>
 
 <style>

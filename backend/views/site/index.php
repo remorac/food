@@ -13,15 +13,15 @@ $schedulesOpen = Schedule::find()->where([
     'and',
     ['<=', 'datetime_start_order', date('Y-m-d H:i:s')],
     ['>=', 'datetime_end_order', date('Y-m-d H:i:s')],
-])->all();
+])->orderBy('date, shift_id')->all();
 $schedulesClosed = Schedule::find()->where([
     'and',
     ['<=', 'datetime_end_order', date('Y-m-d H:i:s')],
     ['>=', 'date', date('Y-m-d')],
-])->all();
+])->orderBy('date, shift_id')->all();
 ?>
 
-<h2 class="mb-8">Pemesanan Sedang Dibuka</h2>
+<h2 class="mb-8">Pemesanan yang Sedang Dibuka</h2>
 <?php if (!$schedulesOpen) echo '<div class="alert alert-white mb-8">belum ada data.</div>'; ?>
 
 <div class="row">
@@ -29,8 +29,8 @@ $schedulesClosed = Schedule::find()->where([
         <div class="col-md-6">
             <div class="card card-custom mb-8">
                 <div class="card-body">
-                    <h4 class="mt-0 text-success">
-                        <?= $schedule->date ?> <?= $schedule->shift->name ?>
+                    <h4 class="mt-0 <?= $schedule->titleCssClass ?>">
+                        <?= $schedule->shortText ?>
                         <br><?= $schedule->menuBadge ?>
                     </h4>
                     <br>Pemesanan sedang berlangsung mulai <?= $schedule->datetime_start_order ?>
@@ -47,7 +47,7 @@ $schedulesClosed = Schedule::find()->where([
 
 <br>
 <br>
-<h2 class="mb-8">Pemesanan Sudah Ditutup</h2>
+<h2 class="mb-8">Pemesanan yang Sudah Ditutup</h2>
 <?php if (!$schedulesClosed) echo '<div class="alert alert-white mb-8">belum ada data.</div>'; ?>
 
 <div class="row">
@@ -55,8 +55,8 @@ $schedulesClosed = Schedule::find()->where([
         <div class="col-md-6">
             <div class="card card-custom mb-8">
                 <div class="card-body">
-                    <h4 class="mt-0 text-danger">
-                        <?= $schedule->date ?> <?= $schedule->shift->name ?>
+                    <h4 class="mt-0 <?= $schedule->titleCssClass ?>">
+                        <?= $schedule->shortText ?>
                         <br><?= $schedule->menuBadge ?>
                     </h4>
                     <br>Pemesanan sudah ditutup pada <?= $schedule->datetime_end_order ?>.

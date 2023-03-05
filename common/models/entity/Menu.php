@@ -183,7 +183,7 @@ class Menu extends \yii\db\ActiveRecord
         $day_of_week = date('w', strtotime($date));
         $holiday = Holiday::findOne(['date' => $date]);
 
-        if (Yii::$app->user->identity->group_id != null) {
+        /* if (Yii::$app->user->identity->group_id != null) {
             $groupShift = GroupShift::findOne([
                 'date'     => $date,
                 'group_id' => Yii::$app->user->identity->group_id,
@@ -203,7 +203,7 @@ class Menu extends \yii\db\ActiveRecord
             if (Yii::$app->user->identity->group_id && $groupShift && $userShift_other && !$userShift)  return false;
             if (!Yii::$app->user->identity->group_id && $day_of_week == 0 && !$userShift)               return false;
             if (!Yii::$app->user->identity->group_id && $holiday && !$userShift)                        return false;
-        }
+        } */
 
         // method 1
         /* $menuAvailability = MenuAvailability::find()->where([

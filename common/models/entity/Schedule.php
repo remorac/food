@@ -124,6 +124,19 @@ class Schedule extends \yii\db\ActiveRecord
         return $this->hasOne(Shift::className(), ['id' => 'shift_id']);
     }
 
+    public function getShortText()
+    {
+        return date('D, d M Y', strtotime($this->date)).' - '.$this->shift->name;
+    }
+
+    public function getTitleCssClass()
+    {
+        if ($this->shift_id == 1) return 'text-success';
+        if ($this->shift_id == 2) return 'text-danger';
+        if ($this->shift_id == 3) return 'text-warning';
+        return '';
+    }
+
     public function getMenuBadge()
     {
         $menuCssClass = 'danger';
@@ -139,13 +152,13 @@ class Schedule extends \yii\db\ActiveRecord
     public function getEligibleUsersCount()
     {
         $return = 0;
-        if (date('w', strtotime($this->date)) != 0) $return+= User::find()->where(['group_id' => null])->count();
-        $return+= User::find()->joinWith(['groups.groupShifts'])->where([
+        if (date('w', strtotime($this->date)) != 0 && date('w', strtotime($this->date)) != 6) $return+= User::find()->where(['group_id' => null])->count();
+        $return+= User::find()->joinWith(['group.groupShifts'])->where([
             'and',
             ['is not', 'user.group_id', null],
             ['group_shift.date' => $this->date],
         ])->count();
-
+        
         return $return;
     }
 }

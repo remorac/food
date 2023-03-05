@@ -50,7 +50,7 @@ use yii\helpers\Url;
 					['label' => 'Instansi', 	 'icon' => 'fa fa-th-list', 	 'url' => ['/unit/index'], 	      'visible' => Yii::$app->user->id == 1 || Yii::$app->user->identity->role == 'Administrator'],
 					['label' => 'Shift', 	 	 'icon' => 'fa fa-cube', 	 	 'url' => ['/group-shift/index'], 'visible' => Yii::$app->user->id == 1 || Yii::$app->user->identity->role == 'Administrator'],
 					['label' => 'Menu', 	 	 'icon' => 'fa fa-utensils', 	 'url' => ['/menu/index'], 	      'visible' => Yii::$app->user->id == 1 || Yii::$app->user->identity->role == 'Administrator' || Yii::$app->user->identity->role == 'Koperasi'],
-					['label' => 'Jadwal', 		 'icon' => 'fa fa-calendar', 	 'url' => ['/schedule/index'],    'visible' => Yii::$app->user->id == 1 || Yii::$app->user->identity->role == 'Administrator' || Yii::$app->user->identity->role == 'Koperasi'],
+					['label' => 'Jadwal', 		 'icon' => 'fa fa-calendar', 	 'url' => ['/schedule/index', 'ScheduleSearch' => ['date' => date('Y-m-d')]],    'visible' => Yii::$app->user->id == 1 || Yii::$app->user->identity->role == 'Administrator' || Yii::$app->user->identity->role == 'Koperasi'],
 					['label' => 'Pemesanan', 	 'icon' => 'fa fa-edit', 		 'url' => ['/order/index'],       'visible' => Yii::$app->user->id == 1 || (!Yii::$app->user->identity->role == 'Administrator' && !Yii::$app->user->identity->role == 'Koperasi')],
 					
 					/* ['label' => 'Pengaturan', 'icon' => 'fa fa-cube', 'url' => '#', 

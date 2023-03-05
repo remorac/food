@@ -112,8 +112,16 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
                     [
                         'contentOptions' => ['class' => 'action-column nowrap text-left'],
                         'class' => 'yii\grid\ActionColumn',
-                        'template' => '{accept} {reject} {reset}',
+                        'template' => '{delete} {accept} {reject} {reset}',
                         'buttons' => [
+                            'delete' => function ($url, $model) {
+                                return Html::a('<i class="fas fa-trash"></i>', ['delete-order', 'order_id' => $model->id], [
+                                    'class'        => 'btn btn-icon btn-xs btn-light-danger mr-4',
+                                    'data-confirm' => 'Hapus pesanan ini?',
+                                    'data-method'  => 'post',
+                                    'data-pjax'    => 0,
+                                ]);
+                            },
                             'reset' => function ($url, $model) {
                                 return Html::a('<i class="fas fa-undo"></i>', ['reset', 'order_id' => $model->id], [
                                     'class'        => 'btn btn-icon btn-xs btn-secondary',
@@ -222,6 +230,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
                         'headerOptions'  => ['class' => 'fit nowrap'],
                         'contentOptions' => ['class' => 'fit nowrap'],
                     ],
+                    'eligibilityLabel:html:Status',
                     // 'created_at:integer',
                     // 'updated_at:integer',
                     // 'created_by:integer',

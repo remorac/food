@@ -28,9 +28,9 @@ $this->title = 'Pemesanan';
             <td style="vertical-align:middle">
                 <big><b><?= Yii::$app->user->identity->name ?></b></big>
                 <br><?= Yii::$app->user->identity->email ?>
-                <div></div>
-                <br><span class="label label-inline font-weight-bold text-primary mb-0"><big><?= Yii::$app->user->identity->unit->name ?></big></span>
-                <br><?= Yii::$app->user->identity->subunit ?></span>
+                <br><span class="label label-inline font-weight-bold text-primary mt-4 mb-2"><big><?= Yii::$app->user->identity->unit->name ?></big></span>
+                <br><span class="font-weight-bold"><?= strtoupper(Yii::$app->user->identity->subunit) ?></span>
+                <br><span class="font-size-sm"><?= strtoupper(Yii::$app->user->identity->position) ?></span>
             </td>
         </tr>
         </table>
@@ -43,7 +43,7 @@ $this->title = 'Pemesanan';
         'and',
         ['<=', 'datetime_start_order', date('Y-m-d H:i:s')],
         ['>=', 'date', date('Y-m-d')],
-    ])->orderBy('date DESC')->all(); ?>
+    ])->orderBy('date, shift_id')->all(); ?>
     <?php foreach ($schedules as $model) { ?>
         <div class="col-md-12 col-lg-6">
             <div class="card card-custom rounded-lg mb-8">
@@ -59,7 +59,7 @@ $this->title = 'Pemesanan';
                             </div>
                             <h5 class="mb-4"><?= $order->menu->name ?></h5>
                         <?php } ?>
-                        <?php if (!$order) echo '<i>belum memesan</i>' ?>
+                        <?php if (!$order) echo '<div class="m-4"><i>belum memesan</i></div>' ?>
                     </div>
                     <?= ($model->datetime_end_order > date('Y-m-d H:i:s')) ? Html::button($order ? 'Ganti Pesanan' : 'Tentukan Pesanan', [
                         'value'     => Url::to(['set-order', 'schedule_id' => $model->id]),
@@ -67,6 +67,12 @@ $this->title = 'Pemesanan';
                         'class'     => 'showModalButton btn btn-light-primary',
                         'size'      => 'modal-lg',
                         'data-pjax' => 0,
+                    ]) : '' ?>
+                    <?= ($model->datetime_end_order > date('Y-m-d H:i:s') && $order) ? Html::a('Batalkan Pesanan', ['delete', 'id' => $order->id], [
+                        'class'        => 'btn btn-light-danger',
+                        'data-confirm' => 'Batalkan pesanan ini?',
+                        'data-method'  => 'post',
+                        'data-pjax'    => 0,
                     ]) : '' ?>
                     <div class="float-right"><button class="btn btn-flat">&nbsp;</button> <?= $order ? $order->reviewStatusHtml : '' ?></div>
                 </div>

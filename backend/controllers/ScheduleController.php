@@ -29,6 +29,12 @@ class ScheduleController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'delete-order' => ['POST'],
+                    'reset' => ['POST'],
+                    'accept' => ['POST'],
+                    'reject' => ['POST'],
+                    'accept-all' => ['POST'],
+                    'reject-all' => ['POST'],
                 ],
             ],
         ];
@@ -154,6 +160,13 @@ class ScheduleController extends Controller
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionDeleteOrder($order_id)
+    {
+        $order = Order::findOne($order_id);
+        $order->delete();
+        return $this->redirect(['view', 'id' => $order->schedule_id]);
     }
 
     public function actionReset($order_id)

@@ -159,4 +159,32 @@ class Order extends \yii\db\ActiveRecord
     {
         return self::reviewStatuses($this->review_status, true);
     }
+
+    public function getEligibilityLabel()
+    {
+        if ($this->user->group_id != null) {
+            $groupShift = GroupShift::find()->where([
+                'date' => $this->schedule->date,
+                'shift_id' => 1,
+                'group_id' => $this->user->group_id,
+            ])->one();
+            if ($groupShift) {
+                return '<span class="label label-inline label-light-success">Shift '.$this->user->group->name.' - sesuai jadwal</span>';
+            } else {
+                $groupShift = GroupShift::find()->where([
+                    'date' => $this->schedule->date,
+                    'shift_id' => 1,
+                ])->one();
+                return '<span class="label label-inline label-light-danger">Shift '.$this->user->group->name.' ke '.$groupShift->group->name.' - ganti jadwal</span>';
+            }
+        } else {
+            if ($this->schedule->shift_id == 1) {
+                return '<span class="label label-inline label-light-success">Non Shift - sesuai jadwal</span>';
+            } else {
+                return '<span class="label label-inline label-light-danger">Non Shift - lembur</span>';
+            }
+        }
+
+        return '';
+    }
 }
