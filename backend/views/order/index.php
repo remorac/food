@@ -21,16 +21,22 @@ $this->title = 'Pemesanan';
 <div class="card card-custom rounded-lg bg-primary text-white mb-8">
     <div class="card-body">
         <table width="100%">
-        <tr class="row">
-            <td width="100px" style="padding-right: 16px;">
+        <tr class="">
+            <td width="100px" style="vertical-align:top; padding-right: 16px;">
                 <?= Html::img(Yii::getAlias('@web/img/user.jpg'), ['class' => 'rounded-circle', 'width' => '100%']) ?>
             </td>
             <td style="vertical-align:middle">
                 <big><b><?= Yii::$app->user->identity->name ?></b></big>
                 <br><?= Yii::$app->user->identity->email ?>
-                <br><span class="label label-inline font-weight-bold text-primary mt-4 mb-2"><big><?= Yii::$app->user->identity->unit->name ?></big></span>
-                <br><span class="font-weight-bold"><?= strtoupper(Yii::$app->user->identity->subunit) ?></span>
-                <br><span class="font-size-sm"><?= strtoupper(Yii::$app->user->identity->position) ?></span>
+                <br>&nbsp;
+                <div class="card card-custom rounded-lg bg-light-primary text-primary w-100 mb-0">
+                    <div class="card-body p-4">
+                        <span class="label label-inline label-primary font-weight-bold mb-2"><big><?= Yii::$app->user->identity->unit->name ?></big></span>
+                        <br><span class="font-weight-bold"><?= strtoupper(Yii::$app->user->identity->subunit) ?></span>
+                        <br><span class="font-size-sm"><?= strtoupper(Yii::$app->user->identity->position) ?></span>
+                        <br><span class="font-size-sm"><?= Yii::$app->user->identity->group ? 'Shift (Regu '.strtoupper(Yii::$app->user->identity->group->name).')' : 'Non Shift' ?></span>
+                    </div>
+                </div>
             </td>
         </tr>
         </table>
