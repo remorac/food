@@ -18,7 +18,7 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model common\models\entity\Schedule */
 
-$this->title = $model->id;
+$this->title = $model->shortText;
 $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
 // $this->params['breadcrumbs'][] = $this->title;
 ?>
