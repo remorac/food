@@ -20,6 +20,8 @@ use common\models\entity\MenuAvailability;
     $menus = Menu::find()->all();
 ?>
 
+<?php $form = ActiveForm::begin(['id' => 'active-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
+
 <div class="order-form">
     
     <div class="mt-0 mb-6">
@@ -27,8 +29,6 @@ use common\models\entity\MenuAvailability;
         <br><span><?= $model->schedule->shift->name ?></span>
         <br><span class="text-muted"><?= $model->schedule->description ?></span>
     </div>
-
-    <?php $form = ActiveForm::begin(['id' => 'active-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= '' /*  $form->field($model, 'menu_id')->widget(Select2::class, [
         'theme' => Select2::THEME_DEFAULT,
@@ -40,15 +40,6 @@ use common\models\entity\MenuAvailability;
     <p class="text-muted">
         Permintaan Anda akan ditinjau terlebih dahulu oleh admin atau koperasi.
     </p>
-
-    <div class="modal-footer text-right d-none">
-        <?=  
-            Html::button('<i class="fa fa-arrow-left"></i> Cancel', ['class' => 'btn btn-secondary', 'data-dismiss' => 'modal']) 
-            . ' ' . Html::submitButton('<i class="fa fa-check"></i> ' . ($model->isNewRecord ? 'Create' : 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) 
-        ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
 
     <div class="row">
         <?php foreach ($menus as $menu) { ?>
@@ -77,7 +68,16 @@ use common\models\entity\MenuAvailability;
         </div>
     <?php } ?>
 
+    <div class="modal-footer text-right">
+        <?=  
+            Html::button('<i class="fa fa-arrow-left"></i> Cancel', ['class' => 'btn btn-secondary', 'data-dismiss' => 'modal']) 
+            //. ' ' . Html::submitButton('<i class="fa fa-check"></i> ' . ($model->isNewRecord ? 'Create' : 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) 
+        ?>
+    </div>
+
 </div>
+
+<?php ActiveForm::end(); ?>
 
 <style>
     .image-container {
