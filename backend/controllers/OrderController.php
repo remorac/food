@@ -167,17 +167,20 @@ class OrderController extends Controller
         if (!$model) {
             $model = new Order();
         }
-        $model->user_id = Yii::$app->user->id;
-        $model->schedule_id = $schedule_id;
-        $model->menu_id = $menu_id;
-        $model->review_status = Order::REVIEW_STATUS_WAITING;
-        $model->reviewed_at = null;
-        $model->reviewed_by = null;
-        
-        if (Menu::isAvailable($model->menu_id, $model->schedule->date, $model->schedule->shift_id, $model->schedule_id)) {
-            if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
-        } else {
-            Yii::$app->session->addFlash('error', '<b>'.$model->menu->name.'</b> sudah tidak tersedia.');
+
+        if ($model->menu_id != $menu_id) {
+            $model->user_id = Yii::$app->user->id;
+            $model->schedule_id = $schedule_id;
+            $model->menu_id = $menu_id;
+            $model->review_status = Order::REVIEW_STATUS_WAITING;
+            $model->reviewed_at = null;
+            $model->reviewed_by = null;
+            
+            if (Menu::isAvailable($model->menu_id, $model->schedule->date, $model->schedule->shift_id, $model->schedule_id)) {
+                if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
+            } else {
+                Yii::$app->session->addFlash('error', '<b>'.$model->menu->name.'</b> sudah tidak tersedia.');
+            }
         }
         
         return $this->redirect(['index']);
