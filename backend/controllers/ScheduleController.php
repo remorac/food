@@ -29,6 +29,7 @@ class ScheduleController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'delete-all' => ['POST'],
                     'delete-order' => ['POST'],
                     'reset' => ['POST'],
                     'accept' => ['POST'],
@@ -141,6 +142,19 @@ class ScheduleController extends Controller
     {
         try {
             $this->findModel($id)->delete();
+            return $this->redirect(['index']);
+        } catch (IntegrityException $e) {
+            throw new \yii\web\HttpException(500,"Integrity Constraint Violation. This data can not be deleted due to the relation.", 405);
+        }
+    }
+
+    public function actionDeleteAll()
+    {
+        try {
+            $models = Schedule::find()->all();
+            foreach ($models as $model) {
+                $model->delete();
+            }
             return $this->redirect(['index']);
         } catch (IntegrityException $e) {
             throw new \yii\web\HttpException(500,"Integrity Constraint Violation. This data can not be deleted due to the relation.", 405);

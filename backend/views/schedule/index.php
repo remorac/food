@@ -133,6 +133,11 @@ $this->title = 'Jadwal';
         'pjaxSettings'     => ['options' => ['id' => 'grid']],
         'headerRowOptions' => ['class' => 'thead-light'],
         'toolbar'          => [
+            Html::button('<i class="fas fa-plus"></i> Generate Jadwal', [
+                'value' => Url::to(['generate']), 
+                'title' => 'Generate Jadwal', 
+                'class' => 'showModalButton btn btn-success',
+            ]),
             Html::button('<i class="fas fa-plus"></i>', [
                 'value' => Url::to(['create']), 
                 'title' => 'Create', 
@@ -141,12 +146,14 @@ $this->title = 'Jadwal';
             Html::a('<i class="fas fa-undo"></i>', ['index'], ['data-pjax' => 0, 'class' => 'btn btn-icon btn-white', 'title' => 'Reload']),
             '{toggleData}',
             // $exportMenu,
-            Html::button('<i class="fas fa-plus"></i> Generate Jadwal', [
-                'value' => Url::to(['generate']), 
-                'title' => 'Generate Jadwal', 
-                'class' => 'showModalButton btn btn-success',
-            ]),
             Html::a('<i class="fas fa-calendar"></i> Hari Libur', ['/holiday/index'], ['data-pjax' => 0, 'class' => 'btn btn-white', 'title' => 'Reload']),
+            Html::a('<i class="fas fa-trash"></i> Hapus Semua', ['/schedule/delete-all'], [
+                'class' => 'btn btn-light-danger', 
+                'title' => 'Hapus Semua',
+                'data-pjax' => 0, 
+                'data-method' => 'post', 
+                'data-confirm' => 'Hapus Semua Jadwal?', 
+            ]),
         ],
         'toggleDataOptions' => [
             'all'  => ['label' => false, 'class' => 'btn btn-icon btn-white'],

@@ -49,7 +49,7 @@ class UserSearchUnit extends User
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
+            'sort' => ['defaultOrder' => ['name' => SORT_ASC]],
         ]);
 
         $this->load($params);
