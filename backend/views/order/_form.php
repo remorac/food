@@ -17,6 +17,8 @@ use common\models\entity\ScheduleMenu;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?= Html::button('<i class="fa fa-arrow-left"></i> Kembali', ['class' => 'btn btn-secondary float-right', 'data-dismiss' => 'modal']) ?>
+
 <?php 
     // $field = 'is_active_'.strtolower(date('l', strtotime($model->schedule->date)));
     $menus = Menu::find()->orderBy('name')->all();
@@ -51,7 +53,7 @@ use common\models\entity\ScheduleMenu;
             'value' => $model->location_id,
             'data' => ArrayHelper::map(Location::find()->asArray()->all(), 'id', 'name'),
             'theme' => Select2::THEME_DEFAULT,
-            'options' => ['placeholder' => '. . .'],
+            'options' => ['placeholder' => '. . .', 'required' => true],
             'pluginOptions' => ['allowClear' => true],
         ]) ?>
     </div>
@@ -106,7 +108,7 @@ use common\models\entity\ScheduleMenu;
 
     <div class="modal-footer text-right">
         <?=  
-            Html::button('<i class="fa fa-arrow-left"></i> Cancel', ['class' => 'btn btn-secondary', 'data-dismiss' => 'modal']) 
+            Html::button('<i class="fa fa-arrow-left"></i> Kembali', ['class' => 'btn btn-secondary', 'data-dismiss' => 'modal']) 
             //. ' ' . Html::submitButton('<i class="fa fa-check"></i> ' . ($model->isNewRecord ? 'Create' : 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) 
         ?>
     </div>

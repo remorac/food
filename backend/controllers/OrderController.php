@@ -160,6 +160,11 @@ class OrderController extends Controller
 
     public function actionSet($schedule_id, $menu_id)
     {
+        if (!Yii::$app->request->post('location_id')) {
+            Yii::$app->session->addFlash('error', 'Gagal menyimpan pemesanan. <b>Lokasi Pengantaran</b> harus diisi.');
+            return $this->redirect(['index']);
+        }
+
         $model = Order::find()->where([
             'user_id' => Yii::$app->user->id,
             'schedule_id' => $schedule_id,
