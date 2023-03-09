@@ -67,14 +67,15 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
             <div class="card-toolbar text-warning"></div>
         </div>
         <div class="card-body">
-            <table>
+            <table style="width:100%">
                 <?php $menus = Menu::find()->orderBy('name')->all(); ?>
                 <?php foreach ($menus as $menu) { ?>
                     <?php $scheduleMenu = ScheduleMenu::findOne(['schedule_id' => $model->id, 'menu_id' => $menu->id]); ?>
                     <?php $menuCssClass = $scheduleMenu && $scheduleMenu->quota > 0 ? '' : 'text-muted' ?>
                     <tr>
-                        <th class="pb-4 pr-8 <?= $menuCssClass ?>"><?= $menu->name ?></th>
-                        <td class="pb-4"><?= Html::textInput('quota['.$menu->id.']', $menuCssClass ? '' : $scheduleMenu->quota, ['class' => 'form-control text-right']) ?></td>
+                        <th class="pb-4 pr-8 fit nowrap <?= $menuCssClass ?>"><?= $menu->name ?></th>
+                        <td class="pb-4 pr-4" width="100px"><?= Html::textInput('quota['.$menu->id.']', $menuCssClass ? '' : $scheduleMenu->quota, ['class' => 'form-control text-right', 'placeholder' => 'kuota']) ?></td>
+                        <td class="pb-4"><?= Html::textInput('description['.$menu->id.']', $menuCssClass ? '' : $scheduleMenu->description, ['class' => 'form-control', 'placeholder' => 'keterangan']) ?></td>
                     </tr>
                 <?php } ?>
             </table>

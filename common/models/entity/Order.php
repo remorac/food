@@ -11,6 +11,7 @@ use Yii;
  * @property integer $schedule_id
  * @property integer $user_id
  * @property integer $menu_id
+ * @property integer $location_id
  * @property integer $review_status
  * @property integer $reviewed_at
  * @property integer $reviewed_by
@@ -20,6 +21,7 @@ use Yii;
  * @property integer $updated_by
  *
  * @property User $user
+ * @property Location $location
  * @property User $reviewedBy
  * @property User $createdBy
  * @property User $updatedBy
@@ -58,14 +60,15 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['schedule_id', 'user_id', 'menu_id'], 'required'],
-            [['schedule_id', 'user_id', 'menu_id', 'review_status', 'reviewed_at', 'reviewed_by', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['schedule_id', 'user_id', 'menu_id', 'location_id'], 'required'],
+            [['schedule_id', 'user_id', 'menu_id', 'location_id', 'review_status', 'reviewed_at', 'reviewed_by', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['reviewed_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['reviewed_by' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
             [['schedule_id'], 'exist', 'skipOnError' => true, 'targetClass' => Schedule::className(), 'targetAttribute' => ['schedule_id' => 'id']],
             [['menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['menu_id' => 'id']],
+            [['location_id'], 'exist', 'skipOnError' => true, 'targetClass' => Location::className(), 'targetAttribute' => ['location_id' => 'id']],
         ];
     }
 
@@ -79,6 +82,7 @@ class Order extends \yii\db\ActiveRecord
             'schedule_id' => 'Jadwal',
             'user_id' => 'User',
             'menu_id' => 'Menu',
+            'location_id' => 'Location',
             'review_status' => 'Review Status',
             'reviewed_at' => 'Reviewed At',
             'reviewed_by' => 'Reviewed By',
@@ -135,6 +139,22 @@ class Order extends \yii\db\ActiveRecord
     public function getMenu()
     {
         return $this->hasOne(Menu::className(), ['id' => 'menu_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getScheduleMenu()
+    {
+        return ScheduleMenu::findOne(['schedule_id' => $this->schedule_id, 'menu_id' => $this->menu_id]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLocation()
+    {
+        return $this->hasOne(Location::className(), ['id' => 'location_id']);
     }
 
     public static function reviewStatuses($index = null, $html = false) {

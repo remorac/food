@@ -76,6 +76,7 @@ class ScheduleController extends Controller
                         $scheduleMenu->menu_id = $key;
                     }
                     $scheduleMenu->quota = $value;
+                    $scheduleMenu->description = $post['description'][$key];
                     if (!$scheduleMenu->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($scheduleMenu->errors));
                     $ids[] = $scheduleMenu->id;
                 }

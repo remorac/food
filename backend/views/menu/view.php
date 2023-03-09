@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Menu', 'url' => ['index']];
     </div>
 
     <?php $form = ActiveForm::begin(['id' => 'active-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
-    <div class="card card-custom">
+    <div class="card card-custom d-none">
         <div class="card-header">
             <div class="card-title">Ketersediaan Mingguan</div>
         </div>

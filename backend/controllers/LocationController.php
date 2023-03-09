@@ -2,19 +2,18 @@
 
 namespace backend\controllers;
 
-use common\models\entity\Menu;
 use Yii;
-use common\models\entity\Order;
-use common\models\search\OrderSearch;
+use common\models\entity\Location;
+use common\models\search\LocationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\IntegrityException;
 
 /**
- * OrderController implements the CRUD actions for Order model.
+ * LocationController implements the CRUD actions for Location model.
  */
-class OrderController extends Controller
+class LocationController extends Controller
 {
     /**
      * @inheritdoc
@@ -26,19 +25,18 @@ class OrderController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                    'set' => ['POST'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all Order models.
+     * Lists all Location models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new OrderSearch();
+        $searchModel = new LocationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +46,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Displays a single Order model.
+     * Displays a single Location model.
      * @param integer $id
      * @return mixed
      */
@@ -60,13 +58,13 @@ class OrderController extends Controller
     }
 
     /**
-     * Creates a new Order model.
+     * Creates a new Location model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Order();
+        $model = new Location();
 
         if ($model->load(Yii::$app->request->post())) {
             if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
@@ -79,7 +77,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Updates an existing Order model.
+     * Updates an existing Location model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -99,7 +97,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Deletes an existing Order model.
+     * Deletes an existing Location model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -115,75 +113,17 @@ class OrderController extends Controller
     }
 
     /**
-     * Finds the Order model based on its primary key value.
+     * Finds the Location model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Order the loaded model
+     * @return Location the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Order::findOne($id)) !== null) {
+        if (($model = Location::findOne($id)) !== null) {
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function actionSetOrder($schedule_id)
-    {
-        $model = Order::find()->where([
-            'user_id' => Yii::$app->user->id,
-            'schedule_id' => $schedule_id,
-        ])->one();
-        if (!$model) {
-            $model = new Order();
-        }
-        $model->user_id = Yii::$app->user->id;
-        $model->schedule_id = $schedule_id;
-        $model->review_status = Order::REVIEW_STATUS_WAITING;
-        $model->reviewed_at = null;
-        $model->reviewed_by = null;
-        
-        if ($model->load(Yii::$app->request->post())) {
-            if (Menu::isAvailable($model->menu_id, $model->schedule->date, $model->schedule->shift_id, $model->schedule_id)) {
-                if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
-            } else {
-                Yii::$app->session->addFlash('error', '<b>'.$model->menu->name.'</b> sudah tidak tersedia.');
-            }
-        } else if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('_form', [
-                'model' => $model
-            ]);
-        }
-        return $this->redirect(Yii::$app->request->referrer);
-    }
-
-    public function actionSet($schedule_id, $menu_id)
-    {
-        $model = Order::find()->where([
-            'user_id' => Yii::$app->user->id,
-            'schedule_id' => $schedule_id,
-        ])->one();
-        if (!$model) {
-            $model = new Order();
-        }
-
-        if ($model->menu_id != $menu_id) {
-            $model->user_id = Yii::$app->user->id;
-            $model->schedule_id = $schedule_id;
-            $model->menu_id = $menu_id;
-            $model->location_id = Yii::$app->request->post('location_id');
-            $model->review_status = Order::REVIEW_STATUS_WAITING;
-            $model->reviewed_at = null;
-            $model->reviewed_by = null;
-            
-            if (Menu::isAvailable($model->menu_id, $model->schedule->date, $model->schedule->shift_id, $model->schedule_id)) {
-                if (!$model->save()) Yii::$app->session->addFlash('error', \yii\helpers\Json::encode($model->errors));
-            } else {
-                Yii::$app->session->addFlash('error', '<b>'.$model->menu->name.'</b> sudah tidak tersedia.');
-            }
-        }
-        
-        return $this->redirect(['index']);
     }
 }

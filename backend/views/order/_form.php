@@ -1,5 +1,6 @@
 <?php
 
+use common\models\entity\Location;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
@@ -9,6 +10,7 @@ use common\models\entity\Schedule;
 use common\models\entity\User;
 use common\models\entity\Menu;
 use common\models\entity\MenuAvailability;
+use common\models\entity\ScheduleMenu;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\entity\Order */
@@ -17,7 +19,8 @@ use common\models\entity\MenuAvailability;
 
 <?php 
     // $field = 'is_active_'.strtolower(date('l', strtotime($model->schedule->date)));
-    $menus = Menu::find()->all();
+    $menus = Menu::find()->orderBy('name')->all();
+    $scheduleMenus = ScheduleMenu::find()->joinWith(['menu'])->where(['schedule_id' => $model->schedule_id])->orderBy('menu.name')->all();
 ?>
 
 <?php $form = ActiveForm::begin(['id' => 'active-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
@@ -41,8 +44,20 @@ use common\models\entity\MenuAvailability;
         Permintaan Anda akan ditinjau terlebih dahulu oleh admin atau koperasi.
     </p>
 
+    <div class="form-group">
+        <label>Lokasi Pengantaran</label>
+        <?= Select2::widget([
+            'name' => 'location_id',
+            'value' => $model->location_id,
+            'data' => ArrayHelper::map(Location::find()->asArray()->all(), 'id', 'name'),
+            'theme' => Select2::THEME_DEFAULT,
+            'options' => ['placeholder' => '. . .'],
+            'pluginOptions' => ['allowClear' => true],
+        ]) ?>
+    </div>
+
     <div class="row">
-        <?php foreach ($menus as $menu) { ?>
+        <?php /* foreach ($menus as $menu) { ?>
             <?php if (Menu::isAvailable($menu->id, $model->schedule->date, $model->schedule->shift_id, $model->schedule_id)) { ?>
                 <div class="col-6">
                     <div class="alert p-0 my-4 bg-light text-center">
@@ -50,8 +65,29 @@ use common\models\entity\MenuAvailability;
                             <?= Html::img(['/menu/download', 'id' => $menu->id], ['width' => '100%', 'class' => 'rounded border img img-responsive full-width bg-secondary']) ?>
                         </div>
                         <h5><?= $menu->name ?></h5>
+                        <p><?= $menu->description ?></p>
                         <div class="p-4">
                         <?= Html::a('<i class="fa fa-check"></i> Pilih', ['order/set', 'schedule_id' => $model->schedule_id, 'menu_id' => $menu->id], [
+                            'class' => 'btn btn-primary btn-block',
+                            'data-method' => 'post',
+                        ]) ?>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+        <?php } */ ?>
+
+        <?php foreach ($scheduleMenus as $scheduleMenu) { ?>
+            <?php if (Menu::isAvailable($scheduleMenu->menu->id, $model->schedule->date, $model->schedule->shift_id, $model->schedule_id)) { ?>
+                <div class="col-6">
+                    <div class="alert p-0 my-4 bg-light text-center">
+                        <div class="image-container mb-4">
+                            <?= Html::img(['/menu/download', 'id' => $scheduleMenu->menu->id], ['width' => '100%', 'class' => 'rounded border img img-responsive full-width bg-secondary']) ?>
+                        </div>
+                        <h5><?= $scheduleMenu->menu->name ?></h5>
+                        <p><?= $scheduleMenu->description ?></p>
+                        <div class="p-4">
+                        <?= Html::a('<i class="fa fa-check"></i> Pilih', ['order/set', 'schedule_id' => $model->schedule_id, 'menu_id' => $scheduleMenu->menu->id], [
                             'class' => 'btn btn-primary btn-block',
                             'data-method' => 'post',
                         ]) ?>

@@ -78,10 +78,10 @@ use common\models\entity\User;
 <?php
 $js = <<<JAVASCRIPT
 
-console.log('js is loaded by yii.');
+// console.log('js is loaded by yii.');
 
-const togglePassword = document.querySelector('#togglePassword');
-const password = document.querySelector('#user-password');
+// const togglePassword = document.querySelector('#togglePassword');
+// const password = document.querySelector('#user-password');
 
 /* togglePassword.addEventListener('click', function (e) {
     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -89,41 +89,41 @@ const password = document.querySelector('#user-password');
     this.classList.toggle('fa-eye-slash');
 }); */
 
-togglePassword.addEventListener('mousedown', function (e) {
-    password.setAttribute('type', 'text');
-    this.classList.add('fa-eye-slash');
-});
+// togglePassword.addEventListener('mousedown', function (e) {
+//     password.setAttribute('type', 'text');
+//     this.classList.add('fa-eye-slash');
+// });
 
-togglePassword.addEventListener('mouseup', function (e) {
-    password.setAttribute('type', 'password');
-    this.classList.remove('fa-eye-slash');
-});
+// togglePassword.addEventListener('mouseup', function (e) {
+//     password.setAttribute('type', 'password');
+//     this.classList.remove('fa-eye-slash');
+// });
 JAVASCRIPT;
 
 // $this->registerJs($js, \yii\web\View::POS_READY);
 ?>
 
-
 <script type="text/javascript">
 
-console.log('js is loaded by html.');
+    console.log('js is loaded by html.');
 
-const togglePassword = document.querySelector('#togglePassword');
-const password = document.querySelector('#user-password');
+    var togglePassword = document.querySelector('#togglePassword');
+    var password = document.querySelector('#user-password');
 
-/* togglePassword.addEventListener('click', function (e) {
-    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-    password.setAttribute('type', type);
-    this.classList.toggle('fa-eye-slash');
-}); */
+    /* togglePassword.addEventListener('click', function (e) {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    }); */
 
-togglePassword.addEventListener('mousedown', function (e) {
-    password.setAttribute('type', 'text');
-    this.classList.add('fa-eye-slash');
-});
+    togglePassword.addEventListener('mousedown', function (e) {
+        password.setAttribute('type', 'text');
+        this.classList.add('fa-eye-slash');
+    });
 
-togglePassword.addEventListener('mouseup', function (e) {
-    password.setAttribute('type', 'password');
-    this.classList.remove('fa-eye-slash');
-});
+    togglePassword.addEventListener('mouseup', function (e) {
+        password.setAttribute('type', 'password');
+        this.classList.remove('fa-eye-slash');
+    });
+
 </script>

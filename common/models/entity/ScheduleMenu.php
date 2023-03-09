@@ -11,6 +11,7 @@ use Yii;
  * @property integer $schedule_id
  * @property integer $menu_id
  * @property integer $quota
+ * @property string $description
  * @property integer $created_at
  * @property integer $updated_at
  * @property integer $created_by
@@ -51,6 +52,7 @@ class ScheduleMenu extends \yii\db\ActiveRecord
         return [
             [['schedule_id', 'menu_id', 'quota'], 'required'],
             [['schedule_id', 'menu_id', 'quota', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['description'], 'string', 'max' => 255],
             [['schedule_id', 'menu_id'], 'unique', 'targetAttribute' => ['schedule_id', 'menu_id'], 'message' => 'The combination of Schedule and Menu has already been taken.'],
             [['schedule_id'], 'exist', 'skipOnError' => true, 'targetClass' => Schedule::className(), 'targetAttribute' => ['schedule_id' => 'id']],
             [['menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['menu_id' => 'id']],
@@ -69,6 +71,7 @@ class ScheduleMenu extends \yii\db\ActiveRecord
             'schedule_id' => 'Schedule',
             'menu_id' => 'Menu',
             'quota' => 'Quota',
+            'description' => 'Description',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',

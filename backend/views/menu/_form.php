@@ -29,7 +29,7 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'quota')->textInput() ?>
+    <?= '' // $form->field($model, 'quota')->textInput() ?>
 
     <?= $form->field($model, 'type')->radioList(Menu::types()) ?>
     

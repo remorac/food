@@ -64,6 +64,7 @@ $this->title = 'Pemesanan';
                                 <?= Html::img(['/menu/download', 'id' => $order->menu_id], ['width' => '100%', 'class' => 'rounded border img img-responsive full-width bg-secondary']) ?>
                             </div>
                             <h5 class="mb-4"><?= $order->menu->name ?></h5>
+                            <p><?= $order->scheduleMenu->description ?></p>
                         <?php } ?>
                         <?php if (!$order) echo '<div class="m-4"><i>belum memesan</i></div>' ?>
                     </div>
