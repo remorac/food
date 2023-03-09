@@ -82,7 +82,7 @@ class Order extends \yii\db\ActiveRecord
             'schedule_id' => 'Jadwal',
             'user_id' => 'User',
             'menu_id' => 'Menu',
-            'location_id' => 'Location',
+            'location_id' => 'Lokasi',
             'review_status' => 'Review Status',
             'reviewed_at' => 'Reviewed At',
             'reviewed_by' => 'Reviewed By',

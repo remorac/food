@@ -20,7 +20,7 @@ class OrderSearch extends Order
     public function rules()
     {
         return [
-            [['id', 'schedule_id', 'user_id', 'menu_id', 'review_status', 'reviewed_at', 'reviewed_by', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'schedule_id', 'user_id', 'menu_id', 'location_id', 'review_status', 'reviewed_at', 'reviewed_by', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['unit_id'], 'safe'],
         ];
     }
@@ -72,6 +72,7 @@ class OrderSearch extends Order
             'schedule_id' => $this->schedule_id,
             'user_id' => $this->user_id,
             'menu_id' => $this->menu_id,
+            'location_id' => $this->location_id,
             'review_status' => $this->review_status,
             'reviewed_at' => $this->reviewed_at,
             'reviewed_by' => $this->reviewed_by,

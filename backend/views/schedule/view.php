@@ -1,5 +1,6 @@
 <?php
 
+use common\models\entity\Location;
 use common\models\entity\Menu;
 use common\models\entity\Order;
 use common\models\entity\Schedule;
@@ -148,7 +149,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
                     ],
                     // 'id',
                     [
-                        'label'               => 'Unit Kerja',
+                        'label'               => 'Instansi',
                         'attribute'           => 'unit_id',
                         'value'               => 'user.unit.name',
                         'filterType'          => GridView::FILTER_SELECT2,
@@ -185,6 +186,17 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
                             'pluginOptions' => ['allowClear' => true],
                         ],
                     ],
+                    [
+                        'attribute'           => 'location_id',
+                        'value'               => 'location.name',
+                        'filterType'          => GridView::FILTER_SELECT2,
+                        'filter'              => ArrayHelper::map(Location::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
+                        'filterInputOptions'  => ['placeholder' => '. . .'],
+                        'filterWidgetOptions' => [
+                            'theme' => Select2::THEME_DEFAULT,
+                            'pluginOptions' => ['allowClear' => true],
+                        ],
+                    ],
                     /* [
                         'attribute'           => 'schedule_id',
                         'value'               => 'scheduleMenu.schedule.name',
@@ -212,12 +224,12 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
                         'headerOptions'  => ['class' => 'fit nowrap'],
                         'contentOptions' => ['class' => 'fit nowrap'],
                     ],
-                    [
+                    /* [
                         'attribute'      => 'reviewed_at',
                         'format'         => 'datetime',
                         'headerOptions'  => ['class' => 'fit nowrap'],
                         'contentOptions' => ['class' => 'fit nowrap'],
-                    ],
+                    ], */
                     [
                         'attribute' => 'reviewed_by',
                         'value'     => 'reviewedBy.name',
@@ -271,8 +283,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Jadwal', 'url' => ['index']];
                         'data-confirm' => 'Tolak semua pesanan?', 
                         'class' => 'btn btn-light-danger',
                     ]),
-                    Html::a('<i class="fas fa-file-pdf"></i> Resume By Menu', ['report-by-menu', 'id' => $model->id], ['data-pjax' => 0, 'class' => 'btn btn-light-info']),
-                    Html::a('<i class="fas fa-file-pdf"></i> Resume by Unit Kerja', ['report-by-unit', 'id' => $model->id], ['data-pjax' => 0, 'class' => 'btn btn-light-info']),
+                    // Html::a('<i class="fas fa-file-pdf"></i> Resume By Menu', ['report-by-menu', 'id' => $model->id], ['data-pjax' => 0, 'class' => 'btn btn-light-info']),
+                    // Html::a('<i class="fas fa-file-pdf"></i> Resume by Unit Kerja', ['report-by-unit', 'id' => $model->id], ['data-pjax' => 0, 'class' => 'btn btn-light-info']),
                 ],
                 'toggleDataOptions' => [
                     'all'  => ['label' => false, 'class' => 'btn btn-icon btn-secondary'],
