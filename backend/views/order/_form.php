@@ -30,8 +30,8 @@ use common\models\entity\ScheduleMenu;
 <div class="order-form">
     
     <div class="mt-0 mb-6">
-        <b class="font-size-lg"><?= date('d F Y', strtotime($model->schedule->date)) ?></b>
-        <br><span><?= $model->schedule->shift->name ?></span>
+        <big><big><b class=""><?= date('d F Y', strtotime($model->schedule->date)) ?></b></big></big>
+        <br><span><big><?= $model->schedule->shift->name ?></big></span>
         <br><span class="text-muted"><?= $model->schedule->description ?></span>
     </div>
 
