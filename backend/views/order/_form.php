@@ -88,7 +88,7 @@ use common\models\entity\ScheduleMenu;
                         </div>
                         <h5><?= $scheduleMenu->menu->name ?></h5>
                         <p><?= $scheduleMenu->description ?></p>
-                        <div class="p-4">
+                        <div class="pt-0 pl-4 pr-4 pb-4">
                         <?= Html::a('<i class="fa fa-check"></i> Pilih', ['order/set', 'schedule_id' => $model->schedule_id, 'menu_id' => $scheduleMenu->menu->id], [
                             'class' => 'btn btn-primary btn-block',
                             'data-method' => 'post',
